@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+       android:id="@+id/q"
+        android:title="Поиск по:">
+            <menu>
+                <group>
+                    <item
+                        android:id="@+id/m_subgroup_filter"
+                        android:icon="@android:drawable/ic_dialog_map"
+                        android:title="классификатору"/>
+                    <item
+                        android:id="@+id/m_contractor_filter"
+                        android:icon="@android:drawable/ic_dialog_dialer"
+                        android:title="поставщику" />
+                    <!--      <item
+                              android:id="@+id/action_mail"
+                              android:icon="@android:drawable/ic_dialog_email"
+                              android:title="cccc" />-->
+                </group>
+            </menu>
+    </item>
+
+    <item android:visible="false" android:title="Результат:">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/m_result_sku"
+                    android:title="Коды"/>
+            </group>
+        </menu>
+
+    </item>
+    <item android:id="@+id/m_exit" android:title="Закрыть"/>
+</menu>

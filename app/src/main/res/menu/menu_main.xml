@@ -1,0 +1,35 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ru.a5x5retail.frontproductmanagement.MainActivity">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_delete"
+        android:orderInCategory="100"
+        android:title="Удалить"
+        app:showAsAction="collapseActionView" />
+
+    <item
+    android:id="@+id/action_select_alll"
+    android:orderInCategory="100"
+    android:title="Выбрать всё"
+    app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_dictionary"
+        android:orderInCategory="100"
+        android:title="Номенклатура"
+        app:showAsAction="collapseActionView" />
+
+    <item
+        android:id="@+id/m_find_code"
+        android:orderInCategory="100"
+        android:title="Поиск кодов"
+        app:showAsAction="collapseActionView" />
+
+
+</menu>

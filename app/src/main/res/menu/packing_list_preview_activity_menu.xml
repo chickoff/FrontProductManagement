@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/itemHelp"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_help_black_24dp"
+        android:title=""/>
+
+    <item android:id="@+id/a_pl_preview_upd_item_1"
+        android:title="Обновить в RR"
+        android:orderInCategory="100"
+        app:showAsAction="collapseActionView"/>
+</menu>

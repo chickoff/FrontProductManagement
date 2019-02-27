@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="ru.a5x5retail.frontproductmanagement">
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:name=".ProdManApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Управление товарами"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".filters.groupfilter.FilterActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".updateapplication.UpdateApplicationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="Обновление" />
+        <activity
+            android:name=".invoicemasters.InvoiceMasterActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".newdocumentmaster.invoicemasters.decommissionspoilmaster.DecommissionSpoilMasterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".newdocumentmaster.invoicemasters.externalincomemaster.ExternalIncomeMasterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".newdocumentmaster.invoicemasters.innerincomemaster.InnerIncomeMasterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="Настройки"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme">
+
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
+        </activity>
+        <activity
+            android:name=".packinglistitems.PackingListItemsActivity"
+            android:label="Инв. Описи" />
+        <activity
+            android:name=".newdocumentmaster.inventorymaster.InventoryMasterActivity"
+            android:label="Новая инвентаризация"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".packinglistpreview.PackingListPreviewActivity" />
+        <activity
+            android:name=".сheckinglist.document.CheckingListGoodsActivity"
+            android:label="Сканирование"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".printprice.document.PrintPriceActivity"
+            android:label="Печать ценников" />
+        <activity android:name=".dictionarygoods.document.DictionaryGoodsActivity"/>
+    </application>
+
+</manifest>
