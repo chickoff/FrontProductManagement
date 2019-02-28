@@ -6,6 +6,11 @@ public class ttttt
 
 {
 
+    public String getHeadGuid() {
+        return "ggggggggggggggg";
+    }
+
+
 
 
 }
