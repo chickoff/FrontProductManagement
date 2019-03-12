@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/invoice_nav_item"
+            android:icon="@drawable/ic_income_sheet"
+            android:title="накладная"/>
+        <item
+            android:id="@+id/plan_income_item"
+            android:icon="@drawable/ic_basic_sheet_multiple"
+            android:title="пп" />
+        <item
+            android:id="@+id/contractor_info_item"
+            android:icon="@drawable/ic_info_outline_black_24dp"
+            android:title="инфо" />
+    </menu>
+
+

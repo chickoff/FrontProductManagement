@@ -7,5 +7,18 @@ public class InvoiceHead {
     public Date dateDoc;
     public String numDoc;
     public String summ;
-    public String conractorNameLong;
+    public String summVat;
+    public int validDoc;
+
+
+
+
+    /*public String guid;
+    public Date dateDoc;
+    public String numDoc;
+    public String summ;
+    public String conractorNameLong;*/
+
+
+
 }

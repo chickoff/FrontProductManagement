@@ -77,7 +77,7 @@ implements IRecyclerViewItemClick<InvoiceHead> {
 
     TextView textview333;
     private void updateView(){
-        textview333.setText(viewModel.getSelectedInvoiceHead().conractorNameLong);
+        //textview333.setText(viewModel.getSelectedInvoiceHead().conractorNameLong);
     }
 
     public void showAlertImage(boolean isShow ){

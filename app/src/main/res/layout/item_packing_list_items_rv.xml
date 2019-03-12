@@ -9,8 +9,10 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginLeft="2dp"
+            android:paddingLeft="15dp"
+            android:background="@drawable/item_recyclerview_background"
     >
 
     <TextView
@@ -22,6 +24,7 @@
             android:id="@+id/nameDocTextView"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/item_recyclerview_textview_color"
 
         />
 
@@ -32,16 +35,17 @@
         android:text="TextView"
         android:textStyle="italic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameDocTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/nameDocTextView"
+        android:textColor="@color/item_recyclerview_textview_color"/>
 
-    <View
+    <!--<View
             android:layout_width="match_parent"
             android:layout_height="@dimen/item_BottomLineHeight"
             android:background="@color/recyclerViewItemBottomLineColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/view"/>
+            android:id="@+id/view"/>-->
 
 
 </android.support.constraint.ConstraintLayout>

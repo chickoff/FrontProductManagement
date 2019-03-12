@@ -122,7 +122,7 @@ public class StepsFDialog extends DialogFragment {
 
         @Override
         public void setSource(InvoiceHead source) {
-            i_steps_f_dialog_textview_1.setText(source.conractorNameLong);
+          //  i_steps_f_dialog_textview_1.setText(source.conractorNameLong);
             i_steps_f_dialog_textview_2.setText(source.dateDoc.toString());
             i_steps_f_dialog_textview_3.setText(source.summ);
             i_steps_f_dialog_textview_4.setText(source.numDoc);

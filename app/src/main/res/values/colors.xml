@@ -4,11 +4,10 @@
     <color name="colorPrimaryDark">#3E56DD</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorAccent1">#a004ed3e</color>
-
-
-
     <color name="btnColorLightBlue">#80148eda</color>
-
-
     <color name="recyclerViewItemBottomLineColor">#4D64C9</color>
+    <color name="item_recyclerview_textview_color">#000</color>
+    <color name="recyclerview_background_color">#B4B4B4</color>
+    <color name="body_background_color">#6B6B6B</color>
+
 </resources>

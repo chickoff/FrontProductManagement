@@ -245,7 +245,7 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
     public class PackingListItemsRvDecoration extends RecyclerView.ItemDecoration {
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-           // outRect.top = 2;
+            outRect.top = 2;
         }
     }
 

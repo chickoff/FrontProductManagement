@@ -5,4 +5,9 @@
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
     </style>
+
+    <style name="item_recyclerview_style">
+        <item name="android:background">@drawable/item_recyclerview_background</item>
+        <item name="android:textColor">#fff</item>
+    </style>
 </resources>

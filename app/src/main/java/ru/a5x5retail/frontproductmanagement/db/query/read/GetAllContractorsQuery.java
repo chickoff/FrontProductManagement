@@ -25,7 +25,7 @@ public class GetAllContractorsQuery extends CallableQuery<ContractorInfo> {
 
     @Override
     protected void SetQuery() {
-        setSqlString("call V_StoreTSD.dbo.GetAllContractors ");
+        setSqlString("call V_StoreTSD.dbo.GetContractorsAll ");
     }
 
     @Override

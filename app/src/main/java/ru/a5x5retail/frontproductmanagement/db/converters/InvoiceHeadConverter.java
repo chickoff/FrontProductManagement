@@ -12,14 +12,18 @@ public class InvoiceHeadConverter implements IDbConvertible<InvoiceHead> {
 
         Object tmp = null;
 
-        obj.guid = resultSet.getObject("GUID").toString();
+        obj.guid = resultSet.getObject("IncomeGUID").toString();
         obj.numDoc = resultSet.getString("NumDoc");
         obj.dateDoc = resultSet.getDate("DateDoc");
-        obj.conractorNameLong = resultSet.getString("ContractorNameLong");
-
         tmp = null;
-        tmp = resultSet.getObject("Summ");
-        obj.summ = tmp == null ? "0" : tmp.toString();
-        return false;
+        tmp = resultSet.getObject("Summ"); obj.summ = tmp == null ? "0" : tmp.toString();
+        tmp = null;
+        tmp = resultSet.getObject("SummVat"); obj.summVat = tmp == null ? "0" : tmp.toString();
+        obj.validDoc = resultSet.getInt("ValidDoc");
+
+        return true;
     }
 }
+
+
+

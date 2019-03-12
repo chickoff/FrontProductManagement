@@ -9,14 +9,14 @@ import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
-
 import java.util.Map;
 
 import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
 import ru.a5x5retail.frontproductmanagement.packinglistpreview.PackingListPreviewActivity;
-
 import static ru.a5x5retail.frontproductmanagement.configuration.Constants.PACKINGLISTHEAD_CONST;
 import static ru.a5x5retail.frontproductmanagement.configuration.Constants.TYPEOFDOCUMENT_CONST;
+
+
 
 public class ProdManApp extends Application {
     private static Context context;

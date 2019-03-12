@@ -18,13 +18,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".newdocumentmaster.extendinvoicemasters.ExtendInvoiceMasterActivity">
+           <intent-filter>
+               <action android:name="android.intent.action.MAIN" />
+               <category android:name="android.intent.category.LAUNCHER" />
+           </intent-filter>
+        </activity>
         <activity
             android:name=".filters.groupfilter.FilterActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".updateapplication.UpdateApplicationActivity"
@@ -52,11 +61,10 @@
             android:theme="@style/AppTheme">
 
 
-            <intent-filter>
+<!--            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
 
 
         </activity>
@@ -75,7 +83,7 @@
         <activity
             android:name=".printprice.document.PrintPriceActivity"
             android:label="Печать ценников" />
-        <activity android:name=".dictionarygoods.document.DictionaryGoodsActivity"/>
+        <activity android:name=".dictionarygoods.document.DictionaryGoodsActivity" />
     </application>
 
 </manifest>

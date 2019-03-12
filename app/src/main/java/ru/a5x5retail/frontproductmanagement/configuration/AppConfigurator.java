@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -193,6 +194,14 @@ public class AppConfigurator {
         return result;
     }
 
+    public static class Period {
 
+        public static Date getStartDate() {
+            return null;
+        }
 
+        public static Date getEndDate() {
+            return null;
+        }
+    }
 }

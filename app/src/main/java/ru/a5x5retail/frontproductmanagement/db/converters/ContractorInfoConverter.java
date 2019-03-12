@@ -10,8 +10,8 @@ import ru.a5x5retail.frontproductmanagement.interfaces.IDbConvertible;
 public class ContractorInfoConverter implements IDbConvertible<ContractorInfo> {
     @Override
     public boolean Convert(ResultSet resultSet, ContractorInfo obj) throws SQLException {
-        obj.guid = resultSet.getObject("guid").toString();
-        obj.nameLong = resultSet.getString("nameLong");
+        obj.guid = resultSet.getObject("ContractorGUID").toString();
+        obj.nameLong = resultSet.getString("ContractorName");
         return false;
     }
 

@@ -29,6 +29,8 @@ public class BaseQuery implements IQuery {
     }
 
 
+
+
     public boolean isSuccessfull() {
         return isSuccessfull;
     }
