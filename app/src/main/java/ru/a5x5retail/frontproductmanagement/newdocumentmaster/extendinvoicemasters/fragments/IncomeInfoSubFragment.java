@@ -3,14 +3,27 @@ package ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemast
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import ru.a5x5retail.frontproductmanagement.ItemsRecyclerViewDecoration;
 import ru.a5x5retail.frontproductmanagement.R;
+import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerViewItemShortClickListener;
+import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
+import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
+import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
+
+import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
+import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.ExtendedContractorInfoViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,20 +81,85 @@ public class IncomeInfoSubFragment extends Fragment {
     }
 
     private ExtendedContractorInfoViewModel viewModel;
+    private RecyclerView recyclerView;
+    private BasicRecyclerViewAdapter<InvoiceHead> adapter ;
+
     private void init(View view) {
 
         initViewModel();
+        recyclerView = view.findViewById(R.id.recyclerView);
+
+        adapter = new BasicRecyclerViewAdapter<>();
+        adapter
+                .setShortClickListener(new IRecyclerViewItemShortClickListener<InvoiceHead>() {
+                    @Override
+                    public void OnShortClick(int pos,View view, InvoiceHead innerItem) {
+                        invoiceRecyclerViewShortClick(pos,view, innerItem);
+                    }
+                })
+                .setLayout(R.layout.item_invoice_head_def_2)
+                .setHolderFactory(new InvoiceRecyclerViewHolderFactory())
+                .setSourceList(viewModel.getInvoiceHeadList());
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new ItemsRecyclerViewDecoration());
     }
+
+    public int DpToPx( int dp){
+
+        Resources r  = getContext().getResources();
+        int px    = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
+        return px;
+
+    }
+
+    private void invoiceRecyclerViewShortClick(int pos,View view, InvoiceHead innerItem) {
+
+    }
+
 
     private void initViewModel() {
         FragmentActivity activity = getActivity();
         viewModel =  ViewModelProviders.of(activity).get(ExtendedContractorInfoViewModel.class);
-
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+    }
 
+
+    public class InvoiceRecyclerViewHolder extends BasicViewHolder<InvoiceHead> {
+
+        public InvoiceRecyclerViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            group_1_tv_1 = itemView.findViewById(R.id.group_1_tv_1);
+            group_2_tv_1 = itemView.findViewById(R.id.group_2_tv_1);
+            group_3_tv_1 = itemView.findViewById(R.id.group_3_tv_1);
+            group_3_tv_2 = itemView.findViewById(R.id.group_3_tv_2);
+        }
+
+        private TextView
+                group_1_tv_1,
+                group_2_tv_1,
+                group_3_tv_1,
+                group_3_tv_2;
+
+        @Override
+        public void setSource(InvoiceHead source) {
+            group_1_tv_1.setText(source.numDoc);
+            group_2_tv_1.setText(source.dateDoc.toString());
+            group_3_tv_1.setText(source.summ);
+            group_3_tv_2.setText(source.summVat);
+        }
+    }
+
+    public class InvoiceRecyclerViewHolderFactory extends BasicViewHolderFactory {
+
+        @Override
+        public BasicViewHolder getNewInstance(View itemView) {
+            return new InvoiceRecyclerViewHolder(itemView);
+        }
     }
 }

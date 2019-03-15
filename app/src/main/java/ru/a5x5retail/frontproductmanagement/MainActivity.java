@@ -8,9 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import ru.a5x5retail.frontproductmanagement.adapters.BasicRecyclerViewAdapter;
+
+import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerViewItemShortClickListener;
+import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicRecyclerViewAdapterBuilder;
-import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolder;
+import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
 import ru.a5x5retail.frontproductmanagement.base.BaseAppCompatActivity;
 import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
@@ -39,9 +41,9 @@ public class MainActivity extends BaseAppCompatActivity{
                 .setHolderFactory(new DocTypeViewHolderFactory())
                 .setLayout(R.layout.item_doctype_rv)
                 .setSourceList(AppConfigurator.getAvailableDocTypes())
-                .setShortClickListener(new BasicRecyclerViewAdapter.IRecyclerViewItemShortClickListener<DocType>() {
+                .setShortClickListener(new IRecyclerViewItemShortClickListener<DocType>() {
                     @Override
-                    public void OnShortClick(int pos, DocType innerItem) {
+                    public void OnShortClick(int pos, View view, DocType innerItem) {
                         if (innerItem.getTypeOfDocument() != Constants.TypeOfDocument.SETTINGS) {
                             int isNewVersion = - 1;
                             isNewVersion = AppConfigurator.checkNewVersion();

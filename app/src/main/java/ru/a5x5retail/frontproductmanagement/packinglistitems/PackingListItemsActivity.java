@@ -1,15 +1,12 @@
 package ru.a5x5retail.frontproductmanagement.packinglistitems;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -19,14 +16,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 import ru.a5x5retail.frontproductmanagement.DocType;
 
 import ru.a5x5retail.frontproductmanagement.ProdManApp;
-import ru.a5x5retail.frontproductmanagement.adapters.BasicRecyclerViewAdapter;
-import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolder;
+import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerViewItemShortClickListener;
+import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
+import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
 import ru.a5x5retail.frontproductmanagement.base.BaseAppCompatActivity;
 import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
@@ -40,9 +36,6 @@ import ru.a5x5retail.frontproductmanagement.interfaces.IRecyclerViewItemClick;
 
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.inventorymaster.InventoryMasterActivity;
 import ru.a5x5retail.frontproductmanagement.R;
-import ru.a5x5retail.frontproductmanagement.packinglistpreview.PackingListPreviewActivity;
-
-import static ru.a5x5retail.frontproductmanagement.configuration.Constants.PACKINGLISTHEAD_CONST;
 
 public class PackingListItemsActivity extends BaseAppCompatActivity
         implements IRecyclerViewItemClick<CheckingListHead> {
@@ -102,9 +95,9 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
         adapter.setHolderFactory(factory);
         adapter.setLayout(R.layout.item_packing_list_items_rv);
         adapter.setSourceList(viewModel.getHeadList());
-        adapter.setShortClickListener(new BasicRecyclerViewAdapter.IRecyclerViewItemShortClickListener<CheckingListHead>() {
+        adapter.setShortClickListener(new IRecyclerViewItemShortClickListener<CheckingListHead>() {
             @Override
-            public void OnShortClick(int pos, CheckingListHead innerItem) {
+            public void OnShortClick(int pos, View view, CheckingListHead innerItem) {
                 ProdManApp.Activities
                         .createPackingListPreviewActivity
                                 (PackingListItemsActivity.this,

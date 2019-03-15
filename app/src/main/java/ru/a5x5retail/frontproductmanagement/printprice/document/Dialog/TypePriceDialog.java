@@ -21,8 +21,8 @@ import ru.a5x5retail.frontproductmanagement.printprice.document.Adapters.BasicRe
 import ru.a5x5retail.frontproductmanagement.printprice.document.Adapters.BasicViewHolder;
 import ru.a5x5retail.frontproductmanagement.printprice.document.Adapters.BasicViewHolderFactory;
 import ru.a5x5retail.frontproductmanagement.printprice.interfaces.IRecyclerViewItemClick;
-//import ru.a5x5retail.frontproductmanagement.adapters.BasicRecyclerViewAdapter;
-//import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolder;
+//import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
+//import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
 //import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
 //import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
 //import ru.a5x5retail.frontproductmanagement.interfaces.IRecyclerViewItemClick;

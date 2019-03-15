@@ -9,8 +9,12 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import ru.a5x5retail.frontproductmanagement.R;
+import ru.a5x5retail.frontproductmanagement.base.BaseViewModel;
+import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.ExtendedContractorInfoViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,16 +82,61 @@ public class ContractorInfoSubFragment extends Fragment {
         }
     }
 
+
+
+    private TextView tv_1;
+    private ImageView edi_group_iv_1,edi_tp_group_iv_1,rpbpp_group_iv_1,cz_group_iv_1;
+
+
+
+
+
+
+
+
     private ExtendedContractorInfoViewModel viewModel;
     private void init(View view) {
         initViewModel();
+
+        tv_1 = view.findViewById(R.id.tv_1);
+        edi_group_iv_1 = view.findViewById(R.id.edi_group_iv_1);
+        edi_tp_group_iv_1 = view.findViewById(R.id.edi_tp_group_iv_1);
+        rpbpp_group_iv_1 = view.findViewById(R.id.rpbpp_group_iv_1);
+        cz_group_iv_1 = view.findViewById(R.id.cz_group_iv_1);
+
+        setView();
+
     }
 
     private void initViewModel() {
         FragmentActivity activity = getActivity();
         viewModel =  ViewModelProviders.of(activity).get(ExtendedContractorInfoViewModel.class);
+
+        viewModel.addDataChangedListener(new BaseViewModel.IDataChanged() {
+            @Override
+            public void dataIsChanged() {
+                setView();
+            }
+        });
     }
 
+
+    private void setView() {
+        tv_1.setText(viewModel.getContractorExtendedInfo().contractorName);
+        setImage(viewModel.getContractorExtendedInfo().edi,edi_group_iv_1);
+        setImage(viewModel.getContractorExtendedInfo().ediTp,edi_tp_group_iv_1);
+        setImage(viewModel.getContractorExtendedInfo().rpbpp,rpbpp_group_iv_1);
+        setImage(viewModel.getContractorExtendedInfo().cz,cz_group_iv_1);
+    }
+
+
+    private void setImage(int i, ImageView iv) {
+        if (i == 1 ) {
+            iv.setImageResource(R.drawable.ic_check_circle_black_24dp);
+        } else {
+            iv.setImageResource(R.drawable.ic_highlight_off_red_24dp);
+        }
+    }
 
     @Override
     public void onAttach(Context context) {

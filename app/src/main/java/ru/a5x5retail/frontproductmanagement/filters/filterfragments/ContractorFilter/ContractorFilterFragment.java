@@ -1,12 +1,13 @@
-package ru.a5x5retail.frontproductmanagement.filters.groupfilter.fragments.ContractorFilter;
+package ru.a5x5retail.frontproductmanagement.filters.filterfragments.ContractorFilter;
 
 
 import android.content.Context;
+import android.graphics.Rect;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +25,7 @@ import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerV
 import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
 import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
-import ru.a5x5retail.frontproductmanagement.db.models.CodeInfo;
 import ru.a5x5retail.frontproductmanagement.db.models.ContractorInfo;
-import ru.a5x5retail.frontproductmanagement.filters.groupfilter.IFilterCompleteListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -89,7 +88,7 @@ public class ContractorFilterFragment extends Fragment {
     FilteredRecyclerViewAdapter adapter;
     SearchView searchView;
     ContractorFilterViewModel viewModel;
-    private IFilterCompleteListener mListener;
+    private IFilterFragmentCompleteListener mListener;
 
     private void init(View view) {
 
@@ -120,21 +119,12 @@ public class ContractorFilterFragment extends Fragment {
             }
         });
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new ItemsRecyclerViewDecoration());
     }
 
     private void shortClick(int pos, ContractorInfo item) {
-
-        List<CodeInfo> skuList = null;
-        try {
-            skuList = viewModel.getCode(item.guid);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
         if (mListener != null) {
-            mListener.setResult(skuList);
+            mListener.setResult(item);
         }
     }
 
@@ -153,8 +143,8 @@ public class ContractorFilterFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof IFilterCompleteListener) {
-            mListener = (IFilterCompleteListener) context;
+        if (context instanceof IFilterFragmentCompleteListener) {
+            mListener = (IFilterFragmentCompleteListener) context;
         }
     }
 
@@ -229,6 +219,13 @@ public class ContractorFilterFragment extends Fragment {
         @Override
         public BasicViewHolder getNewInstance(View itemView) {
             return new ContractorInfoViewHolder(itemView);
+        }
+    }
+
+    public class ItemsRecyclerViewDecoration extends RecyclerView.ItemDecoration {
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            outRect.top = 2;
         }
     }
 }

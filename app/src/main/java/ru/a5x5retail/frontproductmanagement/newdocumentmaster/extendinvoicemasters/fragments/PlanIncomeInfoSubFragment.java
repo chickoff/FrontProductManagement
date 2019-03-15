@@ -5,11 +5,20 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import ru.a5x5retail.frontproductmanagement.ItemsRecyclerViewDecoration;
 import ru.a5x5retail.frontproductmanagement.R;
+import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerViewItemShortClickListener;
+import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
+import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
+import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
+import ru.a5x5retail.frontproductmanagement.db.models.PlanIncome;
+import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.ExtendedContractorInfoViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,14 +76,76 @@ public class PlanIncomeInfoSubFragment extends Fragment {
     }
 
     private ExtendedContractorInfoViewModel viewModel;
+    private RecyclerView recyclerView;
+    private BasicRecyclerViewAdapter<PlanIncome> adapter ;
+
+
 
     private void init(View view) {
+
         initViewModel();
+
+        recyclerView = view.findViewById(R.id.recyclerView);
+
+       adapter = new BasicRecyclerViewAdapter<>();
+        adapter
+                .setShortClickListener(new IRecyclerViewItemShortClickListener<PlanIncome>() {
+                    @Override
+                    public void OnShortClick(int pos,View view, PlanIncome innerItem) {
+                        planIncomeRecyclerViewShortClick(pos,view, innerItem);
+                    }
+                })
+                .setLayout(R.layout.item_plan_income_head_def_1)
+                .setHolderFactory(new InvoiceRecyclerViewHolderFactory())
+                .setSourceList(viewModel.getPlanIncomeList())
+                ;
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new ItemsRecyclerViewDecoration());
+    }
+
+    private void planIncomeRecyclerViewShortClick(int pos,View view, PlanIncome innerItem) {
     }
 
     private void initViewModel() {
         FragmentActivity activity = getActivity();
         viewModel =  ViewModelProviders.of(activity).get(ExtendedContractorInfoViewModel.class);
+    }
+
+
+    public class MyBasicRecyclerViewAdapter<T> extends BasicRecyclerViewAdapter<T> {
+
+    }
+
+
+    public class InvoiceRecyclerViewHolder extends BasicViewHolder<PlanIncome> {
+
+        public InvoiceRecyclerViewHolder( View itemView) {
+            super(itemView);
+                    group_1_tv_1 = itemView.findViewById(R.id.group_1_tv_1);
+                    group_2_tv_1 = itemView.findViewById(R.id.group_2_tv_1);
+                    group_3_tv_1 = itemView.findViewById(R.id.group_3_tv_1);
+        }
+
+        private TextView
+                    group_1_tv_1
+                ,   group_2_tv_1
+                ,   group_3_tv_1;
+
+        @Override
+        public void setSource(PlanIncome source) {
+            group_1_tv_1.setText(source.numDoc);
+            group_2_tv_1.setText(source.dateDoc);
+            group_3_tv_1.setText(source.qty);
+        }
+    }
+
+    public class InvoiceRecyclerViewHolderFactory extends BasicViewHolderFactory {
+
+        @Override
+        public BasicViewHolder getNewInstance(View itemView) {
+            return new InvoiceRecyclerViewHolder(itemView);
+        }
     }
 
 }

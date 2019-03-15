@@ -1,11 +1,15 @@
-package ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.fragments;
+package ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import ru.a5x5retail.frontproductmanagement.base.TypedViewModel;
 import ru.a5x5retail.frontproductmanagement.db.models.ContractorExtendedInfo;
+import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
+import ru.a5x5retail.frontproductmanagement.db.models.PlanIncome;
 import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetExtendedContractorInfoQuery;
+import ru.a5x5retail.frontproductmanagement.db.query.read.GetExternalIncomeInvoiceOnContractorQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetPlanIncomeListQuery;
 
 public class ExtendedContractorInfoViewModel extends TypedViewModel {
@@ -22,11 +26,21 @@ public class ExtendedContractorInfoViewModel extends TypedViewModel {
         setContractorExtendedInfo(q.getContractorExtendedInfo());
 
         LoadPlanIncome();
+        LoadIncome();
+        onDataChanged();
+
     }
 
     private void LoadPlanIncome() throws SQLException {
         GetPlanIncomeListQuery q = new GetPlanIncomeListQuery(con.getConnection(),externalContractorGuid);
         q.Execute();
+        planIncomeList = q.getPlanIncomeList();
+    }
+
+    private void LoadIncome() throws SQLException {
+        GetExternalIncomeInvoiceOnContractorQuery q = new GetExternalIncomeInvoiceOnContractorQuery(con.getConnection(),externalContractorGuid);
+        q.Execute();
+        invoiceHeadList = q.getList();
     }
 
     private String externalContractorGuid;
@@ -47,5 +61,26 @@ public class ExtendedContractorInfoViewModel extends TypedViewModel {
 
     public void setContractorExtendedInfo(ContractorExtendedInfo contractorExtendedInfo) {
         this.contractorExtendedInfo = contractorExtendedInfo;
+    }
+
+
+    private List<InvoiceHead> invoiceHeadList;
+    public List<InvoiceHead> getInvoiceHeadList() {
+        return invoiceHeadList;
+    }
+
+    public void setInvoiceHeadList(List<InvoiceHead> invoiceHeadList) {
+        this.invoiceHeadList = invoiceHeadList;
+    }
+
+
+    private List<PlanIncome> planIncomeList;
+
+    public List<PlanIncome> getPlanIncomeList() {
+        return planIncomeList;
+    }
+
+    public void setPlanIncomeList(List<PlanIncome> planIncomeList) {
+        this.planIncomeList = planIncomeList;
     }
 }

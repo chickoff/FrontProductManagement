@@ -43,6 +43,8 @@ public class GetExtendedContractorInfoQuery extends CallableQuery<ContractorExte
         info.rpbpp = resultSet.getInt("RPbPP");
         info.cz = resultSet.getInt("CZ");
 
+        contractorExtendedInfo = info;
+
     }
 
     public ContractorExtendedInfo getContractorExtendedInfo() {

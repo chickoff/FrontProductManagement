@@ -2,6 +2,9 @@ package ru.a5x5retail.frontproductmanagement.adapters;
 
 import java.util.List;
 
+import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerViewItemShortClickListener;
+import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
+
 public class BasicRecyclerViewAdapterBuilder<T> {
 private BasicRecyclerViewAdapter<T> adapter;
     public BasicRecyclerViewAdapterBuilder() {
@@ -23,7 +26,7 @@ private BasicRecyclerViewAdapter<T> adapter;
         return this;
     }
 
-    public BasicRecyclerViewAdapterBuilder<T> setShortClickListener(BasicRecyclerViewAdapter.IRecyclerViewItemShortClickListener shortClickListener){
+    public BasicRecyclerViewAdapterBuilder<T> setShortClickListener(IRecyclerViewItemShortClickListener shortClickListener){
         adapter.setShortClickListener(shortClickListener);
         return this;
     }

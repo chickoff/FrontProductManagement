@@ -29,7 +29,7 @@ public class GetPlanIncomeListQuery extends PreparedQuery {
     protected void SetQueryParams() throws SQLException {
         stmt.setObject(1, null);
         stmt.setString(2, contractorGuid);
-        stmt.setObject(3, null);
+        stmt.setObject(3, 0);
 
     }
 

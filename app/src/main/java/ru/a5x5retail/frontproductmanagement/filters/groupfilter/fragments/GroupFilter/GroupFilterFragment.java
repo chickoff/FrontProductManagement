@@ -2,7 +2,6 @@ package ru.a5x5retail.frontproductmanagement.filters.groupfilter.fragments.Group
 
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -23,8 +22,9 @@ import java.util.List;
 
 import ru.a5x5retail.frontproductmanagement.ProdManApp;
 import ru.a5x5retail.frontproductmanagement.R;
-import ru.a5x5retail.frontproductmanagement.adapters.BasicRecyclerViewAdapter;
-import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolder;
+import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerViewItemShortClickListener;
+import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
+import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
 import ru.a5x5retail.frontproductmanagement.components.threestatecheckbox.ThreeStateCheckbox;
 import ru.a5x5retail.frontproductmanagement.db.models.CodeInfo;
@@ -127,15 +127,16 @@ public class GroupFilterFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.a_groupfilter_recyclerview);
         adapter = new BasicRecyclerViewAdapter<>();
-        adapter .setHolderFactory(new SkuGroupViewHolderFactory())
-                .setLayout(R.layout.item_group_filter_rv)
-                .setSourceList(viewModel.getCurrentGroup().childList)
-                .setShortClickListener(new BasicRecyclerViewAdapter.IRecyclerViewItemShortClickListener<SkuGroup>() {
+        adapter.setShortClickListener(new IRecyclerViewItemShortClickListener<SkuGroup>() {
                     @Override
-                    public void OnShortClick(int pos, SkuGroup innerItem) {
+                    public void OnShortClick(int pos, View view, SkuGroup innerItem) {
                         shortClick(pos,innerItem);
                     }
-                });
+                })
+                .setHolderFactory(new SkuGroupViewHolderFactory())
+                .setLayout(R.layout.item_group_filter_rv)
+                .setSourceList(viewModel.getCurrentGroup().childList);
+
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new SkuGroupRvDecoration());
     }

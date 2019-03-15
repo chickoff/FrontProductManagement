@@ -1,18 +1,22 @@
 package ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.ViewModelProviders;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import java.sql.SQLException;
 
 import ru.a5x5retail.frontproductmanagement.R;
+import ru.a5x5retail.frontproductmanagement.configuration.Constants;
 import ru.a5x5retail.frontproductmanagement.db.models.ContractorInfo;
 import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetExtendedContractorInfoQuery;
@@ -29,6 +33,7 @@ implements IFilterFragmentCompleteListener<ContractorInfo>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_extend_invoice_master);
+        initViewModel();
         init();
     }
 
@@ -49,6 +54,7 @@ implements IFilterFragmentCompleteListener<ContractorInfo>
             @Override
             public void onRefresh() {
                 mSwipeRefreshLayout.setRefreshing(false);
+                loadViewModel();
             }
         });
 
@@ -83,9 +89,32 @@ implements IFilterFragmentCompleteListener<ContractorInfo>
 
     @Override
     public void setResult(ContractorInfo result) {
-
-        replaceFragment(ExtendedContractorInfoFragment.newInstance(result.guid));
+        viewModel.setExternalContractorGuid(result.guid);
+        loadViewModel();
+        replaceFragment(ExtendedContractorInfoFragment.newInstance());
     }
+
+    private ExtendedContractorInfoViewModel viewModel;
+
+
+    private void initViewModel() {
+            viewModel = ViewModelProviders.of(this).get(ExtendedContractorInfoViewModel.class);
+            if (viewModel.getState() == Constants.ViewModelStateEnum.LOADED) {
+                return;
+            }
+        loadViewModel();
+    }
+
+    private void loadViewModel() {
+        try {
+            viewModel.Load();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

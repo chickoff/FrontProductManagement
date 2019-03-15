@@ -15,8 +15,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import ru.a5x5retail.frontproductmanagement.R;
-import ru.a5x5retail.frontproductmanagement.adapters.BasicRecyclerViewAdapter;
-import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolder;
+import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerViewItemShortClickListener;
+import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
+import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
 import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
 import ru.a5x5retail.frontproductmanagement.interfaces.*;
@@ -66,9 +67,9 @@ public class StepsFDialog extends DialogFragment {
         rv.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         StepsFDialogViewHolderFactory hf = new StepsFDialogViewHolderFactory();
         BasicRecyclerViewAdapter<InvoiceHead> adapter = new BasicRecyclerViewAdapter<>();
-        adapter.setShortClickListener(new BasicRecyclerViewAdapter.IRecyclerViewItemShortClickListener<InvoiceHead>() {
+        adapter.setShortClickListener(new IRecyclerViewItemShortClickListener<InvoiceHead>() {
             @Override
-            public void OnShortClick(int pos, InvoiceHead innerItem) {
+            public void OnShortClick(int pos, View view, InvoiceHead innerItem) {
                 viewModel.setSelectedInvoiceHead(innerItem);
                 if (mListener != null) {
                     mListener.OnClick(pos, innerItem);
