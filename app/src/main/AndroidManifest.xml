@@ -18,11 +18,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".checkinglistinc.CheckingListIncActivity">
+         <!--<intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+             <category android:name="android.intent.category.LAUNCHER" />
+         </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".newdocumentmaster.extendinvoicemasters.creators.newinvoice.CreateNewInvoiceActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity android:name=".newdocumentmaster.extendinvoicemasters.ExtendInvoiceMasterActivity">
+
+            <!--
            <intent-filter>
                <action android:name="android.intent.action.MAIN" />
                <category android:name="android.intent.category.LAUNCHER" />
            </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".filters.groupfilter.FilterActivity"
@@ -59,14 +71,11 @@
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme">
-
-
-<!--            <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-
-
+            </intent-filter>
         </activity>
         <activity
             android:name=".packinglistitems.PackingListItemsActivity"

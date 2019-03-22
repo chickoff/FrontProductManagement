@@ -9,6 +9,7 @@ import ru.a5x5retail.frontproductmanagement.interfaces.IQuery;
 public class BaseQuery implements IQuery {
     private String sqlString;
     private boolean isSuccessfull = false;
+    private SQLException sqlException;
     private int returnCode;
     Connection connection = null;
     private ResultSet rs;
@@ -53,5 +54,13 @@ public class BaseQuery implements IQuery {
 
     public void setReturnCode(int returnCode) {
         this.returnCode = returnCode;
+    }
+
+    public SQLException getSqlException() {
+        return sqlException;
+    }
+
+    protected void setSqlException(SQLException sqlException) {
+        this.sqlException = sqlException;
     }
 }

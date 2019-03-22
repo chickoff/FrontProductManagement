@@ -23,7 +23,7 @@ public class PackingListItemsViewModel extends TypedViewModel {
         super.Load();
         MsSqlConnection con = new MsSqlConnection();
         GetCheckingHeadListQuery query =
-                new GetCheckingHeadListQuery(con.getConnection(), AppConfigurator.getDeviceId(ProdManApp.getAppContext()),getTypeOfDoc().getIndex());
+                new GetCheckingHeadListQuery(con.getConnection(), AppConfigurator.getDeviceId(ProdManApp.getAppContext()),Constants.getCurrentTypeOfDocument().getIndex());
             con.CallQuery(query);
         headList = query.getHeadList();
     }

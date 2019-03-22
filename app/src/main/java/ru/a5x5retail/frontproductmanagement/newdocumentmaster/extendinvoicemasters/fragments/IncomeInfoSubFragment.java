@@ -1,12 +1,12 @@
 package ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.fragments;
 
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -15,22 +15,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.sql.SQLException;
+
 import ru.a5x5retail.frontproductmanagement.ItemsRecyclerViewDecoration;
+import ru.a5x5retail.frontproductmanagement.ProdManApp;
 import ru.a5x5retail.frontproductmanagement.R;
 import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerViewItemShortClickListener;
 import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
 import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
 
+import ru.a5x5retail.frontproductmanagement.db.models.ContractorExtendedInfo;
 import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.ExtendedContractorInfoViewModel;
+import ru.a5x5retail.frontproductmanagement.base.TestFragment;
+import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.dlgfragments.InvoiceSwitchDialogFragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link IncomeInfoSubFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class IncomeInfoSubFragment extends Fragment {
+import static ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.creators.newinvoice.CreateNewInvoiceActivity.BASIS_OF_CREATION_NEW;
+
+
+public class IncomeInfoSubFragment extends TestFragment<ExtendedContractorInfoViewModel> {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -45,15 +49,7 @@ public class IncomeInfoSubFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment IncomeInfoSubFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static IncomeInfoSubFragment newInstance(String param1, String param2) {
         IncomeInfoSubFragment fragment = new IncomeInfoSubFragment();
         Bundle args = new Bundle();
@@ -67,8 +63,7 @@ public class IncomeInfoSubFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
@@ -80,9 +75,10 @@ public class IncomeInfoSubFragment extends Fragment {
         return view;
     }
 
-    private ExtendedContractorInfoViewModel viewModel;
+
     private RecyclerView recyclerView;
     private BasicRecyclerViewAdapter<InvoiceHead> adapter ;
+    private FloatingActionButton fab;
 
     private void init(View view) {
 
@@ -99,10 +95,26 @@ public class IncomeInfoSubFragment extends Fragment {
                 })
                 .setLayout(R.layout.item_invoice_head_def_2)
                 .setHolderFactory(new InvoiceRecyclerViewHolderFactory())
-                .setSourceList(viewModel.getInvoiceHeadList());
+                .setSourceList(getViewModel().getInvoiceHeadList());
 
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new ItemsRecyclerViewDecoration());
+
+        fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fabOnClick();
+            }
+        });
+    }
+
+    private void fabOnClick() {
+
+        ProdManApp.Activities.createNewInvoiceActivity(getActivity(),BASIS_OF_CREATION_NEW,
+                getViewModel().getContractorExtendedInfo(),null,201);
+
+
     }
 
     public int DpToPx( int dp){
@@ -113,21 +125,69 @@ public class IncomeInfoSubFragment extends Fragment {
 
     }
 
-    private void invoiceRecyclerViewShortClick(int pos,View view, InvoiceHead innerItem) {
+    private void invoiceRecyclerViewShortClick(int pos, View view, final InvoiceHead innerItem) {
+        final InvoiceSwitchDialogFragment dlg = new InvoiceSwitchDialogFragment();
+        dlg.setResultListener(new InvoiceSwitchDialogFragment.InvoiceSwithDialogFragmentResult() {
+            @Override
+            public void createCheckList() {
+                IncomeInfoSubFragment.this.createCheckList(innerItem);
+            }
 
+            @Override
+            public void cancelDlg() {
+
+            }
+        });
+
+        dlg.setTitle(innerItem.numDoc);
+        dlg.show(getFragmentManager(),"fdf");
     }
 
+    private void createCheckList(InvoiceHead innerItem) {
+        try {
+            getViewModel().CreateNewCheckList(innerItem);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void initViewModel() {
         FragmentActivity activity = getActivity();
-        viewModel =  ViewModelProviders.of(activity).get(ExtendedContractorInfoViewModel.class);
+        setViewModel( ViewModelProviders.of(activity).get(ExtendedContractorInfoViewModel.class));
+
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    protected void viewModelDataIsChanged() {
+        updateUi();
     }
 
+    @SuppressLint("RestrictedApi")
+    private void updateUi() {
+        ContractorExtendedInfo ci = getViewModel().getContractorExtendedInfo();
+        if (ci == null) return;
+        if (getViewModel().getInvoiceHeadList() == null) return;
+
+        if ((ci.ediTp == 0) || (ci.ediTp == 1 || ci.rpbpp == 1)) {
+            fab.setVisibility(View.VISIBLE);
+        } else {
+            fab.setVisibility(View.VISIBLE);   // тут нужен инвизибл !!!
+        }
+
+        adapter.setSourceList(getViewModel().getInvoiceHeadList());
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void listenerChangedListenerRemove() {
+
+    }
+
+    @Override
+    public void listenerChangedListenerAdded() {
+
+        updateUi();
+    }
 
     public class InvoiceRecyclerViewHolder extends BasicViewHolder<InvoiceHead> {
 

@@ -15,11 +15,11 @@ implements Observable
 
     private boolean isInitialized = false;
 
-    public Constants.TypeOfDocument getTypeOfDoc() {
+    public Constants.TypeOfDocument getTypeOfDoc1() {
         return typeOfDoc;
     }
 
-    public void setTypeOfDoc(Constants.TypeOfDocument typeOfDoc) {
+    public void setTypeOfDoc1(Constants.TypeOfDocument typeOfDoc) {
         this.typeOfDoc = typeOfDoc;
     }
 

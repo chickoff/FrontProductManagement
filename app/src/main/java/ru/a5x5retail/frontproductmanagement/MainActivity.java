@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.SQLException;
+
 import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerViewItemShortClickListener;
 import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicRecyclerViewAdapterBuilder;
@@ -61,7 +63,7 @@ public class MainActivity extends BaseAppCompatActivity{
                         }
 
                         Intent intent = new Intent(MainActivity.this, innerItem.getClassOfActivity());
-                        intent.putExtra(TYPEOFDOCUMENT_CONST,innerItem.getTypeOfDocument().getIndex());
+                        Constants.setCurrentTypeOfDocument(innerItem.getTypeOfDocument());
                         startActivity(intent);
 
                     }
@@ -69,6 +71,14 @@ public class MainActivity extends BaseAppCompatActivity{
         docTypesRecyclerView.setAdapter(adapter);
         docTypesRecyclerView.addItemDecoration(new DocTypeItemDecor(4));
 
+
+        try {
+            AppConfigurator.getMainInfo();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void newIntent(Class<?> activity){

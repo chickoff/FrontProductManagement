@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/goods_nav_item"
+            android:icon="@drawable/ic_income_sheet"
+            android:title="товар"/>
+        <item
+            android:id="@+id/prod_date_item"
+            android:icon="@drawable/ic_basic_sheet_multiple"
+            android:title="дата производства" />
+        <item
+            android:id="@+id/mark_info_item"
+            android:icon="@drawable/ic_info_outline_black_24dp"
+            android:title="марки" />
+    </menu>
+
+

@@ -3,14 +3,22 @@ package ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemast
 import java.sql.SQLException;
 import java.util.List;
 
+import ru.a5x5retail.frontproductmanagement.ProdManApp;
 import ru.a5x5retail.frontproductmanagement.base.TypedViewModel;
+import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
+import ru.a5x5retail.frontproductmanagement.configuration.Constants;
 import ru.a5x5retail.frontproductmanagement.db.models.ContractorExtendedInfo;
 import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
 import ru.a5x5retail.frontproductmanagement.db.models.PlanIncome;
 import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
-import ru.a5x5retail.frontproductmanagement.db.query.read.GetExtendedContractorInfoQuery;
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQueryAsync;
+import ru.a5x5retail.frontproductmanagement.db.query.create.CreateCheckingListIncDocQuery;
+
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetExternalIncomeInvoiceOnContractorQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetPlanIncomeListQuery;
+import ru.a5x5retail.frontproductmanagement.db.query.read.async.GetExtendedContractorInfoQueryAsync;
+
+
 
 public class ExtendedContractorInfoViewModel extends TypedViewModel {
 
@@ -21,14 +29,44 @@ public class ExtendedContractorInfoViewModel extends TypedViewModel {
     public void Load() throws SQLException, ClassNotFoundException {
         super.Load();
         con = new MsSqlConnection();
-        GetExtendedContractorInfoQuery q = new GetExtendedContractorInfoQuery(con.getConnection(),externalContractorGuid);
-        q.Execute();
-        setContractorExtendedInfo(q.getContractorExtendedInfo());
-
+        LoadContractorInfo();
         LoadPlanIncome();
         LoadIncome();
-        onDataChanged();
+    }
 
+    private void LoadContractorInfo() throws SQLException {
+        final GetExtendedContractorInfoQueryAsync q = new GetExtendedContractorInfoQueryAsync(con.getConnection(),externalContractorGuid);
+        q.setQueryListener(new CallableQueryAsync.AsyncQueryListener() {
+            @Override
+            public void onPreExecute() {
+
+            }
+
+            @Override
+            public void onPostExecute(Object o) {
+                setContractorExtendedInfo(q.getContractorExtendedInfo());
+                onDataChanged();
+            }
+
+            @Override
+            public void onProgressUpdate(Object[] values) {
+
+            }
+
+            @Override
+            public void onCancelled(Object o) {
+
+            }
+
+            @Override
+            public void onCancelled() {
+
+            }
+        });
+        q.ExecuteAsync();
+        if (!q.isSuccessfull() && q.getSqlException() != null) {
+            throw q.getSqlException();
+        }
     }
 
     private void LoadPlanIncome() throws SQLException {
@@ -42,6 +80,15 @@ public class ExtendedContractorInfoViewModel extends TypedViewModel {
         q.Execute();
         invoiceHeadList = q.getList();
     }
+
+    public void CreateNewCheckList(InvoiceHead head) throws SQLException {
+        CreateCheckingListIncDocQuery query = new CreateCheckingListIncDocQuery(
+                con.getConnection(),head.guid, AppConfigurator.getDeviceId(ProdManApp.getAppContext()),
+                Constants.getCurrentTypeOfDocument().getIndex()
+        );
+        query.Execute();
+    }
+
 
     private String externalContractorGuid;
 
@@ -63,7 +110,6 @@ public class ExtendedContractorInfoViewModel extends TypedViewModel {
         this.contractorExtendedInfo = contractorExtendedInfo;
     }
 
-
     private List<InvoiceHead> invoiceHeadList;
     public List<InvoiceHead> getInvoiceHeadList() {
         return invoiceHeadList;
@@ -72,7 +118,6 @@ public class ExtendedContractorInfoViewModel extends TypedViewModel {
     public void setInvoiceHeadList(List<InvoiceHead> invoiceHeadList) {
         this.invoiceHeadList = invoiceHeadList;
     }
-
 
     private List<PlanIncome> planIncomeList;
 

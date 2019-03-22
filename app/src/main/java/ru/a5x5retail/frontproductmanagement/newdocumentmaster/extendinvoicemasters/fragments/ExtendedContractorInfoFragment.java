@@ -10,17 +10,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import java.sql.SQLException;
-
 import ru.a5x5retail.frontproductmanagement.R;
-import ru.a5x5retail.frontproductmanagement.configuration.Constants;
+import ru.a5x5retail.frontproductmanagement.base.BaseFragment;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.ExtendedContractorInfoViewModel;
 
 /**
@@ -28,7 +25,7 @@ import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemaste
  * Use the {@link ExtendedContractorInfoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ExtendedContractorInfoFragment extends Fragment {
+public class ExtendedContractorInfoFragment extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String EXTERNAL_CONTRACTOR_GUID = "EXTERNAL_CONTRACTOR_GUID";
@@ -38,19 +35,10 @@ public class ExtendedContractorInfoFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-
     public static ExtendedContractorInfoFragment newInstance() {
         ExtendedContractorInfoFragment fragment = new ExtendedContractorInfoFragment();
-/*
-        Bundle args = new Bundle();
-        args.putString(EXTERNAL_CONTRACTOR_GUID, externalContractorGuid);
-        fragment.setArguments(args);
-*/
         return fragment;
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,18 +47,25 @@ public class ExtendedContractorInfoFragment extends Fragment {
     }
 
     @Override
+    protected void onFirstInit() {
+        super.onFirstInit();
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_extended_contractor_info, container, false);
-        init(view);
+        initUi(view);
         return view;
     }
 
     FrameLayout fragment_frame_layout;
     BottomNavigationView bottomNavigationView;
 
-    private void init(View view) {
+    private void initUi(View view) {
+
         fragment_frame_layout = view.findViewById(R.id.fragment_frame_layout);
 
         bottomNavigationView = view.findViewById(R.id.bottom_navigation);
@@ -97,8 +92,11 @@ public class ExtendedContractorInfoFragment extends Fragment {
                 }
             }
         });
-    }
 
+        if (isFirstStart()) {
+            bottomNavigationView.setSelectedItemId(R.id.invoice_nav_item);
+        }
+    }
 
     private ExtendedContractorInfoViewModel viewModel;
 
@@ -117,7 +115,8 @@ public class ExtendedContractorInfoFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+
     }
 }

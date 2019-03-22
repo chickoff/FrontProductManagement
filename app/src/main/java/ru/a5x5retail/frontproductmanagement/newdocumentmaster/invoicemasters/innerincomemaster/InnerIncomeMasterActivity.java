@@ -63,7 +63,6 @@ implements IRecyclerViewItemClick<InvoiceHead> {
 
         viewModel = ViewModelProviders.of(this).get(InnerIncomeMasterViewModel.class);
         binding.setViewmodel(viewModel);
-        viewModel.setTypeOfDoc(Constants.TypeOfDocument.INNER_INCOME);
         if (viewModel.getState() == Constants.ViewModelStateEnum.LOADED) return;
         try {
             viewModel.Load();

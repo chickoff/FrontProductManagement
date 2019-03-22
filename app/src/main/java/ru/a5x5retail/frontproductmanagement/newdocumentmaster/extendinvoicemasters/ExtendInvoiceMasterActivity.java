@@ -2,6 +2,8 @@ package ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemast
 
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +18,7 @@ import android.widget.FrameLayout;
 import java.sql.SQLException;
 
 import ru.a5x5retail.frontproductmanagement.R;
+import ru.a5x5retail.frontproductmanagement.base.BaseAppCompatActivity;
 import ru.a5x5retail.frontproductmanagement.configuration.Constants;
 import ru.a5x5retail.frontproductmanagement.db.models.ContractorInfo;
 import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
@@ -25,7 +28,7 @@ import ru.a5x5retail.frontproductmanagement.filters.filterfragments.ContractorFi
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.fragments.ExtendedContractorInfoFragment;
 
 
-public class ExtendInvoiceMasterActivity extends AppCompatActivity
+public class ExtendInvoiceMasterActivity extends BaseAppCompatActivity
 implements IFilterFragmentCompleteListener<ContractorInfo>
 {
 
@@ -33,19 +36,21 @@ implements IFilterFragmentCompleteListener<ContractorInfo>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_extend_invoice_master);
+        initUi();
         initViewModel();
-        init();
     }
 
-    private FrameLayout fragmentLayout;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private static boolean f;
+
+    @Override
+    protected void firstInit() {
+        super.firstInit();
+    }
 
 
     @SuppressLint("RestrictedApi")
-    private void init() {
-
+    private void initUi() {
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -58,40 +63,29 @@ implements IFilterFragmentCompleteListener<ContractorInfo>
             }
         });
 
-        fragmentLayout = findViewById(R.id.fragmentLayout);
-
-        if (!f) {
-            replaceFragment(ContractorFilterFragment.newInstance("dddddf","ddf"));
+        if (isFirstStart()) {
+            replaceFragment(ContractorFilterFragment.newInstance("dddddf","ddf"),false);
         }
-
-      /*  try {
-            MsSqlConnection con = new MsSqlConnection();
-            GetExtendedContractorInfoQuery q = new GetExtendedContractorInfoQuery(con.getConnection());
-            q.Execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }*/
-
     }
 
-    private void replaceFragment(Fragment fragment) {
+    @SuppressLint("RestrictedApi")
+    private void replaceFragment(Fragment fragment,boolean useBackStack) {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fmTra = fragmentManager.beginTransaction();
         fmTra.replace(R.id.fragmentLayout, fragment);
-        fmTra.addToBackStack(null);
+        if (useBackStack) {
+            fmTra.addToBackStack(null);
+        }
+
         fmTra.commit();
-        f = true;
     }
 
     @Override
     public void setResult(ContractorInfo result) {
         viewModel.setExternalContractorGuid(result.guid);
         loadViewModel();
-        replaceFragment(ExtendedContractorInfoFragment.newInstance());
+        replaceFragment(ExtendedContractorInfoFragment.newInstance(), true);
     }
 
     private ExtendedContractorInfoViewModel viewModel;
@@ -99,10 +93,17 @@ implements IFilterFragmentCompleteListener<ContractorInfo>
 
     private void initViewModel() {
             viewModel = ViewModelProviders.of(this).get(ExtendedContractorInfoViewModel.class);
+
+            if (!viewModel.isInitialized()) {
+                viewModel.setInitialized(true);
+            }
+
             if (viewModel.getState() == Constants.ViewModelStateEnum.LOADED) {
                 return;
             }
-        loadViewModel();
+
+
+       // loadViewModel();
     }
 
     private void loadViewModel() {
@@ -115,6 +116,31 @@ implements IFilterFragmentCompleteListener<ContractorInfo>
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        loadViewModel();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isFinishing()) {
+            int a = 0;
+            a = a;
+        }
+
+        else {
+            int a = 0;
+            a = a;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -122,9 +148,10 @@ implements IFilterFragmentCompleteListener<ContractorInfo>
         switch (item.getItemId()) {
             case android.R.id.home:
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                if (fragmentManager.getBackStackEntryCount() > 1) {
-                    fragmentManager.popBackStack();
-                } else f = false;
+                fragmentManager.popBackStack();
+                if (fragmentManager.getBackStackEntryCount() == 0) {
+                    finish();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

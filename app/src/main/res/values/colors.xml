@@ -7,7 +7,9 @@
     <color name="btnColorLightBlue">#80148eda</color>
     <color name="recyclerViewItemBottomLineColor">#4D64C9</color>
     <color name="item_recyclerview_textview_color">#000</color>
+    <color name="font_color">#000</color>
     <color name="recyclerview_background_color">#B4B4B4</color>
+    <color name="light_text_color">#FFFFFF</color>
     <color name="body_background_color">#6B6B6B</color>
 
 </resources>

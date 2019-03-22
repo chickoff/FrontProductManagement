@@ -20,6 +20,7 @@ import ru.a5x5retail.frontproductmanagement.ProdManApp;
 import ru.a5x5retail.frontproductmanagement.Version;
 import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetApkVersionApkQuery;
+import ru.a5x5retail.frontproductmanagement.db.query.read.GetMainDivisionInfoQuery;
 import ru.a5x5retail.frontproductmanagement.packinglistitems.PackingListItemsActivity;
 import ru.a5x5retail.frontproductmanagement.printprice.document.PrintPriceActivity;
 import ru.a5x5retail.frontproductmanagement.settings.SettingsActivity;
@@ -192,6 +193,13 @@ public class AppConfigurator {
 
         }
         return result;
+    }
+
+    public static void getMainInfo() throws SQLException, ClassNotFoundException {
+        MsSqlConnection con = new MsSqlConnection();
+        GetMainDivisionInfoQuery query = new GetMainDivisionInfoQuery(con.getConnection());
+        query.Execute();
+        Constants.setDivisionInfo(query.getDivisionInfo());
     }
 
     public static class Period {

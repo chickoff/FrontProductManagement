@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_recyclerview_background"
+    android:paddingLeft="10dp"
+    android:paddingTop="3dp"
+    android:paddingBottom="3dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/group_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="3dp">
+
+        <ImageView
+            android:id="@+id/group_1_iv_1"
+            android:src="@drawable/ic_num_doc"
+            android:layout_width="16dp"
+            android:layout_height="16dp"/>
+
+        <TextView
+            android:id="@+id/group_1_tv_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/item_recyclerview_textview_color"
+            android:text="Это номер документа" />
+        </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/group_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="3dp">
+
+        <ImageView
+            android:id="@+id/group_2_iv_1"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_calendar"/>
+
+
+        <TextView
+            android:id="@+id/group_2_tv_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Это дата документа"
+            android:textColor="@color/item_recyclerview_textview_color"
+            android:layout_marginStart="10dp"
+            />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        >
+
+        <ImageView
+            android:id="@+id/group_3_iv_1"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_summah"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:id="@+id/group_3_tv_1"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Это сумма"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/item_recyclerview_textview_color"
+            android:layout_toRightOf="@+id/group_3_iv_1"/>
+
+        <ImageView
+            android:id="@+id/group_3_iv_2"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_vat"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@+id/group_3_tv_1"
+            />
+
+        <TextView
+            android:id="@+id/group_3_tv_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Это НДС"
+            android:textColor="@color/item_recyclerview_textview_color"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@+id/group_3_iv_2"
+            />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

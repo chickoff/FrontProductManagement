@@ -58,7 +58,6 @@ public class ExternalIncomeMasterActivity extends BaseMasterActivity
     private void initViewModel(){
         viewModel = ViewModelProviders.of(this).get(ExternalIncomeMasterViewModel.class);
         binding.setViewmodel(viewModel);
-        viewModel.setTypeOfDoc(Constants.TypeOfDocument.OUTER_INCOME);
         if (viewModel.getState() == Constants.ViewModelStateEnum.LOADED) return;
         try {
             viewModel.Load();

@@ -1,6 +1,10 @@
 package ru.a5x5retail.frontproductmanagement.configuration;
 
+import ru.a5x5retail.frontproductmanagement.db.models.DivisionInfo;
+
 public final class Constants {
+
+
 
 
     /*  Types of module enum  */
@@ -45,9 +49,31 @@ public final class Constants {
     public static final String PWD_SI = "3860";
     public static final String TYPEOFDOCUMENT_CONST = "TYPEOFDOCUMENT_CONST";
     public static final String PACKINGLISTHEAD_CONST = "PACKINGLISTHEAD_CONST";
+    public static final String CONTRACTOR_INFO_CONST = "CONTRACTOR_INFO_CONST";
+    public static final String PLAN_INCOME_CONST = "PLAN_INCOME_CONST";
 
 
     public final class Messages {
         public static final String SQL_EXEPTION_MSG = "Ошибка запроса в базу данных! Программа не работает!";
+    }
+
+    /** typeOfDocument */
+    private static TypeOfDocument typeOfDocument;
+    public static final TypeOfDocument getCurrentTypeOfDocument() {
+        return typeOfDocument;
+    }
+
+    public static final void setCurrentTypeOfDocument(TypeOfDocument typeOfDocument) {
+        Constants.typeOfDocument = typeOfDocument;
+    }
+
+     /** divisionInfo*/
+    private static DivisionInfo divisionInfo;
+    public static DivisionInfo getDivisionInfo() {
+        return divisionInfo;
+    }
+
+    public static void setDivisionInfo(DivisionInfo divisionInfo) {
+        Constants.divisionInfo = divisionInfo;
     }
 }

@@ -79,6 +79,21 @@
             android:hint="пароль" />
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/a_settings_textInputLayout_5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/a_settings_textInputLayout_4">
+        <EditText
+            android:id="@+id/a_settings_editText_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:inputType="textPassword"
+            android:hint="Номер магазина" />
+    </android.support.design.widget.TextInputLayout>
+
     <CheckBox
         android:id="@+id/a_settings_checkBox_1"
         android:layout_width="wrap_content"
@@ -86,7 +101,7 @@
         android:layout_marginStart="8dp"
         android:text="isDebug"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/a_settings_textInputLayout_4" />
+        app:layout_constraintTop_toBottomOf="@+id/a_settings_textInputLayout_5" />
     <Button
         android:id="@+id/a_settings_button_1"
         android:layout_width="0dp"

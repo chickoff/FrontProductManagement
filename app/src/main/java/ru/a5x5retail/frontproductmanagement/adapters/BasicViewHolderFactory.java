@@ -7,4 +7,15 @@ import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder
 
 public abstract class BasicViewHolderFactory<VH extends RecyclerView.ViewHolder> {
     public abstract VH getNewInstance(View itemView);
+
+
+    private int itemLayoutId;
+
+    public int getItemLayoutId() {
+        return itemLayoutId;
+    }
+
+    public void setItemLayoutId(int itemLayoutId) {
+        this.itemLayoutId = itemLayoutId;
+    }
 }

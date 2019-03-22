@@ -1,10 +1,7 @@
 package ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,120 +10,61 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ru.a5x5retail.frontproductmanagement.R;
-import ru.a5x5retail.frontproductmanagement.base.BaseViewModel;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.ExtendedContractorInfoViewModel;
+import ru.a5x5retail.frontproductmanagement.base.TestFragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ContractorInfoSubFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ContractorInfoSubFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ContractorInfoSubFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
+public class ContractorInfoSubFragment extends TestFragment<ExtendedContractorInfoViewModel> {
 
     public ContractorInfoSubFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ContractorInfoSubFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ContractorInfoSubFragment newInstance(String param1, String param2) {
         ContractorInfoSubFragment fragment = new ContractorInfoSubFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contractor_info_sub, container, false);
-        init(view);
+        initUi(view);
+        initViewModel();
         return view;
     }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
 
 
     private TextView tv_1;
     private ImageView edi_group_iv_1,edi_tp_group_iv_1,rpbpp_group_iv_1,cz_group_iv_1;
 
-
-
-
-
-
-
-
-    private ExtendedContractorInfoViewModel viewModel;
-    private void init(View view) {
-        initViewModel();
-
+    private void initUi(View view) {
         tv_1 = view.findViewById(R.id.tv_1);
         edi_group_iv_1 = view.findViewById(R.id.edi_group_iv_1);
         edi_tp_group_iv_1 = view.findViewById(R.id.edi_tp_group_iv_1);
         rpbpp_group_iv_1 = view.findViewById(R.id.rpbpp_group_iv_1);
         cz_group_iv_1 = view.findViewById(R.id.cz_group_iv_1);
-
-        setView();
-
     }
 
     private void initViewModel() {
         FragmentActivity activity = getActivity();
-        viewModel =  ViewModelProviders.of(activity).get(ExtendedContractorInfoViewModel.class);
-
-        viewModel.addDataChangedListener(new BaseViewModel.IDataChanged() {
-            @Override
-            public void dataIsChanged() {
-                setView();
-            }
-        });
+        setViewModel(ViewModelProviders.of(activity).get(ExtendedContractorInfoViewModel.class));
     }
 
 
-    private void setView() {
-        tv_1.setText(viewModel.getContractorExtendedInfo().contractorName);
-        setImage(viewModel.getContractorExtendedInfo().edi,edi_group_iv_1);
-        setImage(viewModel.getContractorExtendedInfo().ediTp,edi_tp_group_iv_1);
-        setImage(viewModel.getContractorExtendedInfo().rpbpp,rpbpp_group_iv_1);
-        setImage(viewModel.getContractorExtendedInfo().cz,cz_group_iv_1);
+    private void updateUi() {
+        if (getViewModel().getContractorExtendedInfo() == null) return;
+
+        tv_1.setText(getViewModel().getContractorExtendedInfo().contractorName);
+        setImage(getViewModel().getContractorExtendedInfo().edi,edi_group_iv_1);
+        setImage(getViewModel().getContractorExtendedInfo().ediTp,edi_tp_group_iv_1);
+        setImage(getViewModel().getContractorExtendedInfo().rpbpp,rpbpp_group_iv_1);
+        setImage(getViewModel().getContractorExtendedInfo().cz,cz_group_iv_1);
     }
 
 
@@ -139,34 +77,18 @@ public class ContractorInfoSubFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        /*if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }*/
+    protected void viewModelDataIsChanged() {
+        updateUi();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void listenerChangedListenerRemove() {
+        //NULL
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void listenerChangedListenerAdded() {
+
+        updateUi();
     }
 }

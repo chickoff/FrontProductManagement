@@ -28,6 +28,7 @@ import ru.a5x5retail.frontproductmanagement.base.BaseAppCompatActivity;
 import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
 import ru.a5x5retail.frontproductmanagement.configuration.Constants;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListHead;
+import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.ExtendInvoiceMasterActivity;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.invoicemasters.decommissionspoilmaster.DecommissionSpoilMasterActivity;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.invoicemasters.externalincomemaster.ExternalIncomeMasterActivity;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.invoicemasters.innerincomemaster.InnerIncomeMasterActivity;
@@ -101,7 +102,7 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
                 ProdManApp.Activities
                         .createPackingListPreviewActivity
                                 (PackingListItemsActivity.this,
-                                        innerItem,viewModel.getTypeOfDoc().getIndex());
+                                        innerItem);
             }
         });
         docItemsRecyclerView.setAdapter(adapter);
@@ -109,10 +110,9 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
     }
 
     private void initViewModel() {
-        int typeDocInt = getIntent().getIntExtra(Constants.TYPEOFDOCUMENT_CONST,-1);
+
         viewModel = ViewModelProviders.of(this).get(PackingListItemsViewModel.class);
-        viewModel.setTypeOfDoc(Constants.TypeOfDocument.getByOrd(typeDocInt));
-        DocType td = AppConfigurator.getTypeDocByType(viewModel.getTypeOfDoc());
+        DocType td = AppConfigurator.getTypeDocByType(Constants.getCurrentTypeOfDocument());
         this.setTitle(td.getShortName());
         loadViewModel();
     }
@@ -149,28 +149,28 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
        /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             return;
         }*/
-        switch (viewModel.getTypeOfDoc()){
+        switch (Constants.getCurrentTypeOfDocument()){
             case PARTIAL_INVENTORY:
-                CreateIntent(InventoryMasterActivity.class,viewModel.getTypeOfDoc());
+                CreateIntent(InventoryMasterActivity.class,Constants.getCurrentTypeOfDocument());
                 break;
 
             case INNER_INCOME:
-                CreateIntent(InnerIncomeMasterActivity.class,viewModel.getTypeOfDoc());
+                CreateIntent(ExtendInvoiceMasterActivity.class,Constants.getCurrentTypeOfDocument());
                 break;
 
             case OUTER_INCOME:
-                CreateIntent(ExternalIncomeMasterActivity.class,viewModel.getTypeOfDoc());
+                CreateIntent(ExtendInvoiceMasterActivity.class,Constants.getCurrentTypeOfDocument());
                 break;
 
             case DISCARD:
-                CreateIntent(DecommissionSpoilMasterActivity.class,viewModel.getTypeOfDoc());
+                CreateIntent(DecommissionSpoilMasterActivity.class,Constants.getCurrentTypeOfDocument());
                 break;
         }
     }
 
     private void CreateIntent(Class<?> c,Constants.TypeOfDocument td){
         ProdManApp.Activities
-                .createNewDocumentActivity(this,c,td.getIndex(),1);
+                .createNewDocumentActivity(this,c,1);
     }
 
     @Override
@@ -200,7 +200,7 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
     @Override
     public void OnClick(int pos, CheckingListHead innerItem) {
         ProdManApp.Activities
-                .createPackingListPreviewActivity(this,innerItem,viewModel.getTypeOfDoc().getIndex());
+                .createPackingListPreviewActivity(this,innerItem);
     }
 
     @Override

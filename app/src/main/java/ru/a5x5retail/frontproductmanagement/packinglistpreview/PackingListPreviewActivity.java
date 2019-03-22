@@ -56,8 +56,6 @@ public class PackingListPreviewActivity extends BaseAppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(PackingListPreviewViewModel.class);
         if (!viewModel.isInitialized()){
             viewModel.head = getIntent().getParcelableExtra(PACKINGLISTHEAD_CONST);
-            int typeDocInt = getIntent().getIntExtra(Constants.TYPEOFDOCUMENT_CONST,-1);
-            viewModel.setTypeOfDoc(Constants.TypeOfDocument.getByOrd(typeDocInt));
             viewModel.setInitialized(true);
         }
     }
@@ -92,7 +90,7 @@ public class PackingListPreviewActivity extends BaseAppCompatActivity {
                 break;
             case R.id.a_pl_preview_upd_item_1 :
                 try {
-                    viewModel.UpdateInRr(viewModel.head.Guid,viewModel.getTypeOfDoc());
+                    viewModel.UpdateInRr(viewModel.head.Guid, Constants.getCurrentTypeOfDocument());
                 } catch (SQLException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {

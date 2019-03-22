@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    >
+
+    <TextView android:id="@+id/tttt"
+        android:text="fdsfdsfdfdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"
+        />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/body_background_color"
+        android:layout_below="@+id/tttt"
+        />
+
+    <Button android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Создать накладную"
+        android:textColor="@color/light_text_color"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/colorPrimary"
+        android:id="@+id/dlg_create_check_list_btn"
+        android:layout_below="@+id/view"
+        />
+
+    <TextView
+        android:id="@+id/dlg_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dlg_create_check_list_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="ОТМЕНА"
+        />
+</RelativeLayout>

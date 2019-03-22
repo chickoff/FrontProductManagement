@@ -59,7 +59,6 @@ public class DecommissionSpoilMasterActivity extends BaseMasterActivity
     private void initViewModel(){
         viewModel = ViewModelProviders.of(this).get(DecommissionSpoilMasterViewModel.class);
         binding.setViewmodel(viewModel);
-        viewModel.setTypeOfDoc(Constants.TypeOfDocument.DISCARD);
         if (viewModel.getState() == Constants.ViewModelStateEnum.LOADED) return;
         try {
             viewModel.Load();

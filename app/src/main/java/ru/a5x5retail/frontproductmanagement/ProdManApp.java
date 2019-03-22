@@ -12,10 +12,14 @@ import android.widget.Toast;
 import java.util.Map;
 
 import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
+import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.creators.newinvoice.CreateNewInvoiceActivity;
 import ru.a5x5retail.frontproductmanagement.packinglistpreview.PackingListPreviewActivity;
-import static ru.a5x5retail.frontproductmanagement.configuration.Constants.PACKINGLISTHEAD_CONST;
-import static ru.a5x5retail.frontproductmanagement.configuration.Constants.TYPEOFDOCUMENT_CONST;
 
+import static ru.a5x5retail.frontproductmanagement.configuration.Constants.CONTRACTOR_INFO_CONST;
+import static ru.a5x5retail.frontproductmanagement.configuration.Constants.PACKINGLISTHEAD_CONST;
+import static ru.a5x5retail.frontproductmanagement.configuration.Constants.PLAN_INCOME_CONST;
+import static ru.a5x5retail.frontproductmanagement.configuration.Constants.TYPEOFDOCUMENT_CONST;
+import static ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.creators.newinvoice.CreateNewInvoiceActivity.BASIS_OF_CREATION;
 
 
 public class ProdManApp extends Application {
@@ -89,19 +93,28 @@ public class ProdManApp extends Application {
     public static class Activities {
 
 
-        public static void createPackingListPreviewActivity( Context context, Parcelable head,int typeDocIndex){
+        public static void createPackingListPreviewActivity( Context context, Parcelable head){
             Intent intent = new Intent(context, PackingListPreviewActivity.class);
             intent.putExtra(PACKINGLISTHEAD_CONST,head);
-            intent.putExtra(TYPEOFDOCUMENT_CONST,typeDocIndex);
             context.startActivity(intent);
         }
 
-        public static void createNewDocumentActivity(FragmentActivity context, Class<?> activityClass, int typeDocIndex, int requestCode){
+        public static void createNewInvoiceActivity( FragmentActivity context,int basisOfCreation, Parcelable contractorInfo,
+                          Parcelable planIncome, int requestCode){
+            Intent intent = new Intent(context, CreateNewInvoiceActivity.class);
+            intent.putExtra(CONTRACTOR_INFO_CONST,contractorInfo);
+            intent.putExtra(PLAN_INCOME_CONST,planIncome);
+            intent.putExtra(BASIS_OF_CREATION,basisOfCreation);
+            context.startActivityForResult(intent,requestCode);
+        }
+
+        public static void createNewDocumentActivity(FragmentActivity context, Class<?> activityClass, int requestCode){
             Intent intent = new Intent(context, activityClass);
-            intent.putExtra(TYPEOFDOCUMENT_CONST,typeDocIndex);
             context.startActivityForResult(intent,requestCode);
 
         }
+
+
 
         /*public static final void StartActivity (Context context,Class<?> activityClass){
             Intent intent = new Intent(context,activityClass);

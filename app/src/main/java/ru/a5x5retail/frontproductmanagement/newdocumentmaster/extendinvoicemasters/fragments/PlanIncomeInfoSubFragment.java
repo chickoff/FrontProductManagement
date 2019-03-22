@@ -3,7 +3,6 @@ package ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemast
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,43 +11,34 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ru.a5x5retail.frontproductmanagement.ItemsRecyclerViewDecoration;
+import ru.a5x5retail.frontproductmanagement.ProdManApp;
 import ru.a5x5retail.frontproductmanagement.R;
 import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerViewItemShortClickListener;
 import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
 import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
+import ru.a5x5retail.frontproductmanagement.db.models.ContractorExtendedInfo;
 import ru.a5x5retail.frontproductmanagement.db.models.PlanIncome;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.ExtendedContractorInfoViewModel;
+import ru.a5x5retail.frontproductmanagement.base.TestFragment;
+import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.dlgfragments.PlanIncomeSwitchDialogFragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PlanIncomeInfoSubFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class PlanIncomeInfoSubFragment extends Fragment {
+import static ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.creators.newinvoice.CreateNewInvoiceActivity.BASIS_OF_CREATION_ON_PP;
+
+public class PlanIncomeInfoSubFragment extends TestFragment<ExtendedContractorInfoViewModel> {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
 
 
     public PlanIncomeInfoSubFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PlanIncomeInfoSubFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static PlanIncomeInfoSubFragment newInstance(String param1, String param2) {
         PlanIncomeInfoSubFragment fragment = new PlanIncomeInfoSubFragment();
         Bundle args = new Bundle();
@@ -61,33 +51,29 @@ public class PlanIncomeInfoSubFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
        View view = inflater.inflate(R.layout.fragment_plan_income_info_sub, container, false);
-       init(view);
+        initUi(view);
+        initViewModel();
+       //init(view);
        return view;
     }
 
-    private ExtendedContractorInfoViewModel viewModel;
+
     private RecyclerView recyclerView;
     private BasicRecyclerViewAdapter<PlanIncome> adapter ;
 
 
 
-    private void init(View view) {
-
-        initViewModel();
-
+    private void initUi(View view) {
         recyclerView = view.findViewById(R.id.recyclerView);
 
-       adapter = new BasicRecyclerViewAdapter<>();
+        adapter = new BasicRecyclerViewAdapter<>();
         adapter
                 .setShortClickListener(new IRecyclerViewItemShortClickListener<PlanIncome>() {
                     @Override
@@ -97,25 +83,93 @@ public class PlanIncomeInfoSubFragment extends Fragment {
                 })
                 .setLayout(R.layout.item_plan_income_head_def_1)
                 .setHolderFactory(new InvoiceRecyclerViewHolderFactory())
-                .setSourceList(viewModel.getPlanIncomeList())
-                ;
+
+        ;
 
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new ItemsRecyclerViewDecoration());
     }
 
-    private void planIncomeRecyclerViewShortClick(int pos,View view, PlanIncome innerItem) {
+   /* private void init(View view) {
+
+        initViewModel();
+        recyclerView = view.findViewById(R.id.recyclerView);
+
+       adapter = new BasicRecyclerViewAdapter<>();
+       adapter
+                .setShortClickListener(new IRecyclerViewItemShortClickListener<PlanIncome>() {
+                    @Override
+                    public void OnShortClick(int pos,View view, PlanIncome innerItem) {
+                        planIncomeRecyclerViewShortClick(pos,view, innerItem);
+                    }
+                })
+                .setLayout(R.layout.item_plan_income_head_def_1)
+                .setHolderFactory(new InvoiceRecyclerViewHolderFactory())
+                .setSourceList(getViewModel().getPlanIncomeList())
+                ;
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new ItemsRecyclerViewDecoration());
+
+
+    }*/
+
+    private void planIncomeRecyclerViewShortClick(int pos, View view, final PlanIncome innerItem) {
+
+        final PlanIncomeSwitchDialogFragment dlg = new PlanIncomeSwitchDialogFragment();
+        dlg.setResultListener(new PlanIncomeSwitchDialogFragment.PlanIncomeSwithDialogFragmentResult() {
+            @Override
+            public void createInvoice() {
+                createInvoiceClick(innerItem);
+            }
+
+            @Override
+            public void cancelDlg() {
+
+            }
+        });
+
+        dlg.setTitle(innerItem.numDoc);
+        dlg.show(getFragmentManager(),"fdf");
+    }
+
+    private void createInvoiceClick(PlanIncome innerItem) {
+        ContractorExtendedInfo ci = getViewModel().getContractorExtendedInfo();
+        if ((ci.edi == 0) || (ci.rpbpp == 1 || ci.ediTp == 1)) {
+            ProdManApp.Activities.createNewInvoiceActivity(getActivity(),BASIS_OF_CREATION_ON_PP,null,
+                    innerItem,201);
+        } else {
+            ProdManApp.Alerts.MakeToast("Нельзя создать накладную из ПП. Смотрите информацию по поставщику",0);
+        }
     }
 
     private void initViewModel() {
         FragmentActivity activity = getActivity();
-        viewModel =  ViewModelProviders.of(activity).get(ExtendedContractorInfoViewModel.class);
+        setViewModel(ViewModelProviders.of(activity).get(ExtendedContractorInfoViewModel.class));
     }
 
+    private void updateUi() {
+        if (getViewModel().getPlanIncomeList() == null) return;
 
-    public class MyBasicRecyclerViewAdapter<T> extends BasicRecyclerViewAdapter<T> {
-
+        adapter.setSourceList(getViewModel().getPlanIncomeList());
+        adapter.notifyDataSetChanged();
     }
+
+    @Override
+    protected void viewModelDataIsChanged() {
+        updateUi();
+    }
+
+    @Override
+    public void listenerChangedListenerRemove() {
+        //NULL
+    }
+
+    @Override
+    public void listenerChangedListenerAdded() {
+        updateUi();
+    }
+
 
 
     public class InvoiceRecyclerViewHolder extends BasicViewHolder<PlanIncome> {
