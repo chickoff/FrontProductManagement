@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".checkinglistinc.fragments.CheckingListMarksFragment">
+    android:id="@+id/yyyy"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".newdocumentmaster.extendinvoicemasters.fragments.IncomeInfoSubFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Marks" />
 
-</FrameLayout>
+        android:background="@color/body_background_color"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        />
+
+    <!-- <android.support.design.widget.FloatingActionButton
+         android:id="@+id/fab"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="end|bottom"
+         android:layout_margin="16dp"
+         android:layout_marginEnd="8dp"
+         android:layout_marginBottom="8dp"
+         android:src="@drawable/ic_chevron_right_white_24dp"
+         app:layout_constraintBottom_toBottomOf="@+id/yyyy"
+         app:layout_constraintEnd_toEndOf="@+id/yyyy" />-->
+</android.support.constraint.ConstraintLayout>

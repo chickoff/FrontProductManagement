@@ -6,20 +6,18 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.a5x5retail.frontproductmanagement.db.converters.CheckingListHeadConverter;
 import ru.a5x5retail.frontproductmanagement.db.converters.CheckingListMarkConverter;
-import ru.a5x5retail.frontproductmanagement.db.models.CheckingListHead;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListMark;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
 public class GetCheckingListIncMarkListQuery extends CallableQuery<CheckingListMark> {
 
     private String checkingListHeadGuid;
-    private List<CheckingListMark> headList;
+    private List<CheckingListMark> list;
     public GetCheckingListIncMarkListQuery(Connection connection, String checkingListHeadGuid) {
         super(connection);
         this.checkingListHeadGuid = checkingListHeadGuid;
-        headList = new ArrayList<>();
+        list = new ArrayList<>();
     }
 
     @Override
@@ -41,14 +39,16 @@ public class GetCheckingListIncMarkListQuery extends CallableQuery<CheckingListM
             while (getResultSet().next()) {
                 CheckingListMark head = new CheckingListMark();
                 converter.Convert(getResultSet(),head);
-                headList.add(head);
+                list.add(head);
             }
             stmt.getMoreResults();
             setReturnCode((int)stmt.getObject(1));
             int r = getReturnCode();
     }
 
-    public List<CheckingListMark> getHeadList() {
-        return headList;
+
+    @Override
+    public List<CheckingListMark> getList() {
+        return list;
     }
 }

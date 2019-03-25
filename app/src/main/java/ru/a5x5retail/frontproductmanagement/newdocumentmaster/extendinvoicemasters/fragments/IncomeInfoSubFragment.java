@@ -149,6 +149,8 @@ public class IncomeInfoSubFragment extends TestFragment<ExtendedContractorInfoVi
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+       getActivity().finish();
     }
 
     private void initViewModel() {

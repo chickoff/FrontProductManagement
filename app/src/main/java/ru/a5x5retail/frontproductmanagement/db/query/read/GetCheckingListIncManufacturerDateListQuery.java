@@ -7,19 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.a5x5retail.frontproductmanagement.db.converters.CheckingListManufacturerDateConverter;
-import ru.a5x5retail.frontproductmanagement.db.converters.CheckingListMarkConverter;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListManufacturerDate;
-import ru.a5x5retail.frontproductmanagement.db.models.CheckingListMark;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
 public class GetCheckingListIncManufacturerDateListQuery extends CallableQuery<CheckingListManufacturerDate> {
 
     private String checkingListHeadGuid;
-    private List<CheckingListManufacturerDate> headList;
+    private List<CheckingListManufacturerDate> list;
     public GetCheckingListIncManufacturerDateListQuery(Connection connection, String checkingListHeadGuid) {
         super(connection);
         this.checkingListHeadGuid = checkingListHeadGuid;
-        headList = new ArrayList<>();
+        list = new ArrayList<>();
     }
 
     @Override
@@ -41,14 +39,15 @@ public class GetCheckingListIncManufacturerDateListQuery extends CallableQuery<C
             while (getResultSet().next()) {
                 CheckingListManufacturerDate head = new CheckingListManufacturerDate();
                 converter.Convert(getResultSet(),head);
-                headList.add(head);
+                list.add(head);
             }
             stmt.getMoreResults();
             setReturnCode((int)stmt.getObject(1));
             int r = getReturnCode();
     }
 
-    public List<CheckingListManufacturerDate> getHeadList() {
-        return headList;
+    @Override
+    public List<CheckingListManufacturerDate> getList() {
+       return list;
     }
 }

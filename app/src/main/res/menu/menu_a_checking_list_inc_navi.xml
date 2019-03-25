@@ -7,7 +7,7 @@
         <item
             android:id="@+id/prod_date_item"
             android:icon="@drawable/ic_basic_sheet_multiple"
-            android:title="дата производства" />
+            android:title="дата произв." />
         <item
             android:id="@+id/mark_info_item"
             android:icon="@drawable/ic_info_outline_black_24dp"

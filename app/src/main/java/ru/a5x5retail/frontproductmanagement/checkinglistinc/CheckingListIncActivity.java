@@ -11,12 +11,14 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import ru.a5x5retail.frontproductmanagement.R;
+import ru.a5x5retail.frontproductmanagement.base.BaseAppCompatActivity;
 import ru.a5x5retail.frontproductmanagement.base.TestFragment;
 import ru.a5x5retail.frontproductmanagement.checkinglistinc.fragments.CheckingListIncPositionFragment;
 import ru.a5x5retail.frontproductmanagement.checkinglistinc.fragments.CheckingListMarksFragment;
 import ru.a5x5retail.frontproductmanagement.checkinglistinc.fragments.DateOfManufactorFragment;
 
-public class CheckingListIncActivity extends AppCompatActivity {
+
+public class CheckingListIncActivity extends BaseAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,9 @@ public class CheckingListIncActivity extends AppCompatActivity {
     }
     private void initUi() {
 
+        if (isFirstStart()) {
+            replaceFragment(CheckingListIncPositionFragment.newInstance(),false);
+        }
     }
 
     private void initViewModel() {
