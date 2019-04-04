@@ -13,12 +13,14 @@ public class CheckingListHeadConverter implements IDbConvertible<CheckingListHea
             obj.Guid = resultSet.getObject("GUID").toString();
             obj.StatusID = resultSet.getObject("StatusID").toString();
             obj.TypeDocID = resultSet.getObject("TypeDocID").toString();
-            obj.RRGUID = resultSet.getObject("RRGUID").toString();
+            obj.sourceGuid = resultSet.getObject("sourceGuid").toString();
             obj.NameDoc = resultSet.getObject("NameDoc").toString();
             obj.Note = resultSet.getString("Note");
             obj.IMEI = resultSet.getObject("IMEI").toString();
             obj.LDM = resultSet.getObject("LDM").toString();
             obj.LDC = resultSet.getObject("LDC").toString();
+            obj.errorCode = resultSet.getInt("ErrorCode");
+            obj.errorMessage = resultSet.getObject("ErrorMessage").toString();
         } catch (SQLException e) {
             e.printStackTrace();
         }

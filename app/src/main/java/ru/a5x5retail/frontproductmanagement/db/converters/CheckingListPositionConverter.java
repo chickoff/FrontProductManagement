@@ -1,5 +1,6 @@
 package ru.a5x5retail.frontproductmanagement.db.converters;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -13,16 +14,20 @@ public class CheckingListPositionConverter implements IDbConvertible<CheckingLis
         obj.guid = resultSet.getObject("GUID").toString();
         obj.checkingListIncHeadGuid = resultSet.getObject("checkingListIncHeadGuid").toString();
         obj.code = resultSet.getInt("code");
-        obj.qtyUser = resultSet.getBigDecimal("qtyUser");
+        obj.qtyUser = resultSet.getBigDecimal("qtyUser").setScale(3);
         obj.orderBy = resultSet.getInt("orderBy");
-        obj.qty = resultSet.getBigDecimal("qty");
-        obj.incomeGoodsQty = resultSet.getBigDecimal("incomeGoodsQty");
-        obj.price = resultSet.getBigDecimal("price");
-        obj.vat = resultSet.getBigDecimal("vat");
+
+        BigDecimal incomeGoodsQty = resultSet.getBigDecimal("incomeGoodsQty");
+        obj.incomeGoodsQty = (incomeGoodsQty == null ? new BigDecimal(0):incomeGoodsQty).setScale(3);
+
+        BigDecimal price = resultSet.getBigDecimal("price");
+        obj.price = (price == null ? new BigDecimal(0):price).setScale(2);
+
+        obj.vat = resultSet.getInt("vat");
         obj.manufacturingDate = resultSet.getDate("manufacturingDate");
         obj.nameLong = resultSet.getString("nameLong");
         obj.measureUnitIdd = resultSet.getInt("measureUnitIdd");
-        obj.manufacturingDateFl = resultSet.getDate("manufacturingDateFl");
+        obj.manufacturingDateFl = resultSet.getInt("manufacturingDateFl");
         obj.validEror = resultSet.getInt("validEror");
         return false;
     }
@@ -34,7 +39,7 @@ public class CheckingListPositionConverter implements IDbConvertible<CheckingLis
             obj.Guid = resultSet.getObject("GUID").toString();
             obj.StatusID = resultSet.getObject("StatusID").toString();
             obj.TypeDocID = resultSet.getObject("TypeDocID").toString();
-            obj.RRGUID = resultSet.getObject("RRGUID").toString();
+            obj.sourceGuid = resultSet.getObject("sourceGuid").toString();
             obj.NameDoc = resultSet.getObject("NameDoc").toString();
             obj.Note = resultSet.getString("Note");
             obj.IMEI = resultSet.getObject("IMEI").toString();

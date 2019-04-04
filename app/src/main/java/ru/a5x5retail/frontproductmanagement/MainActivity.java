@@ -1,15 +1,18 @@
 package ru.a5x5retail.frontproductmanagement;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerViewItemShortClickListener;
 import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
@@ -32,14 +35,16 @@ public class MainActivity extends BaseAppCompatActivity{
         setContentView(R.layout.activity_main);
         setTitle("Управление товарами " + AppConfigurator.GetCurrentVersion().toString());
         initRecyclerView();
+        backButtonEnabled(true);
     }
 
+    private DocType currentDocType;
     RecyclerView docTypesRecyclerView;
+    BasicRecyclerViewAdapter<DocType> adapter;
 
     private void initRecyclerView(){
         docTypesRecyclerView = findViewById(R.id.docTypesRecyclerView);
-
-        BasicRecyclerViewAdapter<DocType> adapter = new BasicRecyclerViewAdapterBuilder<DocType>()
+        adapter = new BasicRecyclerViewAdapterBuilder<DocType>()
                 .setHolderFactory(new DocTypeViewHolderFactory())
                 .setLayout(R.layout.item_doctype_rv)
                 .setSourceList(AppConfigurator.getAvailableDocTypes())
@@ -62,15 +67,12 @@ public class MainActivity extends BaseAppCompatActivity{
                             }
                         }
 
-                        Intent intent = new Intent(MainActivity.this, innerItem.getClassOfActivity());
-                        Constants.setCurrentTypeOfDocument(innerItem.getTypeOfDocument());
-                        startActivity(intent);
+                        ddd(innerItem);
 
                     }
                 }).Build();
         docTypesRecyclerView.setAdapter(adapter);
         docTypesRecyclerView.addItemDecoration(new DocTypeItemDecor(4));
-
 
         try {
             AppConfigurator.getMainInfo();
@@ -81,10 +83,47 @@ public class MainActivity extends BaseAppCompatActivity{
         }
     }
 
-    private void newIntent(Class<?> activity){
-
+    private void updateUi (List<DocType> docTypeList) {
+        adapter.setSourceList(docTypeList);
+        adapter.notifyDataSetChanged();
     }
 
+
+    private void ddd (DocType dt) {
+
+        currentDocType = dt;
+
+        if (dt.getChildDocs() == null || dt.getChildDocs().size() == 0) {
+            Intent intent = new Intent(MainActivity.this, dt.getClassOfActivity());
+            Constants.setCurrentDoc(dt);
+            startActivity(intent);
+        } else {
+            backButtonEnabled(true);
+            updateUi(dt.getChildDocs());
+        }
+    }
+
+    private void up () {
+        backButtonEnabled(false);
+        updateUi(AppConfigurator.getAvailableDocTypes());
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void backButtonEnabled(boolean enabled) {
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(enabled);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(enabled);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home :
+                up();
+                return true;
+            default:
+                return true;
+        }
+    }
 
     @Override
     protected void onResume() {

@@ -23,6 +23,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.a5x5retail.frontproductmanagement.BInfo;
 import ru.a5x5retail.frontproductmanagement.R;
 import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
 import ru.a5x5retail.frontproductmanagement.configuration.Constants;
@@ -284,22 +285,18 @@ public class PrintPriceActivity extends AppCompatActivity implements IRecyclerVi
 
     private void rowsAdd(String barcodeStr) {
 
-        SKUContext skuContext = new SKUContext();
+        BInfo barcode = new BInfo(barcodeStr);
 
         MsSqlConnection con = new MsSqlConnection();
         PrintPriceItemGetSKUInfo query =  new PrintPriceItemGetSKUInfo(barcodeStr);
         con.CallQuery(query);
-        skuContext=query.getSKUInfoList();
+        barcode.setSkuContext(query.getSKUInfoList());
 
-
-
-        PrintPriceItemEditQuery query2 = new PrintPriceItemEditQuery(headerGUID,skuContext.Code, Integer.valueOf(1),1);
+        PrintPriceItemEditQuery query2 = new PrintPriceItemEditQuery(headerGUID,barcode.getSkuContext().Code, Integer.valueOf(1),1);
         con.CallQuery(query2);
 
         viewModel.Load(imeiID,headerGUID);
         initRecyclerView();
-
-
     }
 
 

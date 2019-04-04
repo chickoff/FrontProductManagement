@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.a5x5retail.frontproductmanagement.сheckinglist.db.converters.GetSKUContextConverter;
-import ru.a5x5retail.frontproductmanagement.сheckinglist.db.models.SKUContext;
+import ru.a5x5retail.frontproductmanagement.db.models.SKUContext;
 import ru.a5x5retail.frontproductmanagement.сheckinglist.interfaces.IQuery;
 
 public class CheckingListGoodsGetSKUInfo implements IQuery {

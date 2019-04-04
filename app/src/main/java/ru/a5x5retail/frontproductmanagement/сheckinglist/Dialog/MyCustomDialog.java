@@ -40,9 +40,9 @@ public class MyCustomDialog extends DialogFragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_checking_list_goods_qty, container, false);
-        mActionOk = view.findViewById(R.id.action_ok);
+       /* mActionOk = view.findViewById(R.id.action_ok);
         mActionCancel = view.findViewById(R.id.action_cancel);
-        mInput = view.findViewById(R.id.input);
+        mInput = view.findViewById(R.id.input);*/
 
         //mOnInputSelected = (OnInputSelected) getTargetFragment();
 

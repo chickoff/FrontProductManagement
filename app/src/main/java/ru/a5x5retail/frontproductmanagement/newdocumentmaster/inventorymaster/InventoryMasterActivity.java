@@ -145,4 +145,9 @@ implements IRecyclerViewItemClick<InventoryList>
         viewModel.setSelectedInventoryList(innerItem);
         dialog.dismiss();
     }
+
+    @Override
+    public void OnCancel() {
+
+    }
 }

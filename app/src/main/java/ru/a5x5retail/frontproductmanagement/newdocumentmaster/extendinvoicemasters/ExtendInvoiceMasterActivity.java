@@ -27,6 +27,8 @@ import ru.a5x5retail.frontproductmanagement.filters.filterfragments.ContractorFi
 import ru.a5x5retail.frontproductmanagement.filters.filterfragments.ContractorFilter.IFilterFragmentCompleteListener;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.fragments.ExtendedContractorInfoFragment;
 
+import static ru.a5x5retail.frontproductmanagement.configuration.Constants.TYPEOFDOCUMENT_CONST;
+
 
 public class ExtendInvoiceMasterActivity extends BaseAppCompatActivity
 implements IFilterFragmentCompleteListener<ContractorInfo>
@@ -92,8 +94,9 @@ implements IFilterFragmentCompleteListener<ContractorInfo>
 
 
     private void initViewModel() {
-            viewModel = ViewModelProviders.of(this).get(ExtendedContractorInfoViewModel.class);
-
+        viewModel = ViewModelProviders.of(this).get(ExtendedContractorInfoViewModel.class);
+        int index = getIntent().getIntExtra(TYPEOFDOCUMENT_CONST,-1);
+        viewModel.setTypeOfDoc1(Constants.TypeOfDocument.getByOrd(index));
             if (!viewModel.isInitialized()) {
                 viewModel.setInitialized(true);
             }

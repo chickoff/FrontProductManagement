@@ -1,5 +1,6 @@
 package ru.a5x5retail.frontproductmanagement.configuration;
 
+import ru.a5x5retail.frontproductmanagement.DocType;
 import ru.a5x5retail.frontproductmanagement.db.models.DivisionInfo;
 
 public final class Constants {
@@ -52,20 +53,24 @@ public final class Constants {
     public static final String CONTRACTOR_INFO_CONST = "CONTRACTOR_INFO_CONST";
     public static final String PLAN_INCOME_CONST = "PLAN_INCOME_CONST";
 
+    public static final String FILTER_DATA_REQUEST_CONST = "FILTER_DATA_REQUEST_CONST";
+    public static final String FILTER_DATA_RESPONSE_CONST = "FILTER_DATA_RESPONSE_CONST";
+
 
     public final class Messages {
         public static final String SQL_EXEPTION_MSG = "Ошибка запроса в базу данных! Программа не работает!";
     }
 
     /** typeOfDocument */
-    private static TypeOfDocument typeOfDocument;
+   /* private static TypeOfDocument typeOfDocument;
     public static final TypeOfDocument getCurrentTypeOfDocument() {
         return typeOfDocument;
-    }
+    }*/
 
-    public static final void setCurrentTypeOfDocument(TypeOfDocument typeOfDocument) {
+   /* public static final void setCurrentTypeOfDocument(TypeOfDocument typeOfDocument) {
         Constants.typeOfDocument = typeOfDocument;
-    }
+    }   */
+
 
      /** divisionInfo*/
     private static DivisionInfo divisionInfo;
@@ -75,5 +80,14 @@ public final class Constants {
 
     public static void setDivisionInfo(DivisionInfo divisionInfo) {
         Constants.divisionInfo = divisionInfo;
+    }
+
+    private static DocType currentDoc;
+    public static DocType getCurrentDoc() {
+        return currentDoc;
+    }
+
+    public static void setCurrentDoc(DocType currentDoc) {
+        Constants.currentDoc = currentDoc;
     }
 }

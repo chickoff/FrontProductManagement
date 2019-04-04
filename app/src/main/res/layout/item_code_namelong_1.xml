@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/item_recyclerview_background"
+    android:paddingLeft="5dp"
+    android:paddingRight="15dp"
+    android:minHeight="40dp"
+    android:layout_height="wrap_content"
+
+    >
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:src="@drawable/ic_circle"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+
+        />
+    <TextView
+        android:id="@+id/text_box_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="7dp"
+        android:text="000"
+        android:layout_toRightOf="@+id/imageView2"
+        />
+    <TextView
+        android:id="@+id/text_box_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+
+        android:text="i_def_1_textbox_1ddddddddddddddddddddddddddddddd"
+        android:gravity="left|center"
+        android:textColor="@color/item_recyclerview_textview_color"
+        android:layout_below="@+id/text_box_1"
+        android:layout_toRightOf="@+id/imageView2"
+        android:layout_marginStart="7dp"
+        />
+
+    <!--<View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#000"
+        app:layout_constraintBottom_toBottomOf="@+id/i_def_1_textbox_1"
+         />-->
+
+</RelativeLayout>

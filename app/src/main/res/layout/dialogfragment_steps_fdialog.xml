@@ -2,20 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/master_rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/dlg_cancel_btn"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+
         android:layout_marginBottom="2dp"
+        android:minHeight="10dp"
         android:background="@color/recyclerview_background_color"
         />
 
     <Button android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/master_rv"
         android:text="ОТМЕНА"
-        android:layout_margin="8dp"
+        android:layout_margin="1dp"
         android:id="@+id/dlg_cancel_btn"/>
 </RelativeLayout>

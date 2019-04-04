@@ -14,21 +14,23 @@ import ru.a5x5retail.frontproductmanagement.printprice.interfaces.IQuery;
 
 public class GetPrintPriceItemListQuery implements IQuery {
 
-    private String headerGUID;
+    private String headerGUID,imei ;
     private List<PrintPriceItem> PPList;
-    private final String sql = "{call V_StoreTSD.dbo.[CheckingListGetGoods](?)}";
+    private final String sql = "{call V_StoreTSD.dbo.[PrintPriceListGetGoods](?, ?)}";
     CallableStatement stmt = null;
 
-    public GetPrintPriceItemListQuery(String headerGUID) {
+    public GetPrintPriceItemListQuery(String headerGUID, String imei) {
         this.headerGUID = headerGUID;
         PPList = new ArrayList<>();
+        this.imei =imei;
     }
 
     @Override
     public void Execute(Connection connection) {
         try {
             stmt = connection.prepareCall(sql);
-            stmt.setString(1,headerGUID);
+            stmt.setString(1,imei);
+            stmt.setString(2,headerGUID);
             stmt.execute();
             ResultSet rs = stmt.getResultSet();
             PrintPriceItemConverter converter = new PrintPriceItemConverter();

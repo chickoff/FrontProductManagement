@@ -24,7 +24,7 @@ public class StandartViewHolder extends BasicViewHolder<InvoiceHead> {
         i_def_1_textbox_1.setText(source.numDoc);
     }
 
-    public class StandartViewHolderFactory extends BasicViewHolderFactory {
+    public static class StandartViewHolderFactory extends BasicViewHolderFactory {
 
         public StandartViewHolderFactory() {
             setItemLayoutId(R.layout.item_default_1);

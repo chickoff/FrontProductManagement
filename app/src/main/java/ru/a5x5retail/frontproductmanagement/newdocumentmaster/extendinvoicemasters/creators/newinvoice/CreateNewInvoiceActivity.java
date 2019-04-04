@@ -114,7 +114,7 @@ implements IRecyclerViewItemClick<DivisionInfo>
 
         if (basisOfCreation == BASIS_OF_CREATION_NEW) {
 
-            if (Constants.getCurrentTypeOfDocument() == Constants.TypeOfDocument.OUTER_INCOME) {
+            if (Constants.getCurrentDoc().getTypeOfDocument() == Constants.TypeOfDocument.OUTER_INCOME) {
                 cat_foot.setVisibility(View.GONE);
                 division_textview.setVisibility(View.GONE);
             }
@@ -187,7 +187,7 @@ implements IRecyclerViewItemClick<DivisionInfo>
 
     private boolean checkDivision(){
 
-        if(Constants.getCurrentTypeOfDocument()
+        if(Constants.getCurrentDoc().getTypeOfDocument()
                 == Constants.TypeOfDocument.OUTER_INCOME) { return true; }
 
         if (basisOfCreation == BASIS_OF_CREATION_ON_PP) { return true; }
@@ -227,7 +227,7 @@ implements IRecyclerViewItemClick<DivisionInfo>
         int checkListTypeId;
         String contractorGUID,divisionGUIDin,divisionGUIDout,numDoc,dateDoc,rrHeadGuid;
 
-        checkListTypeId = Constants.getCurrentTypeOfDocument().getIndex();
+        checkListTypeId = Constants.getCurrentDoc().getTypeOfDocument().getIndex();
         contractorGUID = contractorInfo.contractorGuid;
         divisionGUIDin = Constants.getDivisionInfo().guid;
         divisionGUIDout = divisionInfo == null ? null : divisionInfo.guid;
@@ -263,5 +263,10 @@ implements IRecyclerViewItemClick<DivisionInfo>
     public void OnClick(int pos, DivisionInfo innerItem) {
         divisionInfo = innerItem;
         updateUi();
+    }
+
+    @Override
+    public void OnCancel() {
+
     }
 }

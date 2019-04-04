@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.os.Vibrator;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 import java.util.Map;
 
 import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
+import ru.a5x5retail.frontproductmanagement.configuration.Constants;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.creators.newinvoice.CreateNewInvoiceActivity;
 import ru.a5x5retail.frontproductmanagement.packinglistpreview.PackingListPreviewActivity;
 
@@ -88,6 +90,18 @@ public class ProdManApp extends Application {
                     text, toast_Len);
             toast.show();
         }
+
+        public static void MakeAlertVibrate() {
+            Vibrator v = (Vibrator) getAppContext().getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(300);
+        }
+
+        public static void MakeDoubleVibrate() {
+            Vibrator v = (Vibrator) getAppContext().getSystemService(Context.VIBRATOR_SERVICE);
+
+            long[] i = {100,200,300,200};
+            v.vibrate(i,3);
+        }
     }
 
     public static class Activities {
@@ -112,6 +126,13 @@ public class ProdManApp extends Application {
             Intent intent = new Intent(context, activityClass);
             context.startActivityForResult(intent,requestCode);
 
+        }
+
+
+        public static void createNewDocumentMasterActivity(FragmentActivity context, Class<?> activityClass, Constants.TypeOfDocument typeOfDoc, int requestCode){
+            Intent intent = new Intent(context, activityClass);
+            intent.putExtra(TYPEOFDOCUMENT_CONST,typeOfDoc.getIndex());
+            context.startActivityForResult(intent,requestCode);
         }
 
 

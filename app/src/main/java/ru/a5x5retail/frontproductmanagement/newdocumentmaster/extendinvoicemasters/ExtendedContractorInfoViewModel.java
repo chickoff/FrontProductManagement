@@ -14,6 +14,7 @@ import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQueryAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.create.CreateCheckingListIncDocQuery;
 
+import ru.a5x5retail.frontproductmanagement.db.query.read.GetCheckingListIncIncomesQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetExternalIncomeInvoiceOnContractorQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetPlanIncomeListQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.read.async.GetExtendedContractorInfoQueryAsync;
@@ -76,7 +77,8 @@ public class ExtendedContractorInfoViewModel extends TypedViewModel {
     }
 
     private void LoadIncome() throws SQLException {
-        GetExternalIncomeInvoiceOnContractorQuery q = new GetExternalIncomeInvoiceOnContractorQuery(con.getConnection(),externalContractorGuid);
+
+        GetCheckingListIncIncomesQuery q = new GetCheckingListIncIncomesQuery(con.getConnection(),externalContractorGuid);
         q.Execute();
         invoiceHeadList = q.getList();
     }
@@ -84,7 +86,7 @@ public class ExtendedContractorInfoViewModel extends TypedViewModel {
     public void CreateNewCheckList(InvoiceHead head) throws SQLException {
         CreateCheckingListIncDocQuery query = new CreateCheckingListIncDocQuery(
                 con.getConnection(),head.guid, AppConfigurator.getDeviceId(ProdManApp.getAppContext()),
-                Constants.getCurrentTypeOfDocument().getIndex()
+                Constants.getCurrentDoc().getTypeOfDocument().getIndex(),head.sourceTypeIdd
         );
         query.Execute();
     }

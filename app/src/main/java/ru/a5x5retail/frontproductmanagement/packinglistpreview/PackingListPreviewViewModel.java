@@ -7,6 +7,7 @@ import ru.a5x5retail.frontproductmanagement.configuration.Constants;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListHead;
 import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
+import ru.a5x5retail.frontproductmanagement.db.query.update.UpdateCheckingListIncSourceQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.update.UpdateDecommissionSpoilInRrQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.update.UpdateExternalIncomeInRrQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.update.UpdateInternalIncomeInRrQuery;
@@ -28,10 +29,10 @@ public class PackingListPreviewViewModel extends TypedViewModel {
             case FULL_INVENTORY:
                 break;
             case OUTER_INCOME:
-                q = new UpdateExternalIncomeInRrQuery(con.getConnection(),headGuid);
+                q = new UpdateCheckingListIncSourceQuery(con.getConnection(),headGuid);
                 break;
             case INNER_INCOME:
-                q = new UpdateInternalIncomeInRrQuery(con.getConnection(),headGuid);
+                q = new UpdateCheckingListIncSourceQuery(con.getConnection(),headGuid);
                 break;
             case DISCARD:
                 q = new UpdateDecommissionSpoilInRrQuery(con.getConnection(),headGuid);

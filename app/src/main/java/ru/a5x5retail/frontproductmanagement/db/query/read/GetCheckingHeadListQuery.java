@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+
 import ru.a5x5retail.frontproductmanagement.db.converters.CheckingListHeadConverter;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListHead;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
@@ -14,7 +15,7 @@ public class GetCheckingHeadListQuery extends CallableQuery<CheckingListHead> {
     private int typeDocId;
     private String imei;
     private List<CheckingListHead> headList;
-    public GetCheckingHeadListQuery(Connection connection,String imei,Integer typeDocId) {
+    public GetCheckingHeadListQuery(Connection connection, String imei, Integer typeDocId) {
         super(connection);
         this.typeDocId = typeDocId;
         this.imei = imei;
@@ -47,7 +48,8 @@ public class GetCheckingHeadListQuery extends CallableQuery<CheckingListHead> {
             int r = getReturnCode();
     }
 
-    public List<CheckingListHead> getHeadList() {
+    @Override
+    public List<CheckingListHead> getList() {
         return headList;
     }
 }

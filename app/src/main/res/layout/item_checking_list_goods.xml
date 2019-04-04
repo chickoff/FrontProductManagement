@@ -18,7 +18,6 @@
         android:text=""
         android:textSize="14sp"/>
 
-
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
@@ -36,7 +35,6 @@
             android:text=""
             android:textSize="14dp"/>
 
-
     </LinearLayout>
 
     <Button
@@ -46,8 +44,4 @@
         android:layout_weight="1"
         android:minWidth="140dp"
         android:text="10"/>
-
-
-
-
 </LinearLayout>

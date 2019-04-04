@@ -18,11 +18,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".checkinglistinc.CheckingListIncActivity">
-<!--         <intent-filter>
+        <activity android:name=".filters.skufilter.SkuFilterActivity"></activity>
+        <activity
+            android:name=".checkinglistinc.CheckingListIncActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
+
+            <!--
+         <intent-filter>
              <action android:name="android.intent.action.MAIN" />
              <category android:name="android.intent.category.LAUNCHER" />
-         </intent-filter>-->
+         </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".newdocumentmaster.extendinvoicemasters.creators.newinvoice.CreateNewInvoiceActivity"

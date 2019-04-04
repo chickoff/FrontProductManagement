@@ -12,7 +12,7 @@ public class InvoiceHeadConverter implements IDbConvertible<InvoiceHead> {
 
         Object tmp = null;
 
-        obj.guid = resultSet.getObject("IncomeGUID").toString();
+        obj.guid = resultSet.getObject("SourceGUID").toString();
         obj.numDoc = resultSet.getString("NumDoc");
         obj.dateDoc = resultSet.getDate("DateDoc");
         tmp = null;
@@ -20,6 +20,7 @@ public class InvoiceHeadConverter implements IDbConvertible<InvoiceHead> {
         tmp = null;
         tmp = resultSet.getObject("SummVat"); obj.summVat = tmp == null ? "0" : tmp.toString();
         obj.validDoc = resultSet.getInt("ValidDoc");
+        obj.sourceTypeIdd = resultSet.getInt("SourceTypeIDD");
 
         return true;
     }

@@ -11,10 +11,10 @@ public class CheckingListMarkConverter implements IDbConvertible<CheckingListMar
     @Override
     public boolean Convert(ResultSet resultSet, CheckingListMark obj) throws SQLException {
         obj.guid = resultSet.getObject("GUID").toString();
-        obj.checkingListIncHeadGuid = resultSet.getObject("checkingListIncHeadGuid").toString();
+       // obj.checkingListIncHeadGuid = resultSet.getObject("checkingListIncHeadGuid").toString();
         obj.code = resultSet.getInt("code");
-        obj.qtyCl = resultSet.getBigDecimal("qtyCl");
-        obj.qtyTtn = resultSet.getBigDecimal("qtyTtn");
+        obj.qtyCl = resultSet.getBigDecimal("qtyCl").setScale(3);
+        obj.qtyTtn = resultSet.getBigDecimal("qtyTtn").setScale(3);
         obj.orderBy = resultSet.getInt("orderBy");
         return false;
     }
@@ -26,7 +26,7 @@ public class CheckingListMarkConverter implements IDbConvertible<CheckingListMar
             obj.Guid = resultSet.getObject("GUID").toString();
             obj.StatusID = resultSet.getObject("StatusID").toString();
             obj.TypeDocID = resultSet.getObject("TypeDocID").toString();
-            obj.RRGUID = resultSet.getObject("RRGUID").toString();
+            obj.sourceGuid = resultSet.getObject("sourceGuid").toString();
             obj.NameDoc = resultSet.getObject("NameDoc").toString();
             obj.Note = resultSet.getString("Note");
             obj.IMEI = resultSet.getObject("IMEI").toString();

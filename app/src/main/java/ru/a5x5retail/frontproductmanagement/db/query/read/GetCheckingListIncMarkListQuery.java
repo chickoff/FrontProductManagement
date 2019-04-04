@@ -22,7 +22,7 @@ public class GetCheckingListIncMarkListQuery extends CallableQuery<CheckingListM
 
     @Override
     protected void SetQuery() {
-        setSqlString("{? = call V_StoreTSD.dbo.CheckingListMark(?)}");
+        setSqlString("{? = call V_StoreTSD.dbo.CheckingListIncGetMarkList(?)}");
     }
 
     @Override

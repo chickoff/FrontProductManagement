@@ -9,6 +9,7 @@ public class InvoiceHead {
     public String summ;
     public String summVat;
     public int validDoc;
+    public int sourceTypeIdd;
 
 
 

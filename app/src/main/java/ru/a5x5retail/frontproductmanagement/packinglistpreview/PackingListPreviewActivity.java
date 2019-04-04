@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import ru.a5x5retail.frontproductmanagement.R;
 import ru.a5x5retail.frontproductmanagement.base.BaseAppCompatActivity;
+import ru.a5x5retail.frontproductmanagement.checkinglistinc.CheckingListIncActivity;
 import ru.a5x5retail.frontproductmanagement.configuration.Constants;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListHead;
 import ru.a5x5retail.frontproductmanagement.help.HelpDialog;
@@ -66,9 +67,16 @@ public class PackingListPreviewActivity extends BaseAppCompatActivity {
     }
 
     private void createIntent(){
-        Intent intent1 = new Intent(this, CheckingListGoodsActivity.class);
-        intent1.putExtra("gggg", UUID.fromString(viewModel.head.Guid));
-        startActivity(intent1);
+       if (Constants.getCurrentDoc().getTypeOfDocument() == Constants.TypeOfDocument.OUTER_INCOME ||
+           Constants.getCurrentDoc().getTypeOfDocument() == Constants.TypeOfDocument.INNER_INCOME) {
+           Intent intent1 = new Intent(this, CheckingListIncActivity.class);
+           intent1.putExtra(Constants.PACKINGLISTHEAD_CONST, viewModel.head);
+           startActivity(intent1);
+       } else {
+           Intent intent1 = new Intent(this, CheckingListGoodsActivity.class);
+           intent1.putExtra("gggg", UUID.fromString(viewModel.head.Guid));
+           startActivity(intent1);
+       }
     }
 
     @Override
@@ -90,7 +98,7 @@ public class PackingListPreviewActivity extends BaseAppCompatActivity {
                 break;
             case R.id.a_pl_preview_upd_item_1 :
                 try {
-                    viewModel.UpdateInRr(viewModel.head.Guid, Constants.getCurrentTypeOfDocument());
+                    viewModel.UpdateInRr(viewModel.head.Guid, Constants.getCurrentDoc().getTypeOfDocument());
                 } catch (SQLException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {

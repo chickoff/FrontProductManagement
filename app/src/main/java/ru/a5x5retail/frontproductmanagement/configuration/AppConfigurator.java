@@ -90,15 +90,35 @@ public class AppConfigurator {
         doc = new DocType<PackingListItemsActivity>();
         doc.setClassOfActivity(PackingListItemsActivity.class);
         doc.setTypeOfDocument(Constants.TypeOfDocument.PARTIAL_INVENTORY);
-        doc.setName("Локальная инвентаризация");
-        doc.setShortName("Локалка");
-        list.add(doc);
+        doc.setName("Инвентаризация");
+        doc.setShortName("");
 
-        doc = new DocType<PackingListItemsActivity>();
-        doc.setClassOfActivity(PackingListItemsActivity.class);
-        doc.setTypeOfDocument(Constants.TypeOfDocument.FULL_INVENTORY);
-        doc.setName("Полная инвентаризация");
-        doc.setShortName("Полная инв.");
+/**************************
+ *      Дочки !
+ * */
+
+            List<DocType> inventoryChilds = new ArrayList<>();
+
+            DocType loChild = new DocType();
+            loChild.setClassOfActivity(PackingListItemsActivity.class);
+            loChild.setTypeOfDocument(Constants.TypeOfDocument.PARTIAL_INVENTORY);
+            loChild.setName("Локальная инвентаризация");
+            loChild.setShortName("Локалка");
+            loChild.setParentDoc(doc);
+            inventoryChilds.add(loChild);
+
+            loChild = new DocType();
+            loChild.setClassOfActivity(PackingListItemsActivity.class);
+            loChild.setTypeOfDocument(Constants.TypeOfDocument.FULL_INVENTORY);
+            loChild.setName("Полная инвентаризация");
+            loChild.setShortName("Полная инв.");
+            loChild.setParentDoc(doc);
+            inventoryChilds.add(loChild);
+
+            doc.setChildDocs(inventoryChilds);
+
+/****************************/
+
         list.add(doc);
 
         doc = new DocType<PackingListItemsActivity>();
@@ -207,9 +227,11 @@ public class AppConfigurator {
         public static Date getStartDate() {
             return null;
         }
-
         public static Date getEndDate() {
             return null;
         }
     }
+
+
+
 }

@@ -1,14 +1,76 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    >
+    <CheckBox
+        android:id="@+id/tvCboxP"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_centerVertical="true"/>
+
+
+    <TextView
+        android:id="@+id/tvCodeP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:text="sku"
+        android:textSize="14sp"
+        android:layout_toRightOf="@+id/tvCboxP"
+        />
+
+    <TextView
+        android:id="@+id/priceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="price"
+        android:layout_marginStart="2dp"
+        android:layout_toRightOf="@+id/tvCodeP"
+        android:textColor="#000"
+        />
+
+
+    <TextView
+        android:id="@+id/tvNameP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NameLong"
+        android:layout_below="@+id/tvCodeP"
+        android:layout_toRightOf="@+id/tvCboxP"
+        android:layout_marginTop="2dp"
+        />
+
+
+
+
+    <Button
+        android:id="@+id/tvButP"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:maxLines="1"
+        android:minWidth="10dp"
+        android:text="5"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+
+        />
+</RelativeLayout>
+
+
+
+
+<!--
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <CheckBox
-        android:id="@+id/tvCboxP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </CheckBox>
+
     <TextView
         android:id="@+id/tvCodeP"
         android:layout_width="wrap_content"
@@ -16,9 +78,7 @@
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
         android:text=""
-        android:textSize="14sp"></TextView>
-
-
+        android:textSize="14sp"/>
     <LinearLayout
         android:id="@+id/linearLayout1P"
         android:layout_width="match_parent"
@@ -33,11 +93,16 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:text=""
+            android:text="NameLong"
 
-            android:textSize="14dp"></TextView>
-
-
+            android:textSize="14dp"/>
+    <TextView
+        android:id="@+id/priceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="price"
+        android:layout_marginStart="2dp"
+        />
     </LinearLayout>
 
     <Button
@@ -47,11 +112,5 @@
         android:layout_weight="0"
         android:maxLines="1"
         android:minWidth="10dp"
-
-
-        android:text="5"></Button>
-
-
-
-
-</LinearLayout>
+        android:text="5"/>
+</LinearLayout>-->

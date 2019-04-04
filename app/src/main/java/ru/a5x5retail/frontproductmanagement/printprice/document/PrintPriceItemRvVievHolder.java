@@ -18,11 +18,12 @@ import ru.a5x5retail.frontproductmanagement.printprice.interfaces.IViewHolderCli
 
 public class PrintPriceItemRvVievHolder extends RecyclerView.ViewHolder  {
 
-    private TextView tvCode;
+    private TextView tvCode, priceTextView;
     private TextView tvName;
     private Button tvBut;
     private CheckBox tvCbox;
     private IViewHolderClickPosition buttonClickListener;
+
 
     private IPPChecked mPPChecked;
 
@@ -33,6 +34,7 @@ public class PrintPriceItemRvVievHolder extends RecyclerView.ViewHolder  {
 
         tvCode = itemView.findViewById(R.id.tvCodeP);
         tvName = itemView.findViewById(R.id.tvNameP);
+        priceTextView = itemView.findViewById(R.id.priceTextView);
         tvBut = itemView.findViewById(R.id.tvButP);
         tvCbox=itemView.findViewById(R.id.tvCboxP);
         tvCbox.setOnCheckedChangeListener(myCheckChangList);
@@ -73,6 +75,10 @@ public class PrintPriceItemRvVievHolder extends RecyclerView.ViewHolder  {
 
     public CheckBox gettvCbox() {
         return tvCbox;
+    }
+
+    public TextView gettPriceTextView() {
+        return priceTextView;
     }
 
     // обработчик для чекбоксов

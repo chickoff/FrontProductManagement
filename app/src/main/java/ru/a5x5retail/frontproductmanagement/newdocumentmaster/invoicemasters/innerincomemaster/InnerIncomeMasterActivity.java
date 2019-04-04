@@ -121,6 +121,11 @@ implements IRecyclerViewItemClick<InvoiceHead> {
         dialog.dismiss();
     }
 
+    @Override
+    public void OnCancel() {
+
+    }
+
     /*@Override
     public void OnClick(int pos, InvoiceHead innerItem) {
 

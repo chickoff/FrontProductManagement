@@ -110,9 +110,8 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
     }
 
     private void initViewModel() {
-
         viewModel = ViewModelProviders.of(this).get(PackingListItemsViewModel.class);
-        DocType td = AppConfigurator.getTypeDocByType(Constants.getCurrentTypeOfDocument());
+        DocType td = Constants.getCurrentDoc();
         this.setTitle(td.getShortName());
         loadViewModel();
     }
@@ -149,21 +148,21 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
        /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             return;
         }*/
-        switch (Constants.getCurrentTypeOfDocument()){
+        switch (Constants.getCurrentDoc().getTypeOfDocument()){
             case PARTIAL_INVENTORY:
-                CreateIntent(InventoryMasterActivity.class,Constants.getCurrentTypeOfDocument());
+                CreateIntent(InventoryMasterActivity.class,Constants.getCurrentDoc().getTypeOfDocument());
                 break;
 
             case INNER_INCOME:
-                CreateIntent(ExtendInvoiceMasterActivity.class,Constants.getCurrentTypeOfDocument());
+                CreateIntent(ExtendInvoiceMasterActivity.class,Constants.getCurrentDoc().getTypeOfDocument(),1);
                 break;
 
             case OUTER_INCOME:
-                CreateIntent(ExtendInvoiceMasterActivity.class,Constants.getCurrentTypeOfDocument());
+                CreateIntent(ExtendInvoiceMasterActivity.class,Constants.getCurrentDoc().getTypeOfDocument(),1);
                 break;
 
             case DISCARD:
-                CreateIntent(DecommissionSpoilMasterActivity.class,Constants.getCurrentTypeOfDocument());
+                CreateIntent(DecommissionSpoilMasterActivity.class,Constants.getCurrentDoc().getTypeOfDocument());
                 break;
         }
     }
@@ -171,6 +170,11 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
     private void CreateIntent(Class<?> c,Constants.TypeOfDocument td){
         ProdManApp.Activities
                 .createNewDocumentActivity(this,c,1);
+    }
+
+    private void CreateIntent(Class<?> c,Constants.TypeOfDocument td, int requestCode){
+        ProdManApp.Activities
+                .createNewDocumentMasterActivity(this,c,td, requestCode);
     }
 
     @Override
@@ -201,6 +205,11 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
     public void OnClick(int pos, CheckingListHead innerItem) {
         ProdManApp.Activities
                 .createPackingListPreviewActivity(this,innerItem);
+    }
+
+    @Override
+    public void OnCancel() {
+
     }
 
     @Override
@@ -241,6 +250,4 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
             outRect.top = 2;
         }
     }
-
-
 }

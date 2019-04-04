@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".MainActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Введите дату производства"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:id="@+id/text_view_1"
+        />
+
+    <DatePicker
+        android:id="@+id/date_picker_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_1"
+        />
+
+   <!-- <TextView
+        android:id="@+id/text_view_2"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_alignTop="@+id/text_view_1"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="Дата:"
+        android:textColor="#000"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/text_view_3"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignTop="@+id/text_view_2"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:layout_toEndOf="@+id/oldQtyName"
+        android:layout_toRightOf="@+id/oldQtyName"
+        android:text="00000"
+        android:textSize="20dp" />-->
+
+<!--    <TextView
+        android:id="@+id/newQtyName"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_alignTop="@+id/oldQtyName"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="Новое количество:"
+        android:textColor="#000"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/input"
+        android:minWidth="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_below="@id/oldQtyValue"
+        android:layout_toRightOf="@+id/newQtyName"
+        android:background="@null"
+        android:hint="..."
+        android:selectAllOnFocus="true"
+        android:gravity="center"
+        android:textColor="#000" />-->
+
+    <TextView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:text="OK"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/date_picker_1"
+        android:layout_marginRight="20dp"
+        android:textSize="18sp"
+        android:textColor="#33bbff"
+        android:id="@+id/action_ok"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        />
+
+    <TextView
+        android:layout_width="90dp"
+        android:layout_height="40dp"
+        android:text="CANCEL"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/date_picker_1"
+        android:layout_marginRight="20dp"
+        android:textSize="18sp"
+        android:textColor="#33bbff"
+        android:id="@+id/action_cancel"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        />
+
+<!--    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:padding="10dp">
+
+       &lt;!&ndash; <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Введите количество"
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:id="@+id/heading"/>&ndash;&gt;
+
+        <EditText
+            android:id="@+id/input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/heading"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="50dp"
+            android:background="@null"
+
+
+            android:hint="......."
+            android:selectAllOnFocus="true"
+            android:textColor="#000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:textSize="18sp"
+            android:textColor="#33bbff"
+            android:id="@+id/action_ok"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CANCEL"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="20dp"
+            android:textSize="18sp"
+            android:textColor="#33bbff"
+            android:id="@+id/action_cancel"/>
+
+    </RelativeLayout>-->
+
+
+
+</RelativeLayout>

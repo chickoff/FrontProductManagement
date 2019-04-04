@@ -12,21 +12,22 @@ public class CreateCheckingListIncDocQuery extends CallableQuery {
                     relationGuid,
                     headGuid;
 
-    private int checkingListType;
+    private int checkingListType,sourceTypeIdd;
 
 
     public CreateCheckingListIncDocQuery(Connection connection, String relationGuid
-            , String imei,int checkingListType) {
+            , String imei,int checkingListType, int sourceTypeIdd) {
         super(connection);
 
         this.imei = imei;
         this.relationGuid = relationGuid;
         this.checkingListType = checkingListType;
+        this.sourceTypeIdd = sourceTypeIdd;
     }
 
     @Override
     protected void SetQuery() {
-        setSqlString("{call V_StoreTSD.dbo.CheckingListIncDocAdd(?, ?, ?, ?)}");
+        setSqlString("{call V_StoreTSD.dbo.CheckingListIncDocAdd(?, ?, ?, ?, ?)}");
     }
 
     @Override
@@ -34,13 +35,14 @@ public class CreateCheckingListIncDocQuery extends CallableQuery {
         stmt.setString(1,relationGuid);
         stmt.setString(2,imei);
         stmt.setInt(3,checkingListType);
-        stmt.registerOutParameter(4, Types.OTHER);
+        stmt.setInt(4,sourceTypeIdd);
+        stmt.registerOutParameter(5, Types.OTHER);
     }
 
     @Override
     public void Execute() throws SQLException {
         super.Execute();
-        headGuid = stmt.getString(4);
+        headGuid = stmt.getString(5);
     }
 
     public String getHeadGuid() {

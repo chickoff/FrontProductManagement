@@ -20,6 +20,7 @@ public class PrintPriceItemConverter implements IDbConvertible<PrintPriceItem> {
             obj.Check = resultSet.getBoolean("Check");
             obj.Qty = resultSet.getInt("Qty");
             obj.OrderBy = resultSet.getInt("OrderBy");
+            obj.Price = resultSet.getBigDecimal("Price");
 
         } catch (SQLException e) {
             e.printStackTrace();

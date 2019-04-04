@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import ru.a5x5retail.frontproductmanagement.BInfo;
 import ru.a5x5retail.frontproductmanagement.R;
 import ru.a5x5retail.frontproductmanagement.db.models.CodeInfo;
 import ru.a5x5retail.frontproductmanagement.dictionarygoods.document.DictionaryGoodsActivity;
@@ -230,53 +231,33 @@ implements IRecyclerViewItemClick<CheckingListGoods>
                     e.printStackTrace();
                     Log.e("in", e.toString());
                 }
-
-
             }
         }
     };
 
     private void rowsAdd(String barcodeStr) {
-
-        BarcodeComponent bc= new BarcodeComponent(barcodeStr);
-
-        String qq=bc.GetMeasure();
-       // String qq1=bc.GetCode();
-       // String qq2=bc.GetQty();
-       // float qq3=bc.GetQtyV();
-
         MsSqlConnection con = new MsSqlConnection();
 
-        if(bc.GetMeasureF())//если товар весовой
-        {
-            CheckingListGoodsEditQuery query2 = new CheckingListGoodsEditQuery(checkingListHeadGUID,bc.GetCode(),bc.GetQtyV(),1);
-            con.CallQuery(query2);
+        BInfo barcode = new BInfo(barcodeStr);
+        CheckingListGoodsGetSKUInfo q1 = new CheckingListGoodsGetSKUInfo(barcodeStr);
+        con.CallQuery(q1);
+        barcode.setSkuContext(q1.getSKUInfoList());
 
+        if (barcode.isLocal()) {
+            if(barcode.isWeightAvailable()){
+                CheckingListGoodsEditQuery query2 = new CheckingListGoodsEditQuery(checkingListHeadGUID,barcode.getSkuContext().Code,barcode.getLocalWeight(),1);
+                con.CallQuery(query2);
+                return;
+            }
         }
-        else {
 
-            SKUContext skuContext = new SKUContext();
-
-
-            CheckingListGoodsGetSKUInfo query = new CheckingListGoodsGetSKUInfo(barcodeStr);
-            con.CallQuery(query);
-            skuContext = query.getSKUInfoList();
-
-
-            CheckingListGoodsEditQuery query2 = new CheckingListGoodsEditQuery(checkingListHeadGUID, skuContext.Code, BigDecimal.valueOf(0), 2);
-            con.CallQuery(query2);
-        }
+        CheckingListGoodsEditQuery query2 = new CheckingListGoodsEditQuery(checkingListHeadGUID, barcode.getSkuContext().Code, BigDecimal.valueOf(0), 2);
+        con.CallQuery(query2);
 
         viewModel.Load(checkingListHeadGUID);
         initRecyclerView();
-
-        if(!bc.GetMeasureF())//если не товар весовой
-        {
-            viewModel.getGoodsList().get(0);
-            openDialogF(viewModel.getGoodsList().get(0));
-        }
-
-
+        viewModel.getGoodsList().get(0);
+        openDialogF(viewModel.getGoodsList().get(0));
     }
 
     @SuppressLint("ValidFragment")

@@ -2,6 +2,8 @@ package ru.a5x5retail.frontproductmanagement.printprice.document.viewmodel;
 
 import java.util.List;
 
+import ru.a5x5retail.frontproductmanagement.ProdManApp;
+import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
 import ru.a5x5retail.frontproductmanagement.dictionarygoods.configuration.Constants;
 import ru.a5x5retail.frontproductmanagement.printprice.base.BaseViewModel;
 import ru.a5x5retail.frontproductmanagement.printprice.db.models.PrintPriceItem;
@@ -55,7 +57,7 @@ public class PrintPriceItemsViewModel extends BaseViewModel {
 
 
         //query.getHeadGuid()
-        GetPrintPriceItemListQuery query1 = new GetPrintPriceItemListQuery(headerGuid);
+        GetPrintPriceItemListQuery query1 = new GetPrintPriceItemListQuery(headerGuid, AppConfigurator.getDeviceId(ProdManApp.getAppContext()));
         query1.Execute(con.getConnection());
 
        // con.CallQuery();

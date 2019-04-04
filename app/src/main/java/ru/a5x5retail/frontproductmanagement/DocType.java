@@ -1,17 +1,16 @@
 package ru.a5x5retail.frontproductmanagement;
 
 import android.support.v7.app.AppCompatActivity;
+
+import java.util.List;
+
 import ru.a5x5retail.frontproductmanagement.configuration.Constants;
 
 public class DocType<T extends AppCompatActivity> {
 
-
-
-
     public DocType(){
 
     }
-
 
     private Class<T> classOfActivity;
     public Class<T> getClassOfActivity() {
@@ -32,24 +31,40 @@ public class DocType<T extends AppCompatActivity> {
     }
 
 
+
     private String name;
-
-    private String shortName;
-
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
 
+
+    private String shortName;
     public String getShortName() {
         return shortName;
     }
 
     public void setShortName(String shortName) {
         this.shortName = shortName;
+    }
+
+    private List<DocType> childDocList;
+    public List<DocType> getChildDocs() {
+        return childDocList;
+    }
+    public void setChildDocs(List<DocType> childDocList) {
+        this.childDocList = childDocList;
+    }
+
+    private DocType parentDoc;
+
+    public DocType getParentDoc() {
+        return parentDoc;
+    }
+
+    public void setParentDoc(DocType parentDoc) {
+        this.parentDoc = parentDoc;
     }
 }

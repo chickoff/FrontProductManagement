@@ -110,4 +110,9 @@ public class DecommissionSpoilMasterActivity extends BaseMasterActivity
         showAlertImage(false);
         dialog.dismiss();
     }
+
+    @Override
+    public void OnCancel() {
+
+    }
 }

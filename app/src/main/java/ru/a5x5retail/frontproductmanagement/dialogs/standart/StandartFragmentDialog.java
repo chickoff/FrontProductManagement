@@ -51,6 +51,10 @@ public class StandartFragmentDialog<T> extends DialogFragment {
         this.viewHolderFactory = viewHolderFactory;
     }
 
+    public void setRecyclerViewClickListener(IRecyclerViewItemClick<T> listener) {
+        this.mListener = listener;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialogfragment_steps_fdialog, container);
@@ -64,6 +68,9 @@ public class StandartFragmentDialog<T> extends DialogFragment {
         dlg_cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.OnCancel();
+                }
                 dismiss();
             }
         });
@@ -112,47 +119,4 @@ public class StandartFragmentDialog<T> extends DialogFragment {
         super.onPause();
         dismiss();
     }
-
-
-
-
-    public class StepsFDialogViewHolder extends BasicViewHolder<InvoiceHead> {
-        public StepsFDialogViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-
-
-            i_steps_f_dialog_textview_1 = itemView.findViewById(R.id.i_steps_f_dialog_textview_1);
-            i_steps_f_dialog_textview_2 = itemView.findViewById(R.id.i_steps_f_dialog_textview_2);
-            i_steps_f_dialog_textview_3 = itemView.findViewById(R.id.i_steps_f_dialog_textview_3);
-            i_steps_f_dialog_textview_4 = itemView.findViewById(R.id.i_steps_f_dialog_textview_4);
-        }
-
-        private TextView i_steps_f_dialog_textview_1;
-        private TextView i_steps_f_dialog_textview_2;
-        private TextView i_steps_f_dialog_textview_3;
-        private TextView i_steps_f_dialog_textview_4;
-
-        @Override
-        public void setSource(InvoiceHead source) {
-          //  i_steps_f_dialog_textview_1.setText(source.conractorNameLong);
-            i_steps_f_dialog_textview_2.setText(source.dateDoc.toString());
-            i_steps_f_dialog_textview_3.setText(source.summ);
-            i_steps_f_dialog_textview_4.setText(source.numDoc);
-
-        }
-    }
-
-    public class StepsFDialogViewHolderFactory extends BasicViewHolderFactory {
-
-        public StepsFDialogViewHolderFactory() {
-            setItemLayoutId(R.layout.item_default_1);
-        }
-
-        @Override
-        public BasicViewHolder getNewInstance(View itemView) {
-            return new StepsFDialogViewHolder(itemView);
-        }
-    }
-
 }
