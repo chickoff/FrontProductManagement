@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="ru.a5x5retail.frontproductmanagement.newdocumentmaster.invoicemasters.InvoiceMasterViewModel" />
+            type="ru.a5x5retail.frontproductmanagement.newdocumentmaster.invoicemasters.decommissionspoilmaster.DecommissionSpoilMasterViewModel" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="Биндинг - хуиндинг"
+                    android:text="@{viewmodel.selectedInvoiceHead.contractorNameLong}"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -112,7 +112,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="@{viewmodel.selectedInvoiceHead.summ}"
+                    android:text="@{viewmodel.selectedInvoiceHead.summ.toString()}"
                     android:textColor="@color/colorAccent"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"

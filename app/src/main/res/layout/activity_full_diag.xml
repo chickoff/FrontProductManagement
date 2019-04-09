@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".diag.FullDiagActivity">
+    <TextView
+        android:id="@+id/text_view_1"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="WiFi сеть:"
+        />
+    <TextView
+        android:id="@+id/wifi_ssid_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="пусто"
+        android:layout_toRightOf="@+id/text_view_1"
+        android:layout_marginStart="15dp"
+        android:textColor="#000"
+        />
+
+    <TextView
+        android:id="@+id/text_view_2"
+        android:text="Ip ТСД:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view_1"
+        />
+    <TextView
+        android:id="@+id/ip_addr_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="000.000.000.000"
+        android:layout_below="@id/text_view_1"
+        android:layout_toRightOf="@+id/text_view_1"
+        android:layout_marginStart="15dp"
+        android:textColor="#000"
+        />
+
+    <TextView
+        android:id="@+id/text_view_3"
+        android:text="Ip сервер:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view_2"
+        />
+    <TextView
+        android:id="@+id/server_ip_addr_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="000.000.000.000"
+        android:layout_below="@id/text_view_2"
+        android:layout_toRightOf="@+id/text_view_1"
+        android:layout_marginStart="15dp"
+        android:textColor="#000"
+        />
+
+    <TextView
+        android:id="@+id/text_view_4"
+        android:text="Ping:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view_3"
+        />
+    <TextView
+        android:id="@+id/ping_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="..."
+        android:layout_below="@id/text_view_3"
+        android:layout_toRightOf="@+id/text_view_1"
+        android:layout_marginStart="15dp"
+        android:textColor="#000"
+        />
+
+
+    <ProgressBar
+        android:id="@+id/ping_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:visibility="visible"
+        android:layout_below="@id/text_view_3"
+        android:layout_toRightOf="@+id/ping_text_view"
+        android:layout_marginStart="5dp"
+    />
+
+
+    <TextView
+        android:id="@+id/text_view_5"
+        android:text="Бд:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view_4"
+        />
+    <TextView
+        android:id="@+id/db_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="..."
+        android:layout_below="@id/text_view_4"
+        android:layout_toRightOf="@+id/text_view_1"
+        android:layout_marginStart="15dp"
+        android:textColor="#000"
+        />
+
+    <ProgressBar
+        android:id="@+id/db_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:visibility="visible"
+        android:layout_below="@id/text_view_4"
+        android:layout_toRightOf="@+id/db_text_view"
+        android:layout_marginStart="5dp"
+        />
+    <TextView
+        android:id="@+id/text_view_6"
+        android:text="Update:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view_5"
+        />
+
+    <TextView
+        android:id="@+id/update_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="..."
+        android:layout_below="@id/text_view_5"
+        android:layout_toRightOf="@+id/text_view_1"
+        android:layout_marginStart="15dp"
+        android:textColor="#000"
+        />
+    <ProgressBar
+        android:id="@+id/update_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:visibility="visible"
+        android:layout_below="@id/text_view_5"
+        android:layout_toRightOf="@+id/update_text_view"
+        android:layout_marginStart="5dp"
+        />
+
+    <Button
+        android:id="@+id/updateButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="обновить"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>

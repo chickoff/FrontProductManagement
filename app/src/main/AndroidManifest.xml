@@ -18,7 +18,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".filters.skufilter.SkuFilterActivity"></activity>
+        <activity android:name=".diag.FullDiagActivity">
+
+        <!-- <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+             <category android:name="android.intent.category.LAUNCHER" />
+         </intent-filter>-->
+
+        </activity>
+        <activity android:name=".filters.skufilter.SkuFilterActivity" />
         <activity
             android:name=".checkinglistinc.CheckingListIncActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
@@ -63,12 +71,7 @@
         <activity
             android:name=".newdocumentmaster.invoicemasters.decommissionspoilmaster.DecommissionSpoilMasterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".newdocumentmaster.invoicemasters.externalincomemaster.ExternalIncomeMasterActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".newdocumentmaster.invoicemasters.innerincomemaster.InnerIncomeMasterActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".settings.SettingsActivity"
             android:label="Настройки"

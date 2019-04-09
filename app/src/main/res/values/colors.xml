@@ -12,4 +12,7 @@
     <color name="light_text_color">#FFFFFF</color>
     <color name="body_background_color">#6B6B6B</color>
 
+    <color name="normal_font_color">#000</color>
+    <color name="min_font_color">#DF913A</color>
+    <color name="max_font_color">#D62424</color>
 </resources>

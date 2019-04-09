@@ -107,7 +107,6 @@
         android:layout_below="@id/text_view_5"
         android:layout_marginStart="15dp"
         android:textSize="26dp"
-        android:textColor="#000"
         android:layout_marginTop="10dp"
         />
 
