@@ -106,6 +106,7 @@ public class CheckingListIncPositionFragment extends TestFragment<CheckingListIn
 
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new ItemsRecyclerViewDecoration());
+
     }
 
 
@@ -143,6 +144,8 @@ public class CheckingListIncPositionFragment extends TestFragment<CheckingListIn
                 }
             });
         }
+
+
     }
 
     private void receiveBarcode(String message) {
@@ -166,6 +169,7 @@ public class CheckingListIncPositionFragment extends TestFragment<CheckingListIn
     @Override
     public void onPause() {
         super.onPause();
+        enterInUoW.clear();
     }
 
     @Override
@@ -199,6 +203,10 @@ public class CheckingListIncPositionFragment extends TestFragment<CheckingListIn
                     }
                 }
             });
+        }
+        public int getPositionBySource(CheckingListPosition source) {
+            if (list == null) return 0;
+            return list.indexOf(source);
         }
 
         public void setQtyButtonClickListener(Te listener) {
@@ -250,6 +258,8 @@ public class CheckingListIncPositionFragment extends TestFragment<CheckingListIn
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
+            recyclerView.scrollToPosition(adapter.getPositionBySource(input.getSelectedPosition()));
         }
 
         @Override
@@ -264,69 +274,7 @@ public class CheckingListIncPositionFragment extends TestFragment<CheckingListIn
         }
     };
 
-    /*private BlaBlaUoW blaBlaUoW;
-    BlaBlaUoW.IBlaBlaUoWEventsListener blaUoWEventsListener;
-
-    {
-        blaUoWEventsListener = new BlaBlaUoW.IBlaBlaUoWEventsListener() {
-            @Override
-            public void getSkuContext(BarcodeInfo barcodeInfo) {
-                try {
-                    blaBlaUoW.setSkuContext(getViewModel().getSkuContextByBarcode(barcodeInfo.barcode));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void getNewQty(CheckingListPosition position) {
-                openEditableDialog(position);
-            }
-
-            @Override
-            public void getNewQty(BarcodeInfo barcodeInfo) {
-                openEditableDialog(barcodeInfo.getSelectedPosition());
-            }
-
-            @Override
-            public void selectOnePosition(BarcodeInfo barcodeInfo) {
-                ProdManApp.Alerts.MakeAlertVibrate();
-                openSelectiblePositionDialod(barcodeInfo);
-            }
-
-            @Override
-            public void changeNewQty(CheckingListPosition position, BigDecimal newQty) {
-                try {
-                    getViewModel().addQty(position, newQty, 0);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void changeNewQty(BarcodeInfo barcodeInfo, BigDecimal newQty) {
-                try {
-                    getViewModel().addQty(barcodeInfo.getSelectedPosition(), newQty, 1);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void raiseError(String message) {
-                ProdManApp.Alerts.MakeDoubleVibrate();
-                ProdManApp.Alerts.MakeToast(message, 0);
-            }
-
-            @Override
-            public void raiseClear() {
-
-            }
-        };
-    }*/
-
-
-    private void openEditableDialog(CheckingListPosition source) {
+   private void openEditableDialog(CheckingListPosition source) {
         CheckingListPositionDialogFragment dialig = new CheckingListPositionDialogFragment();
         FragmentManager fm = getFragmentManager();
         dialig.setPosition(source);

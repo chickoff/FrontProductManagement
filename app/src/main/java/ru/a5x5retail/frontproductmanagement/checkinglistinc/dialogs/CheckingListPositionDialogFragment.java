@@ -120,6 +120,7 @@ public class CheckingListPositionDialogFragment extends DialogFragment {
 
     private void updateUi(){
         setOldQtyValue(position.qtyUser);
+
     }
 
     @Override

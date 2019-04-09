@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import java.text.DecimalFormat;
 
+import ru.a5x5retail.frontproductmanagement.ProdManApp;
 import ru.a5x5retail.frontproductmanagement.R;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
 import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
@@ -51,6 +52,23 @@ public class PositionViewHolder extends BasicViewHolder<CheckingListPosition> {
                 }
             }
         });
+
+
+        int colorId = 0;
+        switch (source.compareQty()) {
+            case -1:
+                colorId = R.color.max_font_color;
+                break;
+            case 0:
+                colorId = R.color.normal_font_color;
+                break;
+            case 1:
+                colorId = R.color.min_font_color;
+                break;
+        }
+        text_view_7.setTextColor(ProdManApp.getAppContext().getResources().getColor(colorId));
+
+
 
 
 

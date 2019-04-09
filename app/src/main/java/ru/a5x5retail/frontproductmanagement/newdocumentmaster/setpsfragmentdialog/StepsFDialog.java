@@ -19,9 +19,11 @@ import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerV
 import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
 import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
-import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
+import ru.a5x5retail.frontproductmanagement.db.models.IncomeInvoiceHead;
+import ru.a5x5retail.frontproductmanagement.db.models.OutgoInvoiceHead;
 import ru.a5x5retail.frontproductmanagement.interfaces.*;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.invoicemasters.InvoiceMasterViewModel;
+import ru.a5x5retail.frontproductmanagement.newdocumentmaster.invoicemasters.decommissionspoilmaster.DecommissionSpoilMasterViewModel;
 
 public class StepsFDialog extends DialogFragment {
 
@@ -29,8 +31,8 @@ public class StepsFDialog extends DialogFragment {
 
     private String mTitle;
     private Button dlg_cancel_btn;
-    private IRecyclerViewItemClick<InvoiceHead> mListener;
-    private InvoiceMasterViewModel viewModel;
+    private IRecyclerViewItemClick<OutgoInvoiceHead> mListener;
+    private DecommissionSpoilMasterViewModel viewModel;
 
 
     public StepsFDialog() {
@@ -40,7 +42,7 @@ public class StepsFDialog extends DialogFragment {
         this.mTitle = mTitle;
     }
 
-    public void setViewModel(InvoiceMasterViewModel viewModel) {
+    public void setViewModel(DecommissionSpoilMasterViewModel viewModel) {
         this.viewModel = viewModel;
     }
 
@@ -66,10 +68,10 @@ public class StepsFDialog extends DialogFragment {
         rv = view.findViewById(R.id.master_rv);
         rv.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         StepsFDialogViewHolderFactory hf = new StepsFDialogViewHolderFactory();
-        BasicRecyclerViewAdapter<InvoiceHead> adapter = new BasicRecyclerViewAdapter<>();
-        adapter.setShortClickListener(new IRecyclerViewItemShortClickListener<InvoiceHead>() {
+        BasicRecyclerViewAdapter<OutgoInvoiceHead> adapter = new BasicRecyclerViewAdapter<>();
+        adapter.setShortClickListener(new IRecyclerViewItemShortClickListener<OutgoInvoiceHead>() {
             @Override
-            public void OnShortClick(int pos, View view, InvoiceHead innerItem) {
+            public void OnShortClick(int pos, View view, OutgoInvoiceHead innerItem) {
                 viewModel.setSelectedInvoiceHead(innerItem);
                 if (mListener != null) {
                     mListener.OnClick(pos, innerItem);
@@ -96,7 +98,7 @@ public class StepsFDialog extends DialogFragment {
 
     private void attachListener(Context context){
         if (context instanceof IRecyclerViewItemClick){
-            mListener = (IRecyclerViewItemClick<InvoiceHead>) context;
+            mListener = (IRecyclerViewItemClick<OutgoInvoiceHead>) context;
         }
     }
 
@@ -107,7 +109,7 @@ public class StepsFDialog extends DialogFragment {
     }
 
 
-    public class StepsFDialogViewHolder extends BasicViewHolder<InvoiceHead> {
+    public class StepsFDialogViewHolder extends BasicViewHolder<OutgoInvoiceHead> {
         public StepsFDialogViewHolder(@NonNull View itemView) {
             super(itemView);
             i_steps_f_dialog_textview_1 = itemView.findViewById(R.id.i_steps_f_dialog_textview_1);
@@ -122,10 +124,10 @@ public class StepsFDialog extends DialogFragment {
         private TextView i_steps_f_dialog_textview_4;
 
         @Override
-        public void setSource(InvoiceHead source) {
+        public void setSource(OutgoInvoiceHead source) {
           //  i_steps_f_dialog_textview_1.setText(source.conractorNameLong);
             i_steps_f_dialog_textview_2.setText(source.dateDoc.toString());
-            i_steps_f_dialog_textview_3.setText(source.summ);
+            i_steps_f_dialog_textview_3.setText(source.summ.toString());
             i_steps_f_dialog_textview_4.setText(source.numDoc);
 
         }

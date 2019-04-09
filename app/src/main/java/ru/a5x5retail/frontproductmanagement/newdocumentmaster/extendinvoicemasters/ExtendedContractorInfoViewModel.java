@@ -8,14 +8,13 @@ import ru.a5x5retail.frontproductmanagement.base.TypedViewModel;
 import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
 import ru.a5x5retail.frontproductmanagement.configuration.Constants;
 import ru.a5x5retail.frontproductmanagement.db.models.ContractorExtendedInfo;
-import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
+import ru.a5x5retail.frontproductmanagement.db.models.IncomeInvoiceHead;
 import ru.a5x5retail.frontproductmanagement.db.models.PlanIncome;
 import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQueryAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.create.CreateCheckingListIncDocQuery;
 
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetCheckingListIncIncomesQuery;
-import ru.a5x5retail.frontproductmanagement.db.query.read.GetExternalIncomeInvoiceOnContractorQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetPlanIncomeListQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.read.async.GetExtendedContractorInfoQueryAsync;
 
@@ -83,7 +82,7 @@ public class ExtendedContractorInfoViewModel extends TypedViewModel {
         invoiceHeadList = q.getList();
     }
 
-    public void CreateNewCheckList(InvoiceHead head) throws SQLException {
+    public void CreateNewCheckList(IncomeInvoiceHead head) throws SQLException {
         CreateCheckingListIncDocQuery query = new CreateCheckingListIncDocQuery(
                 con.getConnection(),head.guid, AppConfigurator.getDeviceId(ProdManApp.getAppContext()),
                 Constants.getCurrentDoc().getTypeOfDocument().getIndex(),head.sourceTypeIdd
@@ -112,12 +111,12 @@ public class ExtendedContractorInfoViewModel extends TypedViewModel {
         this.contractorExtendedInfo = contractorExtendedInfo;
     }
 
-    private List<InvoiceHead> invoiceHeadList;
-    public List<InvoiceHead> getInvoiceHeadList() {
+    private List<IncomeInvoiceHead> invoiceHeadList;
+    public List<IncomeInvoiceHead> getInvoiceHeadList() {
         return invoiceHeadList;
     }
 
-    public void setInvoiceHeadList(List<InvoiceHead> invoiceHeadList) {
+    public void setInvoiceHeadList(List<IncomeInvoiceHead> invoiceHeadList) {
         this.invoiceHeadList = invoiceHeadList;
     }
 

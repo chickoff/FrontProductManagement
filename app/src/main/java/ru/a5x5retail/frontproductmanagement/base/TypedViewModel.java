@@ -10,19 +10,14 @@ public class TypedViewModel extends BaseViewModel
 implements Observable
 {
     private transient PropertyChangeRegistry mCallbacks;
-
     private Constants.TypeOfDocument typeOfDoc;
-
     private boolean isInitialized = false;
-
     public Constants.TypeOfDocument getTypeOfDoc1() {
         return typeOfDoc;
     }
-
     public void setTypeOfDoc1(Constants.TypeOfDocument typeOfDoc) {
         this.typeOfDoc = typeOfDoc;
     }
-
     @Override
     public void addOnPropertyChangedCallback(OnPropertyChangedCallback callback) {
         synchronized (this) {
@@ -32,7 +27,6 @@ implements Observable
         }
         mCallbacks.add(callback);
     }
-
     @Override
     public void removeOnPropertyChangedCallback(OnPropertyChangedCallback callback) {
         synchronized (this) {
@@ -42,7 +36,6 @@ implements Observable
         }
         mCallbacks.remove(callback);
     }
-
     public void notifyPropertyChanged(int fieldId) {
         synchronized (this) {
             if (mCallbacks == null) {
@@ -51,11 +44,9 @@ implements Observable
         }
         mCallbacks.notifyCallbacks(this, fieldId, null);
     }
-
     public boolean isInitialized() {
         return isInitialized;
     }
-
     public void setInitialized(boolean initialized) {
         isInitialized = initialized;
     }

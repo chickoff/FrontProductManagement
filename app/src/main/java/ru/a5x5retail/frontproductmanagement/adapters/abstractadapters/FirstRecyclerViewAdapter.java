@@ -30,6 +30,7 @@ public abstract class FirstRecyclerViewAdapter<T,VH extends RecyclerView.ViewHol
     }
 
 
+
     @Override
     public int getItemCount() {
         if (list == null) return 0;

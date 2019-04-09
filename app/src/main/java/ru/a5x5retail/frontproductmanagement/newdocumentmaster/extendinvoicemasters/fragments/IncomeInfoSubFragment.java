@@ -26,7 +26,7 @@ import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder
 import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
 
 import ru.a5x5retail.frontproductmanagement.db.models.ContractorExtendedInfo;
-import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
+import ru.a5x5retail.frontproductmanagement.db.models.IncomeInvoiceHead;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.ExtendedContractorInfoViewModel;
 import ru.a5x5retail.frontproductmanagement.base.TestFragment;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.dlgfragments.InvoiceSwitchDialogFragment;
@@ -77,7 +77,7 @@ public class IncomeInfoSubFragment extends TestFragment<ExtendedContractorInfoVi
 
 
     private RecyclerView recyclerView;
-    private BasicRecyclerViewAdapter<InvoiceHead> adapter ;
+    private BasicRecyclerViewAdapter<IncomeInvoiceHead> adapter ;
     private FloatingActionButton fab;
 
     private void init(View view) {
@@ -87,9 +87,9 @@ public class IncomeInfoSubFragment extends TestFragment<ExtendedContractorInfoVi
 
         adapter = new BasicRecyclerViewAdapter<>();
         adapter
-                .setShortClickListener(new IRecyclerViewItemShortClickListener<InvoiceHead>() {
+                .setShortClickListener(new IRecyclerViewItemShortClickListener<IncomeInvoiceHead>() {
                     @Override
-                    public void OnShortClick(int pos,View view, InvoiceHead innerItem) {
+                    public void OnShortClick(int pos,View view, IncomeInvoiceHead innerItem) {
                         invoiceRecyclerViewShortClick(pos,view, innerItem);
                     }
                 })
@@ -125,7 +125,7 @@ public class IncomeInfoSubFragment extends TestFragment<ExtendedContractorInfoVi
 
     }
 
-    private void invoiceRecyclerViewShortClick(int pos, View view, final InvoiceHead innerItem) {
+    private void invoiceRecyclerViewShortClick(int pos, View view, final IncomeInvoiceHead innerItem) {
         final InvoiceSwitchDialogFragment dlg = new InvoiceSwitchDialogFragment();
         dlg.setResultListener(new InvoiceSwitchDialogFragment.InvoiceSwithDialogFragmentResult() {
             @Override
@@ -143,7 +143,7 @@ public class IncomeInfoSubFragment extends TestFragment<ExtendedContractorInfoVi
         dlg.show(getFragmentManager(),"fdf");
     }
 
-    private void createCheckList(InvoiceHead innerItem) {
+    private void createCheckList(IncomeInvoiceHead innerItem) {
         try {
             getViewModel().CreateNewCheckList(innerItem);
         } catch (SQLException e) {
@@ -170,10 +170,10 @@ public class IncomeInfoSubFragment extends TestFragment<ExtendedContractorInfoVi
         if (ci == null) return;
         if (getViewModel().getInvoiceHeadList() == null) return;
 
-        if ((ci.ediTp == 0) || (ci.ediTp == 1 || ci.rpbpp == 1)) {
+        if (ci.ediTp == 1 || ci.rpbpp == 1) {
             fab.setVisibility(View.VISIBLE);
         } else {
-            fab.setVisibility(View.VISIBLE);   // тут нужен инвизибл !!!
+            fab.setVisibility(View.INVISIBLE);   // тут нужен инвизибл !!!
         }
 
         adapter.setSourceList(getViewModel().getInvoiceHeadList());
@@ -191,7 +191,7 @@ public class IncomeInfoSubFragment extends TestFragment<ExtendedContractorInfoVi
         updateUi();
     }
 
-    public class InvoiceRecyclerViewHolder extends BasicViewHolder<InvoiceHead> {
+    public class InvoiceRecyclerViewHolder extends BasicViewHolder<IncomeInvoiceHead> {
 
         public InvoiceRecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -209,7 +209,7 @@ public class IncomeInfoSubFragment extends TestFragment<ExtendedContractorInfoVi
                 group_3_tv_2;
 
         @Override
-        public void setSource(InvoiceHead source) {
+        public void setSource(IncomeInvoiceHead source) {
             group_1_tv_1.setText(source.numDoc);
             group_2_tv_1.setText(source.dateDoc.toString());
             group_3_tv_1.setText(source.summ);

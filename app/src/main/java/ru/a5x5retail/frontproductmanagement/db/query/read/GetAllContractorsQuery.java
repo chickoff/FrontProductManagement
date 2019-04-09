@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.a5x5retail.frontproductmanagement.db.converters.ContractorInfoConverter;
-import ru.a5x5retail.frontproductmanagement.db.converters.InvoiceHeadConverter;
 import ru.a5x5retail.frontproductmanagement.db.models.ContractorInfo;
-import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
 public class GetAllContractorsQuery extends CallableQuery<ContractorInfo> {

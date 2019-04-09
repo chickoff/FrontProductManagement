@@ -8,7 +8,6 @@ import ru.a5x5retail.frontproductmanagement.R;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
 import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListPosition;
-import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
 
 public class SelectOnePositionViewHolder extends BasicViewHolder<CheckingListPosition> {
 

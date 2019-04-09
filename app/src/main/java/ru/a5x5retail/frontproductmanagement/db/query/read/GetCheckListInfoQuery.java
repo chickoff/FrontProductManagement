@@ -5,15 +5,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.a5x5retail.frontproductmanagement.db.converters.InvoiceHeadConverter;
-import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
+import ru.a5x5retail.frontproductmanagement.db.converters.IncomeInvoiceHeadConverter;
+import ru.a5x5retail.frontproductmanagement.db.models.IncomeInvoiceHead;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class GetCheckListInfoQuery extends CallableQuery<InvoiceHead> {
+public class GetCheckListInfoQuery extends CallableQuery<IncomeInvoiceHead> {
 
     private String checkingListGuid;
 
-    private List<InvoiceHead> list;
+    private List<IncomeInvoiceHead> list;
 
     public GetCheckListInfoQuery(Connection connection,String checkingListGuid) {
         super(connection);
@@ -34,15 +34,15 @@ public class GetCheckListInfoQuery extends CallableQuery<InvoiceHead> {
     @Override
     public void Execute() throws SQLException {
         super.Execute();
-        InvoiceHeadConverter converter = new InvoiceHeadConverter();
+        IncomeInvoiceHeadConverter converter = new IncomeInvoiceHeadConverter();
         while (getResultSet().next()) {
-            InvoiceHead head = new InvoiceHead();
+            IncomeInvoiceHead head = new IncomeInvoiceHead();
             converter.Convert(getResultSet(),head);
             list.add(head);
         }
     }
 
-    public List<InvoiceHead> getList() {
+    public List<IncomeInvoiceHead> getList() {
         return list;
     }
 }

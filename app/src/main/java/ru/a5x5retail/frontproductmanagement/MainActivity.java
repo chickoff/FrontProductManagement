@@ -29,13 +29,23 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static ru.a5x5retail.frontproductmanagement.configuration.Constants.TYPEOFDOCUMENT_CONST;
 
 public class MainActivity extends BaseAppCompatActivity{
+
+    private SendExceptionFiles sendExceptionFiles;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //adapter.notifyDataSetChanged();
         setContentView(R.layout.activity_main);
         setTitle("Управление товарами " + AppConfigurator.GetCurrentVersion().toString());
         initRecyclerView();
-        backButtonEnabled(true);
+        //backButtonEnabled(true);
+        if (sendExceptionFiles == null) {
+            sendExceptionFiles = new SendExceptionFiles();
+        }
+        if (!sendExceptionFiles.isWork()) {
+            sendExceptionFiles.SendAsync();
+        }
     }
 
     private DocType currentDocType;
@@ -73,14 +83,6 @@ public class MainActivity extends BaseAppCompatActivity{
                 }).Build();
         docTypesRecyclerView.setAdapter(adapter);
         docTypesRecyclerView.addItemDecoration(new DocTypeItemDecor(4));
-
-        try {
-            AppConfigurator.getMainInfo();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     private void updateUi (List<DocType> docTypeList) {
@@ -94,6 +96,15 @@ public class MainActivity extends BaseAppCompatActivity{
         currentDocType = dt;
 
         if (dt.getChildDocs() == null || dt.getChildDocs().size() == 0) {
+
+            try {
+                AppConfigurator.getMainInfo();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
             Intent intent = new Intent(MainActivity.this, dt.getClassOfActivity());
             Constants.setCurrentDoc(dt);
             startActivity(intent);

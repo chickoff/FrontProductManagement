@@ -39,10 +39,12 @@ public class GetSKUContextQuery extends CallableQuery<SKUContext> {
         super.Execute();
         GetSKUContextConverter converter = new GetSKUContextConverter();
 
-        while (getResultSet().next()) {
-            SKUContext head = new SKUContext();
-            converter.Convert(getResultSet(),head);
-            list.add(head);
+        if (getResultSet() != null) {
+            while (getResultSet().next()) {
+                SKUContext head = new SKUContext();
+                converter.Convert(getResultSet(), head);
+                list.add(head);
+            }
         }
     }
 

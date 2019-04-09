@@ -4,10 +4,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
 import ru.a5x5retail.frontproductmanagement.Version;
-import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
+import ru.a5x5retail.frontproductmanagement.db.models.IncomeInvoiceHead;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class GetApkVersionApkQuery extends CallableQuery<InvoiceHead> {
+public class GetApkVersionApkQuery extends CallableQuery<IncomeInvoiceHead> {
     Version version;
 
     public GetApkVersionApkQuery(Connection connection) {

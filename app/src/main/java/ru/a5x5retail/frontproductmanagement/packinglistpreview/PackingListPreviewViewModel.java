@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import ru.a5x5retail.frontproductmanagement.base.TypedViewModel;
 import ru.a5x5retail.frontproductmanagement.configuration.Constants;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListHead;
+import ru.a5x5retail.frontproductmanagement.db.models.QueryReturnCode;
 import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.update.UpdateCheckingListIncSourceQuery;
@@ -17,8 +18,7 @@ public class PackingListPreviewViewModel extends TypedViewModel {
 
     public CheckingListHead head;
 
-
-    public void UpdateInRr(String headGuid, Constants.TypeOfDocument typeDoc) throws SQLException, ClassNotFoundException {
+    public QueryReturnCode UpdateInRr(String headGuid, Constants.TypeOfDocument typeDoc) throws SQLException, ClassNotFoundException {
         MsSqlConnection con = new MsSqlConnection();
 
         CallableQuery q = null;
@@ -41,5 +41,9 @@ public class PackingListPreviewViewModel extends TypedViewModel {
                 break;
         }
         q.Execute();
+        QueryReturnCode r = new QueryReturnCode();
+        r.returnCode = q.returnCode;
+        r.eventMessage = q.eventMessage;
+        return r;
     }
 }

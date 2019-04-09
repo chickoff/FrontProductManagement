@@ -41,6 +41,11 @@ public class EnterInUoW {
         analyze();
     }
     public void setSkuContext(SKUContext skuContext) {
+        if (skuContext == null) {
+            onError("Не найден товар по штрих-коду!");
+            clear();
+            return;
+        }
         getIn().getBarcodeInfo().setSkuContext(skuContext);
         getIn().setNextStepIndex();
         analyze();

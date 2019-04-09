@@ -35,8 +35,7 @@ public class BarcodeInfo {
             return null;
         }
 
-        return BigDecimal.valueOf(Double.parseDouble(barcode.substring(7,9)+"."+barcode.substring(9,12)));
-
+        return BigDecimal.valueOf(Double.parseDouble(barcode.substring(7,9)+"."+ barcode.substring(9,12)));
     }
 
     private CheckingListPosition selectedPosition;

@@ -1,18 +1,12 @@
 package ru.a5x5retail.frontproductmanagement.db.query.read;
 
-import android.os.Debug;
-import android.util.Log;
-
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.a5x5retail.frontproductmanagement.db.converters.CodeInfoConverter;
-import ru.a5x5retail.frontproductmanagement.db.converters.InvoiceHeadConverter;
 import ru.a5x5retail.frontproductmanagement.db.models.CodeInfo;
-import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
 public class GetCodeBySubgroupQuery extends CallableQuery<CodeInfo> {

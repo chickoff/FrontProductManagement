@@ -60,8 +60,7 @@ public class CheckingListIncActivity extends BaseAppCompatActivity {
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        IntentFilter intentFilter = new IntentFilter(SCN_CUST_ACTION_SCODE);
-        registerReceiver(scanDataReceiver,intentFilter);
+
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -147,6 +146,19 @@ public class CheckingListIncActivity extends BaseAppCompatActivity {
 
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter(SCN_CUST_ACTION_SCODE);
+        registerReceiver(scanDataReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(scanDataReceiver);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_a_checking_list_inc, menu);
         return true;
@@ -189,7 +201,7 @@ public class CheckingListIncActivity extends BaseAppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(scanDataReceiver);
+
 
     }
 

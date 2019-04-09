@@ -23,6 +23,8 @@ import ru.a5x5retail.frontproductmanagement.db.query.read.GetSKUContextQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.update.AddCheckigListPositionQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.update.EditCheckigListPositionDateQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.update.EditCheckigListPositionQtyQuery;
+import ru.a5x5retail.frontproductmanagement.db.repositories.CheckListRepository;
+import ru.a5x5retail.frontproductmanagement.models.CheckList;
 
 public class CheckingListIncViewModel extends TypedViewModel {
 
@@ -117,12 +119,33 @@ public class CheckingListIncViewModel extends TypedViewModel {
     public SKUContext getSkuContextByBarcode(String barcode) throws SQLException {
         GetSKUContextQuery query = new GetSKUContextQuery(con.getConnection(),barcode);
         query.Execute();
-        return query.getList().get(0);
+
+        if (query.getList() != null && query.getList().size() > 0) {
+            return query.getList().get(0);
+        } else {
+            return null;
+        }
     }
 
 
 
    public void Sort() {
        Collections.sort(checkingListPositionList);
+   }
+
+
+   /*********************************************************************************************/
+
+   private CheckListRepository repository;
+
+   //private CheckList
+
+   public void l() throws SQLException, ClassNotFoundException {
+
+
+       repository = new CheckListRepository(selectedCheckingListHead);
+
+       repository.load();
+       repository.getCheckList();
    }
 }

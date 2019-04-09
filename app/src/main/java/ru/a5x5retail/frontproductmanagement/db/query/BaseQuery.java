@@ -10,7 +10,8 @@ public class BaseQuery implements IQuery {
     private String sqlString;
     private boolean isSuccessfull = false;
     private SQLException sqlException;
-    private int returnCode;
+    public int returnCode;
+    public String eventMessage;
     Connection connection = null;
     private ResultSet rs;
 

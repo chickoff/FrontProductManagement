@@ -5,14 +5,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.a5x5retail.frontproductmanagement.db.converters.InvoiceHeadConverter;
-import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
+import ru.a5x5retail.frontproductmanagement.db.converters.IncomeInvoiceHeadConverter;
+import ru.a5x5retail.frontproductmanagement.db.models.IncomeInvoiceHead;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class GetExternalIncomeInvoiceOnContractorQuery extends CallableQuery<InvoiceHead> {
+public class GetExternalIncomeInvoiceOnContractorQuery extends CallableQuery<IncomeInvoiceHead> {
 
     private String contractorGuid;
-    private List<InvoiceHead> headList;
+    private List<IncomeInvoiceHead> headList;
 
     public GetExternalIncomeInvoiceOnContractorQuery(Connection connection, String contractorGuid) {
         super(connection);
@@ -33,15 +33,15 @@ public class GetExternalIncomeInvoiceOnContractorQuery extends CallableQuery<Inv
     @Override
     public void Execute() throws SQLException {
         super.Execute();
-        InvoiceHeadConverter converter = new InvoiceHeadConverter();
+        IncomeInvoiceHeadConverter converter = new IncomeInvoiceHeadConverter();
         while (getResultSet().next()) {
-            InvoiceHead head = new InvoiceHead();
+            IncomeInvoiceHead head = new IncomeInvoiceHead();
             converter.Convert(getResultSet(),head);
             headList.add(head);
         }
     }
 
-    public List<InvoiceHead> getList() {
+    public List<IncomeInvoiceHead> getList() {
         return headList;
     }
 }

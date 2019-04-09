@@ -3,12 +3,12 @@ package ru.a5x5retail.frontproductmanagement.db.converters;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
+import ru.a5x5retail.frontproductmanagement.db.models.IncomeInvoiceHead;
 import ru.a5x5retail.frontproductmanagement.interfaces.IDbConvertible;
 
-public class InvoiceHeadConverter implements IDbConvertible<InvoiceHead> {
+public class IncomeInvoiceHeadConverter implements IDbConvertible<IncomeInvoiceHead> {
     @Override
-    public boolean Convert(ResultSet resultSet, InvoiceHead obj) throws SQLException {
+    public boolean Convert(ResultSet resultSet, IncomeInvoiceHead obj) throws SQLException {
 
         Object tmp = null;
 

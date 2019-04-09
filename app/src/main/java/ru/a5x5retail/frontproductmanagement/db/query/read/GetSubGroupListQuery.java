@@ -5,9 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.a5x5retail.frontproductmanagement.db.converters.InvoiceHeadConverter;
 import ru.a5x5retail.frontproductmanagement.db.converters.SubGroupInfoConverter;
-import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
 import ru.a5x5retail.frontproductmanagement.db.models.SubGroupInfo;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 

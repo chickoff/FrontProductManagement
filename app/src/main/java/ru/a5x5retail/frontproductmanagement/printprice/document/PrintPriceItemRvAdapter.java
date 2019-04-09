@@ -56,7 +56,7 @@ public class PrintPriceItemRvAdapter extends RecyclerView.Adapter<PrintPriceItem
         holder.gettvName().setText(item.NameLong);
         holder.gettvBut().setText(item.Qty.toString());
         holder.gettvCbox().setChecked(item.Check);
-        holder.gettPriceTextView().setText(String.valueOf(item.Price.setScale(2)));
+        holder.gettPriceTextView().setText(String.valueOf(item.Price.setScale(4)));
 
 
         holder.resListenerOn();

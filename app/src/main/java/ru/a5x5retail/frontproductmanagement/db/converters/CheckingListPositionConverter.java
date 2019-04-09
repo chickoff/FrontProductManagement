@@ -21,7 +21,7 @@ public class CheckingListPositionConverter implements IDbConvertible<CheckingLis
         obj.incomeGoodsQty = (incomeGoodsQty == null ? new BigDecimal(0):incomeGoodsQty).setScale(3);
 
         BigDecimal price = resultSet.getBigDecimal("price");
-        obj.price = (price == null ? new BigDecimal(0):price).setScale(2);
+        obj.price = (price == null ? new BigDecimal(0):price).setScale(4);
 
         obj.vat = resultSet.getInt("vat");
         obj.manufacturingDate = resultSet.getDate("manufacturingDate");

@@ -20,6 +20,10 @@ public class CheckingListPosition
     public int manufacturingDateFl;
     public int validEror;
 
+    public int compareQty() {
+        return incomeGoodsQty.compareTo(qtyUser);
+    }
+
     @Override
     public int compareTo(CheckingListPosition o) {
         return 0;

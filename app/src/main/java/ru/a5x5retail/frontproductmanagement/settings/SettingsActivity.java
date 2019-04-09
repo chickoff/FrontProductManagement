@@ -1,6 +1,7 @@
 package ru.a5x5retail.frontproductmanagement.settings;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import ru.a5x5retail.frontproductmanagement.R;
 import ru.a5x5retail.frontproductmanagement.base.BaseAppCompatActivity;
 import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
 import ru.a5x5retail.frontproductmanagement.db.query.TestConnectionQuery;
+import ru.a5x5retail.frontproductmanagement.diag.FullDiagActivity;
 
 public class SettingsActivity extends BaseAppCompatActivity
 
@@ -73,7 +75,7 @@ implements View.OnClickListener  {
                 getDialogFragment();
                 break;
             case R.id.a_settings_button_2:
-                textConnection();
+                fullDiagActivity();
                 break;
         }
     }
@@ -105,8 +107,14 @@ implements View.OnClickListener  {
     }
 
 
-    private void textConnection(){
+    private void fullDiagActivity() {
 
+        Intent intent = new Intent(this, FullDiagActivity.class);
+        startActivity(intent);
+
+    }
+
+    /*private void textConnection() {
         try {
             MsSqlConnection con = new MsSqlConnection();
             TestConnectionQuery q = new TestConnectionQuery(con.getConnection());
@@ -119,7 +127,7 @@ implements View.OnClickListener  {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

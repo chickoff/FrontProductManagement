@@ -30,6 +30,8 @@ public class ProdManApp extends Application {
     public void onCreate() {
         super.onCreate();
         ProdManApp.context = getApplicationContext();
+        Thread.UncaughtExceptionHandler defaultUEH = Thread.getDefaultUncaughtExceptionHandler();
+        Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(defaultUEH));
        // StartMainActivity();
     }
 

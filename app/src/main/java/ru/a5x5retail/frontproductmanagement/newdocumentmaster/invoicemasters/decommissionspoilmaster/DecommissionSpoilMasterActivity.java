@@ -14,14 +14,14 @@ import java.sql.SQLException;
 import ru.a5x5retail.frontproductmanagement.R;
 import ru.a5x5retail.frontproductmanagement.configuration.Constants;
 import ru.a5x5retail.frontproductmanagement.databinding.ActivityDecommissionSpoilMasterBinding;
-import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
+import ru.a5x5retail.frontproductmanagement.db.models.IncomeInvoiceHead;
+import ru.a5x5retail.frontproductmanagement.db.models.OutgoInvoiceHead;
 import ru.a5x5retail.frontproductmanagement.interfaces.IRecyclerViewItemClick;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.BaseMasterActivity;
-import ru.a5x5retail.frontproductmanagement.newdocumentmaster.invoicemasters.InvoiceMasterViewModel;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.setpsfragmentdialog.StepsFDialog;
 
 public class DecommissionSpoilMasterActivity extends BaseMasterActivity
-        implements IRecyclerViewItemClick<InvoiceHead> {
+        implements IRecyclerViewItemClick<OutgoInvoiceHead> {
 
     DecommissionSpoilMasterViewModel viewModel;
     StepsFDialog dialog;
@@ -106,7 +106,7 @@ public class DecommissionSpoilMasterActivity extends BaseMasterActivity
     }
 
     @Override
-    public void OnClick(int pos, InvoiceHead innerItem) {
+    public void OnClick(int pos, OutgoInvoiceHead innerItem) {
         showAlertImage(false);
         dialog.dismiss();
     }

@@ -7,10 +7,9 @@ import android.widget.TextView;
 import ru.a5x5retail.frontproductmanagement.R;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
 import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
-import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
-import ru.a5x5retail.frontproductmanagement.dialogs.standart.StandartFragmentDialog;
+import ru.a5x5retail.frontproductmanagement.db.models.IncomeInvoiceHead;
 
-public class StandartViewHolder extends BasicViewHolder<InvoiceHead> {
+public class StandartViewHolder extends BasicViewHolder<IncomeInvoiceHead> {
 
     TextView i_def_1_textbox_1;
 
@@ -20,7 +19,7 @@ public class StandartViewHolder extends BasicViewHolder<InvoiceHead> {
     }
 
     @Override
-    public void setSource(InvoiceHead source) {
+    public void setSource(IncomeInvoiceHead source) {
         i_def_1_textbox_1.setText(source.numDoc);
     }
 

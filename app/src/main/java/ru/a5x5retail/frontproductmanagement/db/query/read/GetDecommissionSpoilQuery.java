@@ -5,13 +5,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.a5x5retail.frontproductmanagement.db.converters.InvoiceHeadConverter;
-import ru.a5x5retail.frontproductmanagement.db.models.InvoiceHead;
+import ru.a5x5retail.frontproductmanagement.db.converters.IncomeInvoiceHeadConverter;
+import ru.a5x5retail.frontproductmanagement.db.converters.OutgoInvoiceHeadConverter;
+import ru.a5x5retail.frontproductmanagement.db.models.IncomeInvoiceHead;
+import ru.a5x5retail.frontproductmanagement.db.models.OutgoInvoiceHead;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class GetDecommissionSpoilQuery extends CallableQuery<InvoiceHead> {
+public class GetDecommissionSpoilQuery extends CallableQuery<OutgoInvoiceHead> {
 
-    private List<InvoiceHead> list;
+    private List<OutgoInvoiceHead> list;
 
     public GetDecommissionSpoilQuery(Connection connection) {
         super(connection);
@@ -31,15 +33,15 @@ public class GetDecommissionSpoilQuery extends CallableQuery<InvoiceHead> {
     @Override
     public void Execute() throws SQLException {
         super.Execute();
-        InvoiceHeadConverter converter = new InvoiceHeadConverter();
+        OutgoInvoiceHeadConverter converter = new OutgoInvoiceHeadConverter();
         while (getResultSet().next()) {
-            InvoiceHead head = new InvoiceHead();
+            OutgoInvoiceHead head = new OutgoInvoiceHead();
             converter.Convert(getResultSet(),head);
             list.add(head);
         }
     }
 
-    public List<InvoiceHead> getList() {
+    public List<OutgoInvoiceHead> getList() {
         return list;
     }
 }

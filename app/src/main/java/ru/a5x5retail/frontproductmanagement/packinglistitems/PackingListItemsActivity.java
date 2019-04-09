@@ -30,8 +30,7 @@ import ru.a5x5retail.frontproductmanagement.configuration.Constants;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListHead;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.ExtendInvoiceMasterActivity;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.invoicemasters.decommissionspoilmaster.DecommissionSpoilMasterActivity;
-import ru.a5x5retail.frontproductmanagement.newdocumentmaster.invoicemasters.externalincomemaster.ExternalIncomeMasterActivity;
-import ru.a5x5retail.frontproductmanagement.newdocumentmaster.invoicemasters.innerincomemaster.InnerIncomeMasterActivity;
+
 import ru.a5x5retail.frontproductmanagement.packinglistitems.viewmodel.PackingListItemsViewModel;
 import ru.a5x5retail.frontproductmanagement.interfaces.IRecyclerViewItemClick;
 
@@ -63,6 +62,11 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
 
     @SuppressLint("RestrictedApi")
     private void init() {
+
+        if (Constants.getCurrentDoc() == null) {
+            throw new NullPointerException("Object currentDoc not initialized!");
+        }
+
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -112,7 +116,10 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
     private void initViewModel() {
         viewModel = ViewModelProviders.of(this).get(PackingListItemsViewModel.class);
         DocType td = Constants.getCurrentDoc();
-        this.setTitle(td.getShortName());
+        if (td != null) {
+            this.setTitle(td.getShortName());
+        }
+
         loadViewModel();
     }
 
