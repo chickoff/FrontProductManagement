@@ -5,9 +5,13 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.sql.SQLException;
@@ -18,6 +22,7 @@ import ru.a5x5retail.frontproductmanagement.R;
 import ru.a5x5retail.frontproductmanagement.base.BaseAppCompatActivity;
 import ru.a5x5retail.frontproductmanagement.checkinglistinc.CheckingListIncActivity;
 import ru.a5x5retail.frontproductmanagement.configuration.Constants;
+import ru.a5x5retail.frontproductmanagement.db.models.AcceptResult;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListHead;
 import ru.a5x5retail.frontproductmanagement.db.models.QueryReturnCode;
 import ru.a5x5retail.frontproductmanagement.help.HelpDialog;
@@ -27,7 +32,10 @@ import static ru.a5x5retail.frontproductmanagement.configuration.Constants.PACKI
 
 public class PackingListPreviewActivity extends BaseAppCompatActivity {
     PackingListPreviewViewModel viewModel;
-    TextView a_packing_list_preview_textview_1;
+    //TextView a_packing_list_preview_textview_1;
+
+    FrameLayout fragment_frame_layout;
+
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -39,20 +47,42 @@ public class PackingListPreviewActivity extends BaseAppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         init();
+        initUi();
         initViewModel();
         setView();
     }
 
     private void init(){
-        a_packing_list_preview_textview_1 = findViewById(R.id.a_packing_list_preview_textview_1);
+      //  a_packing_list_preview_textview_1 = findViewById(R.id.a_packing_list_preview_textview_1);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+       /* FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createIntent();
             }
-        });
+        });*/
+
+        fragment_frame_layout = findViewById(R.id.fragment_frame_layout);
+    }
+
+    private void initUi() {
+        if (isFirstStart()) {
+            replaceFragment(PreviewFragment.newInstance(),false);
+        }
+    }
+
+
+    private void replaceFragment(Fragment fragment, boolean useBackStack) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fmTra = fragmentManager.beginTransaction();
+        fmTra.replace(R.id.fragment_frame_layout, fragment);
+        if (useBackStack) {
+            fmTra.addToBackStack(null);
+        }
+
+        fmTra.commit();
     }
 
     private void initViewModel(){
@@ -64,11 +94,11 @@ public class PackingListPreviewActivity extends BaseAppCompatActivity {
     }
 
     private void setView(){
-        if (viewModel.head != null)
-            a_packing_list_preview_textview_1.setText(viewModel.head.NameDoc);
+        //if (viewModel.head != null)
+            //a_packing_list_preview_textview_1.setText(viewModel.head.NameDoc);
     }
 
-    private void createIntent(){
+    /*private void createIntent(){
        if (Constants.getCurrentDoc().getTypeOfDocument() == Constants.TypeOfDocument.OUTER_INCOME ||
            Constants.getCurrentDoc().getTypeOfDocument() == Constants.TypeOfDocument.INNER_INCOME) {
            Intent intent1 = new Intent(this, CheckingListIncActivity.class);
@@ -79,7 +109,7 @@ public class PackingListPreviewActivity extends BaseAppCompatActivity {
            intent1.putExtra("gggg", UUID.fromString(viewModel.head.Guid));
            startActivity(intent1);
        }
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,7 +121,12 @@ public class PackingListPreviewActivity extends BaseAppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case android.R.id.home :
-                finish();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.popBackStack();
+                if (fragmentManager.getBackStackEntryCount() == 0) {
+                    finish();
+                }
                 break;
 
             case R.id.itemHelp :
@@ -100,19 +135,20 @@ public class PackingListPreviewActivity extends BaseAppCompatActivity {
                 break;
             case R.id.a_pl_preview_upd_item_1 :
                 try {
-
                     QueryReturnCode r0 = viewModel.UpdateInRr(viewModel.head.Guid, Constants.getCurrentDoc().getTypeOfDocument());
                     if (r0.returnCode == 0) {
                         ProdManApp.Alerts.MakeToast("Синхронизация прошла успешно",0);
                     } else {
                         ProdManApp.Alerts.MakeToast(r0.eventMessage,0);
                     }
-
                 } catch (SQLException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
+                break;
+            case R.id.m_accept_item :
+                replaceFragment(AcceptFragment.newInstance(),true);
                 break;
             default:
                 return true;

@@ -4,10 +4,11 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Date;
 
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class EditCheckigListPositionQtyQuery extends CallableQuery {
+public class EditCheckingListPositionDateQuery extends CallableQuery {
 
     /*
     *
@@ -22,40 +23,38 @@ public class EditCheckigListPositionQtyQuery extends CallableQuery {
 
 
     private String checkingListHeadGuid,positionGuid;
-    private BigDecimal qty;
-    private int operationType;
-    private BigDecimal newQty;
+    private Date date;
 
-    public EditCheckigListPositionQtyQuery(Connection connection, String checkingListHeadGuid,String positionGuid, BigDecimal qty,int operationType) {
+
+
+    public EditCheckingListPositionDateQuery(Connection connection, String checkingListHeadGuid, String positionGuid, Date date) {
         super(connection);
         this.checkingListHeadGuid = checkingListHeadGuid;
         this.positionGuid = positionGuid;
-        this.qty = qty;
-        this.operationType = operationType;
-        this.newQty = newQty;
+        this.date = date;
+
     }
 
     @Override
     protected void SetQuery() {
-        setSqlString("call V_StoreTSD.dbo.CheckingListIncPositionEditQty (?, ?, ?, ?, ?)");
+        setSqlString("call V_StoreTSD.dbo.CheckingListIncPositionEditDate (?, ?, ?)");
     }
 
     @Override
     protected void SetQueryParams() throws SQLException {
         stmt.setString(1,checkingListHeadGuid);
         stmt.setString(2,positionGuid);
-        stmt.setBigDecimal(3,qty);
-        stmt.setInt(4,operationType);
-        stmt.registerOutParameter(5, Types.DECIMAL);
+        java.sql.Date d = new java.sql.Date(date.getTime());
+        stmt.setDate(3, d);
     }
 
     @Override
     public void Execute() throws SQLException {
         super.Execute();
-        newQty = stmt.getBigDecimal(5).setScale(3);
+        //newQty = stmt.getBigDecimal(5).setScale(3);
     }
 
-    public BigDecimal getNewQty() {
+   /* public BigDecimal getNewQty() {
         return newQty;
-    }
+    }*/
 }

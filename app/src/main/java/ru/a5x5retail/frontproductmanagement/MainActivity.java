@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +29,7 @@ import ru.a5x5retail.frontproductmanagement.updateapplication.UpdateApplicationA
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static ru.a5x5retail.frontproductmanagement.configuration.Constants.TYPEOFDOCUMENT_CONST;
 
-public class MainActivity extends BaseAppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private SendExceptionFiles sendExceptionFiles;
 
@@ -134,6 +135,11 @@ public class MainActivity extends BaseAppCompatActivity{
             default:
                 return true;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        up();
     }
 
     @Override

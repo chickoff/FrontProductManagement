@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 import ru.a5x5retail.frontproductmanagement.R;
+import ru.a5x5retail.frontproductmanagement.conversions.Converter;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListPosition;
 import ru.a5x5retail.frontproductmanagement.сheckinglist.Dialog.MyCustomDialog;
 
@@ -75,7 +76,7 @@ public class CheckingListPositionDialogFragment extends DialogFragment {
     private void setOldQtyValue(BigDecimal value) {
 
         DecimalFormat df = new DecimalFormat("0.000##");
-        oldQtyValue.setText(String.valueOf(df.format(value)));
+        oldQtyValue.setText(Converter.QtyToString(value));
     }
 
     @Nullable

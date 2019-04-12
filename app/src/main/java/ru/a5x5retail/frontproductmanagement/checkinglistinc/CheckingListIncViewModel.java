@@ -4,12 +4,10 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import ru.a5x5retail.frontproductmanagement.base.TypedViewModel;
-import ru.a5x5retail.frontproductmanagement.db.converters.GetSKUContextConverter;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListHead;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListManufacturerDate;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListMark;
@@ -20,11 +18,10 @@ import ru.a5x5retail.frontproductmanagement.db.query.read.GetCheckingListIncManu
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetCheckingListIncMarkListQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetCheckingListIncPositionListQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetSKUContextQuery;
-import ru.a5x5retail.frontproductmanagement.db.query.update.AddCheckigListPositionQuery;
-import ru.a5x5retail.frontproductmanagement.db.query.update.EditCheckigListPositionDateQuery;
-import ru.a5x5retail.frontproductmanagement.db.query.update.EditCheckigListPositionQtyQuery;
+import ru.a5x5retail.frontproductmanagement.db.query.update.AddCheckingListPositionQuery;
+import ru.a5x5retail.frontproductmanagement.db.query.update.EditCheckingListPositionDateQuery;
+import ru.a5x5retail.frontproductmanagement.db.query.update.EditCheckingListPositionQtyQuery;
 import ru.a5x5retail.frontproductmanagement.db.repositories.CheckListRepository;
-import ru.a5x5retail.frontproductmanagement.models.CheckList;
 
 public class CheckingListIncViewModel extends TypedViewModel {
 
@@ -83,8 +80,8 @@ public class CheckingListIncViewModel extends TypedViewModel {
     public CheckingListHead selectedCheckingListHead;
 
     public void addQty(CheckingListPosition position, BigDecimal qty, int operationType) throws SQLException {
-        EditCheckigListPositionQtyQuery qtyQuery =
-                new EditCheckigListPositionQtyQuery(con.getConnection(),position.checkingListIncHeadGuid, position.guid, qty,operationType);
+        EditCheckingListPositionQtyQuery qtyQuery =
+                new EditCheckingListPositionQtyQuery(con.getConnection(),position.checkingListIncHeadGuid, position.guid, qty,operationType);
         qtyQuery.Execute();
         if (operationType == 1) {
             position.qtyUser = position.qtyUser.add(qty).setScale(3);
@@ -99,8 +96,8 @@ public class CheckingListIncViewModel extends TypedViewModel {
     }
 
     public void addDate(CheckingListPosition position, Date date) throws SQLException {
-        EditCheckigListPositionDateQuery query =
-                new EditCheckigListPositionDateQuery(con.getConnection(),position.checkingListIncHeadGuid, position.guid,date);
+        EditCheckingListPositionDateQuery query =
+                new EditCheckingListPositionDateQuery(con.getConnection(),position.checkingListIncHeadGuid, position.guid,date);
         query.Execute();
         loadPositionLists();
         onDataChanged();
@@ -110,7 +107,7 @@ public class CheckingListIncViewModel extends TypedViewModel {
         if (selectedCheckingListHead == null) {
             return;
         }
-        AddCheckigListPositionQuery query = new AddCheckigListPositionQuery(con.getConnection(),selectedCheckingListHead.Guid,sku);
+        AddCheckingListPositionQuery query = new AddCheckingListPositionQuery(con.getConnection(),selectedCheckingListHead.Guid,sku);
         query.Execute();
         loadPositionLists();
         onDataChanged();

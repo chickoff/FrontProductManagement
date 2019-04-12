@@ -7,7 +7,7 @@ import java.sql.Types;
 
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class AddCheckigListPositionQuery extends CallableQuery {
+public class AddCheckingListPositionQuery extends CallableQuery {
 
     /*
     *
@@ -25,7 +25,7 @@ public class AddCheckigListPositionQuery extends CallableQuery {
     private int sku;
 
 
-    public AddCheckigListPositionQuery(Connection connection, String checkingListHeadGuid, int sku) {
+    public AddCheckingListPositionQuery(Connection connection, String checkingListHeadGuid, int sku) {
         super(connection);
         this.checkingListHeadGuid = checkingListHeadGuid;
         this.sku = sku;

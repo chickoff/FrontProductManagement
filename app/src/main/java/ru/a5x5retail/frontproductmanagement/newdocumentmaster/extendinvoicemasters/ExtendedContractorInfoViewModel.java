@@ -64,7 +64,7 @@ public class ExtendedContractorInfoViewModel extends TypedViewModel {
             }
         });
         q.ExecuteAsync();
-        if (!q.isSuccessfull() && q.getSqlException() != null) {
+        if (!q.isResultSetEnable() && q.getSqlException() != null) {
             throw q.getSqlException();
         }
     }

@@ -27,9 +27,11 @@ public abstract class CallableQuery<T> extends BaseQuery {
         SetQuery();
         createStatement();
         SetQueryParams();
-        setSuccessfull(stmt.execute());
-        ResultSet rs = stmt.getResultSet();
-        setResultSet(rs);
+        setResultSetEnable(stmt.execute());
+        if (isResultSetEnable()) {
+            ResultSet rs = stmt.getResultSet();
+            setResultSet(rs);
+       }
     }
 
     public List<T> getList(){return null;}

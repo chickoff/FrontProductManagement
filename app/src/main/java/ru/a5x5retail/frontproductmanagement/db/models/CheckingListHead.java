@@ -3,6 +3,8 @@ package ru.a5x5retail.frontproductmanagement.db.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 
 public class CheckingListHead implements Parcelable {
@@ -18,6 +20,9 @@ public class CheckingListHead implements Parcelable {
     public String LDC;
     public int errorCode;
     public String errorMessage;
+    public BigDecimal summ;
+    public String contractorName;
+    public BigDecimal summVat;
 
     public CheckingListHead(){
 
@@ -35,6 +40,11 @@ public class CheckingListHead implements Parcelable {
         LDC = in.readString();
         errorCode = in.readInt();
         errorMessage = in.readString();
+        Long summLong = in.readLong();
+        summ = new BigDecimal(summLong == 0 ? 0 : summLong / 10000);
+        contractorName = in.readString();
+        Long summVatLong = in.readLong();
+        summVat = new BigDecimal(summVatLong == 0 ? 0 : summVatLong / 10000);
     }
 
     @Override
@@ -50,6 +60,12 @@ public class CheckingListHead implements Parcelable {
         dest.writeString(LDC);
         dest.writeInt(errorCode);
         dest.writeString(errorMessage);
+        Long summLong = Long.decode(summ.multiply(new BigDecimal(10000)).setScale(0, RoundingMode.FLOOR).toString());
+        dest.writeLong(summLong);
+        dest.writeString(contractorName);
+        Long summVatLong = Long.decode(summVat.multiply(new BigDecimal(10000)).setScale(0, RoundingMode.FLOOR).toString());
+        dest.writeLong(summVatLong);
+
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +21,7 @@ import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
 import ru.a5x5retail.frontproductmanagement.db.query.TestConnectionQuery;
 import ru.a5x5retail.frontproductmanagement.diag.FullDiagActivity;
 
-public class SettingsActivity extends BaseAppCompatActivity
+public class SettingsActivity extends AppCompatActivity
 
 implements View.OnClickListener  {
 
@@ -119,7 +120,7 @@ implements View.OnClickListener  {
             MsSqlConnection con = new MsSqlConnection();
             TestConnectionQuery q = new TestConnectionQuery(con.getConnection());
             con.CallQuery(q);
-            if (q.isSuccessfull()){
+            if (q.isResultSetEnable()){
                 ProdManApp.Alerts.MakeToast("Соединение установлено.", Toast.LENGTH_SHORT);
             }
         } catch (SQLException e) {

@@ -170,7 +170,7 @@ public class IncomeInfoSubFragment extends TestFragment<ExtendedContractorInfoVi
         if (ci == null) return;
         if (getViewModel().getInvoiceHeadList() == null) return;
 
-        if (ci.ediTp == 1 || ci.rpbpp == 1) {
+        if (ci.edi == 0 || ci.ediTp == 1 || ci.rpbpp == 1) {
             fab.setVisibility(View.VISIBLE);
         } else {
             fab.setVisibility(View.INVISIBLE);   // тут нужен инвизибл !!!

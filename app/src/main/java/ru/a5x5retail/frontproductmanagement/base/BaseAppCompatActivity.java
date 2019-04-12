@@ -1,11 +1,19 @@
 package ru.a5x5retail.frontproductmanagement.base;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
+
+import ru.a5x5retail.frontproductmanagement.MainActivity;
 import ru.a5x5retail.frontproductmanagement.ProdManApp;
+import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
 import ru.a5x5retail.frontproductmanagement.configuration.Constants;
+import ru.a5x5retail.frontproductmanagement.updateapplication.UpdateApplicationActivity;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 
 public class BaseAppCompatActivity extends AppCompatActivity {
@@ -21,15 +29,13 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        checkUpdateVer();
     }
 
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         outState.putInt("STATE_ACTIVITY", STATE_ACTIVITY_VALUE);
     }
 
@@ -78,7 +84,9 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     }
 
     protected boolean isFirstStart() {
-         return firstStart;
+         return STATE_ACTIVITY_VALUE == 0;
+
+                 //firstStart;
     }
 
 
@@ -105,6 +113,21 @@ public class BaseAppCompatActivity extends AppCompatActivity {
 
     }
 
+    private void checkUpdateVer() {
+        int isNewVersion = -1;
+        isNewVersion = AppConfigurator.checkNewVersion();
+        switch (isNewVersion) {
+            case 1:
+                Intent updIntent = new Intent(BaseAppCompatActivity.this, UpdateApplicationActivity.class);
+                updIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                startActivity(updIntent);
+                return;
+            case -1:
+                ProdManApp.Alerts.MakeToast("Нет связи с сервером обновлений. Работа с ТСД приостановлена.", Toast.LENGTH_LONG);
+                return;
+            case 0:
+        }
+    }
 
 
 

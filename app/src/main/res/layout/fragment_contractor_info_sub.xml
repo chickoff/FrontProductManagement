@@ -152,16 +152,61 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/cz_group"
+    android:id="@+id/cz_group"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+
+    app:layout_constraintTop_toBottomOf="@+id/rpbpp_group">
+
+    <ImageView
+        android:id="@+id/cz_group_iv_1"
+        android:layout_marginTop="8dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/ic_check_circle_black_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/cz_group_tv_1"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="left"
+
+        android:text="Поставщик на центрзаказе"
+        android:textColor="#000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cz_group_iv_1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/cz_group_view_1"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+
+        android:background="#555555"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/cz_group_tv_1" />
+</android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/dp_group"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
 
-        app:layout_constraintTop_toBottomOf="@+id/rpbpp_group">
+        app:layout_constraintTop_toBottomOf="@+id/cz_group">
 
         <ImageView
-            android:id="@+id/cz_group_iv_1"
+            android:id="@+id/dp_group_iv_1"
             android:layout_marginTop="8dp"
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -172,7 +217,7 @@
 
 
         <TextView
-            android:id="@+id/cz_group_tv_1"
+            android:id="@+id/dp_group_tv_1"
             android:layout_width="0dp"
             android:layout_height="24dp"
             android:layout_marginStart="8dp"
@@ -180,22 +225,21 @@
             android:layout_marginEnd="8dp"
             android:gravity="left"
 
-            android:text="Поставщик на центрзаказе"
+            android:text="Доверительная приемка"
             android:textColor="#000"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cz_group_iv_1"
+            app:layout_constraintStart_toEndOf="@+id/dp_group_iv_1"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
-            android:id="@+id/cz_group_view_1"
+            android:id="@+id/dp_group_view_1"
             android:layout_width="0dp"
             android:layout_height="1dp"
 
             android:background="#555555"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/cz_group_tv_1" />
+            app:layout_constraintStart_toStartOf="@+id/dp_group_tv_1" />
     </android.support.constraint.ConstraintLayout>
-
 <!--
     <ImageView
         android:id="@+id/imageView3"

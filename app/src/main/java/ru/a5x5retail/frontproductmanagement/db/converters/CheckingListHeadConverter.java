@@ -21,6 +21,9 @@ public class CheckingListHeadConverter implements IDbConvertible<CheckingListHea
             obj.LDC = resultSet.getObject("LDC").toString();
             obj.errorCode = resultSet.getInt("ErrorCode");
             obj.errorMessage = resultSet.getObject("ErrorMessage").toString();
+            obj.summ = resultSet.getBigDecimal("Summ");
+            obj.contractorName = resultSet.getString("ContractorName");
+            obj.summVat = resultSet.getBigDecimal("SummVat");
         } catch (SQLException e) {
             e.printStackTrace();
         }

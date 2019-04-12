@@ -47,7 +47,7 @@ public abstract class CallableQueryAsync<T,Params, Progress, Result> extends Cal
 
                 CallableQueryAsync.this.Execute();
             } catch (SQLException e) {
-                CallableQueryAsync.this.setSuccessfull(false);
+                CallableQueryAsync.this.setResultSetEnable(false);
                 CallableQueryAsync.this.setSqlException(e);
                 e.printStackTrace();
             }

@@ -11,6 +11,7 @@ public class ContractorExtendedInfo implements Parcelable {
     public int ediTp;
     public int rpbpp;
     public int cz;
+    public int dp;
 
 
     public ContractorExtendedInfo() {
@@ -25,6 +26,7 @@ public class ContractorExtendedInfo implements Parcelable {
         ediTp = in.readInt();
         rpbpp = in.readInt();
         cz = in.readInt();
+        dp = in.readInt();
     }
 
     @Override
@@ -36,6 +38,7 @@ public class ContractorExtendedInfo implements Parcelable {
         dest.writeInt(ediTp);
         dest.writeInt(rpbpp);
         dest.writeInt(cz);
+        dest.writeInt(dp);
     }
 
     @Override

@@ -7,29 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".packinglistpreview.PackingListPreviewActivity">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_chevron_right_white_24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/yyyy"
-        app:layout_constraintEnd_toEndOf="@+id/yyyy" />
-
-    <TextView
-        android:id="@+id/a_packing_list_preview_textview_1"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textSize="16sp"
-
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <FrameLayout
+        android:id="@+id/fragment_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 </android.support.constraint.ConstraintLayout>

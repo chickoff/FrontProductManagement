@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ru.a5x5retail.frontproductmanagement.R;
+import ru.a5x5retail.frontproductmanagement.db.models.ContractorExtendedInfo;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.ExtendedContractorInfoViewModel;
 import ru.a5x5retail.frontproductmanagement.base.TestFragment;
 
@@ -41,7 +42,7 @@ public class ContractorInfoSubFragment extends TestFragment<ExtendedContractorIn
 
 
     private TextView tv_1;
-    private ImageView edi_group_iv_1,edi_tp_group_iv_1,rpbpp_group_iv_1,cz_group_iv_1;
+    private ImageView edi_group_iv_1,edi_tp_group_iv_1,rpbpp_group_iv_1,cz_group_iv_1, dp_group_iv_1;
 
     private void initUi(View view) {
         tv_1 = view.findViewById(R.id.tv_1);
@@ -49,6 +50,7 @@ public class ContractorInfoSubFragment extends TestFragment<ExtendedContractorIn
         edi_tp_group_iv_1 = view.findViewById(R.id.edi_tp_group_iv_1);
         rpbpp_group_iv_1 = view.findViewById(R.id.rpbpp_group_iv_1);
         cz_group_iv_1 = view.findViewById(R.id.cz_group_iv_1);
+        dp_group_iv_1 = view.findViewById(R.id.dp_group_iv_1);
     }
 
     private void initViewModel() {
@@ -56,15 +58,16 @@ public class ContractorInfoSubFragment extends TestFragment<ExtendedContractorIn
         setViewModel(ViewModelProviders.of(activity).get(ExtendedContractorInfoViewModel.class));
     }
 
-
     private void updateUi() {
-        if (getViewModel().getContractorExtendedInfo() == null) return;
+        ContractorExtendedInfo info = getViewModel().getContractorExtendedInfo();
 
-        tv_1.setText(getViewModel().getContractorExtendedInfo().contractorName);
-        setImage(getViewModel().getContractorExtendedInfo().edi,edi_group_iv_1);
-        setImage(getViewModel().getContractorExtendedInfo().ediTp,edi_tp_group_iv_1);
-        setImage(getViewModel().getContractorExtendedInfo().rpbpp,rpbpp_group_iv_1);
-        setImage(getViewModel().getContractorExtendedInfo().cz,cz_group_iv_1);
+        if (info == null) return;
+        tv_1.setText(info.contractorName);
+        setImage(info.edi,edi_group_iv_1);
+        setImage(info.ediTp,edi_tp_group_iv_1);
+        setImage(info.rpbpp,rpbpp_group_iv_1);
+        setImage(info.cz,cz_group_iv_1);
+        setImage(info.dp,dp_group_iv_1);
     }
 
 

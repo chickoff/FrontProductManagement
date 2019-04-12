@@ -12,4 +12,9 @@
         android:title="Обновить в RR"
         android:orderInCategory="100"
         app:showAsAction="collapseActionView"/>
+
+    <item android:id="@+id/m_accept_item"
+        android:title="Утверждение"
+        android:orderInCategory="100"
+        app:showAsAction="collapseActionView"/>
 </menu>

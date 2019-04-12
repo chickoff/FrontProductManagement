@@ -15,7 +15,7 @@ public class TestConnectionQuery extends BaseQuery {
         try {
             Statement stmt = connection.createStatement();
             boolean successfull =  stmt.execute(getSqlString());
-            setSuccessfull(successfull);
+            setResultSetEnable(successfull);
         } catch (SQLException e) {
             e.printStackTrace();
         }

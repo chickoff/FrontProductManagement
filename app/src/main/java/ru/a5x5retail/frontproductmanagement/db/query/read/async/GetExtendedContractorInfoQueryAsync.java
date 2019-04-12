@@ -43,6 +43,7 @@ public class GetExtendedContractorInfoQueryAsync extends CallableQueryAsync<Cont
         info.ediTp = resultSet.getInt("EDITP");
         info.rpbpp = resultSet.getInt("RPbPP");
         info.cz = resultSet.getInt("CZ");
+        info.dp = resultSet.getInt("DP");
 
         contractorExtendedInfo = info;
 

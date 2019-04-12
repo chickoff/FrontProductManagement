@@ -11,9 +11,9 @@ import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetCheckingListIncControlQtyListQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetCheckingListIncMarkListQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetCheckingListIncPositionListQuery;
-import ru.a5x5retail.frontproductmanagement.db.query.update.AddCheckigListPositionQuery;
-import ru.a5x5retail.frontproductmanagement.db.query.update.EditCheckigListPositionDateQuery;
-import ru.a5x5retail.frontproductmanagement.db.query.update.EditCheckigListPositionQtyQuery;
+import ru.a5x5retail.frontproductmanagement.db.query.update.AddCheckingListPositionQuery;
+import ru.a5x5retail.frontproductmanagement.db.query.update.EditCheckingListPositionDateQuery;
+import ru.a5x5retail.frontproductmanagement.db.query.update.EditCheckingListPositionQtyQuery;
 import ru.a5x5retail.frontproductmanagement.models.CheckList;
 import ru.a5x5retail.frontproductmanagement.models.CheckListMarkList;
 import ru.a5x5retail.frontproductmanagement.models.CheckListPositionList;
@@ -62,8 +62,8 @@ public class CheckListRepository {
     }
 
     public void addQty(CheckingListPosition position, BigDecimal qty, int operationType) throws SQLException, ClassNotFoundException {
-        EditCheckigListPositionQtyQuery qtyQuery =
-                new EditCheckigListPositionQtyQuery(getConnection(),getCheckList().getHead().Guid, position.guid, qty,operationType);
+        EditCheckingListPositionQtyQuery qtyQuery =
+                new EditCheckingListPositionQtyQuery(getConnection(),getCheckList().getHead().Guid, position.guid, qty,operationType);
         qtyQuery.Execute();
         if (operationType == 1) {
             position.qtyUser = position.qtyUser.add(qty).setScale(3);
@@ -79,8 +79,8 @@ public class CheckListRepository {
     }
 
     public void addDate(CheckingListPosition position, Date date) throws SQLException, ClassNotFoundException {
-        EditCheckigListPositionDateQuery query =
-                new EditCheckigListPositionDateQuery(getConnection(),getCheckList().getHead().Guid, position.guid,date);
+        EditCheckingListPositionDateQuery query =
+                new EditCheckingListPositionDateQuery(getConnection(),getCheckList().getHead().Guid, position.guid,date);
         query.Execute();
         getDbPositions();
 
@@ -89,7 +89,7 @@ public class CheckListRepository {
 
     public void addNewSku(int sku) throws SQLException, ClassNotFoundException {
 
-        AddCheckigListPositionQuery query = new AddCheckigListPositionQuery(getConnection(),getCheckList().getHead().Guid,sku);
+        AddCheckingListPositionQuery query = new AddCheckingListPositionQuery(getConnection(),getCheckList().getHead().Guid,sku);
         query.Execute();
         getDbPositions();
 

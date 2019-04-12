@@ -8,7 +8,7 @@ import ru.a5x5retail.frontproductmanagement.interfaces.IQuery;
 
 public class BaseQuery implements IQuery {
     private String sqlString;
-    private boolean isSuccessfull = false;
+    private boolean isResultSetEnable = false;
     private SQLException sqlException;
     public int returnCode;
     public String eventMessage;
@@ -33,12 +33,12 @@ public class BaseQuery implements IQuery {
 
 
 
-    public boolean isSuccessfull() {
-        return isSuccessfull;
+    public boolean isResultSetEnable() {
+        return isResultSetEnable;
     }
 
-    protected void setSuccessfull(boolean successfull) {
-        isSuccessfull = successfull;
+    protected void setResultSetEnable(boolean resultSetEnable) {
+        isResultSetEnable = resultSetEnable;
     }
 
     public ResultSet getResultSet() {

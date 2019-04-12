@@ -228,19 +228,25 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
 
     public class CheckingListHeadViewHolder extends BasicViewHolder<CheckingListHead> {
 
-        private TextView nameDocTextView;
-        private TextView statusTextView;
+        private TextView text_view_1,text_view_2,text_view_3,text_view_4;
+
 
         public CheckingListHeadViewHolder(@NonNull View itemView) {
             super(itemView);
-            nameDocTextView = itemView.findViewById(R.id.nameDocTextView);
-            statusTextView = itemView.findViewById(R.id.statusTextView)  ;
+            text_view_1 = itemView.findViewById(R.id.text_view_1);
+            text_view_2 = itemView.findViewById(R.id.text_view_2);
+            text_view_3 = itemView.findViewById(R.id.text_view_3);
+            text_view_4 = itemView.findViewById(R.id.text_view_4);
         }
 
         @Override
         public void setSource(CheckingListHead source) {
-            nameDocTextView.setText(source.NameDoc);
-            statusTextView.setText(source.StatusID == "0" ? "ЗАКРЫТО":"ОТКРЫТО");
+            text_view_1.setText(source.NameDoc);
+            text_view_2.setText(source.contractorName);
+            text_view_3.setText(source.summ.toString());
+            text_view_4.setText(source.summVat.toString());
+
+
         }
     }
 
