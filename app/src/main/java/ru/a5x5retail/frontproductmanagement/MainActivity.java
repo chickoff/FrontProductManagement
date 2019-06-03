@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -24,14 +26,24 @@ import ru.a5x5retail.frontproductmanagement.base.BaseAppCompatActivity;
 import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
 import ru.a5x5retail.frontproductmanagement.configuration.Constants;
 
+
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
+import ru.a5x5retail.frontproductmanagement.db.query.read.GetApkVersionApkQuery;
+import ru.a5x5retail.frontproductmanagement.db.query.read.GetMainDivisionInfoQuery;
+import ru.a5x5retail.frontproductmanagement.db_local.ProjectMap;
 import ru.a5x5retail.frontproductmanagement.updateapplication.UpdateApplicationActivity;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static ru.a5x5retail.frontproductmanagement.configuration.Constants.TYPEOFDOCUMENT_CONST;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends BaseAppCompatActivity
+implements IMainActivityView
+{
 
     private SendExceptionFiles sendExceptionFiles;
+
+    @InjectPresenter
+    MainActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +59,12 @@ public class MainActivity extends AppCompatActivity {
         if (!sendExceptionFiles.isWork()) {
             sendExceptionFiles.SendAsync();
         }
+
+        WiFiSpeedTimer timer = new WiFiSpeedTimer(this);
+        timer.StartTimer();
     }
 
-    private DocType currentDocType;
+    private DocType<AppCompatActivity> currentDocType;
     RecyclerView docTypesRecyclerView;
     BasicRecyclerViewAdapter<DocType> adapter;
 
@@ -59,31 +74,101 @@ public class MainActivity extends AppCompatActivity {
                 .setHolderFactory(new DocTypeViewHolderFactory())
                 .setLayout(R.layout.item_doctype_rv)
                 .setSourceList(AppConfigurator.getAvailableDocTypes())
+
                 .setShortClickListener(new IRecyclerViewItemShortClickListener<DocType>() {
                     @Override
-                    public void OnShortClick(int pos, View view, DocType innerItem) {
+                    public void OnShortClick(int pos, View view, final DocType innerItem) {
                         if (innerItem.getTypeOfDocument() != Constants.TypeOfDocument.SETTINGS) {
-                            int isNewVersion = - 1;
-                            isNewVersion = AppConfigurator.checkNewVersion();
-                            switch (isNewVersion) {
-                                case 1 :
-                                    Intent updIntent = new Intent(MainActivity.this, UpdateApplicationActivity.class);
-                                    updIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(updIntent);
-                                    return;
-                                case -1 :
-                                    ProdManApp.Alerts.MakeToast("Нет связи с сервером обновлений. Работа с ТСД приостановлена.", Toast.LENGTH_LONG);
-                                    return;
-                                case 0 :
-                            }
+                            Log.d("sdsds","sdsd77777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777");
+                            final GetApkVersionApkQuery query = new GetApkVersionApkQuery();
+                            presenter.registerAwaitEvents(query);
+
+
+                            /*query.addAsyncQueryEventListener(new CallableQAsync.IAsyncQueryEventListener() {
+                                @Override
+                                public void onAsyncQueryEvent(CallableQAsync query, int returnCode, String returnMessage) {
+                                   // showEventToast(returnMessage,0);
+                                }
+                            });
+*/
+
+                           /* query.addAsyncExceptionEventListener(new CallableQAsync.IAsyncQueryExceptionListener() {
+                                @Override
+                                public void onAsyncQueryException(CallableQAsync query, Exception e) {
+                                    showExceptionToast(e,e.getMessage());
+                                }
+                            });*/
+
+
+                           /* query.addOnPreExecuteListener(new CallableQAsync.OnPreExecuteListener() {
+                                @Override
+                                public void onPreExecute() {
+                                    showAwaitDialog(true);
+                                }
+                            });*/
+
+                            query.addOnPostExecuteListener(new CallableQAsync.OnPostExecuteListener() {
+                                @Override
+                                public void onPostExecute() {
+                                    if (query.isDoError()) {
+                                        return;
+                                    }
+
+                                    Version dbVersion = query.getDbVersion();
+                                    Version currentVersion = AppConfigurator.GetCurrentVersion();
+                                    if (currentVersion.getRealise() != dbVersion.getRealise() ||
+                                            currentVersion.getBuild() != dbVersion.getBuild()) {
+                                        Intent updIntent = new Intent(MainActivity.this, UpdateApplicationActivity.class);
+                                        updIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(updIntent);
+                                        return;
+                                    } else {
+                                        ddd(innerItem);
+                                    }
+                                }
+                            });
+
+
+                            /*{
+                                /*@Override
+                                public void onPostExecute() {
+
+                                    showAwaitDialog(false);
+
+                                    if (query.isDoError()) {
+                                        return;
+                                    }
+
+                                    Version dbVersion = query.getDbVersion();
+                                    Version currentVersion = AppConfigurator.GetCurrentVersion();
+                                    if (currentVersion.getRealise() != dbVersion.getRealise() ||
+                                            currentVersion.getBuild() != dbVersion.getBuild()) {
+
+                                        Intent updIntent = new Intent(MainActivity.this, UpdateApplicationActivity.class);
+                                        updIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(updIntent);
+                                        return;
+                                    } else {
+                                        ddd(innerItem);
+                                    }
+                                }*/
+
+
+                            query.ExecuteAsync();
+                        } else {
+                            Intent intent = new Intent(MainActivity.this, innerItem.getClassOfActivity());
+                            startActivity(intent);
                         }
-
-                        ddd(innerItem);
-
                     }
                 }).Build();
         docTypesRecyclerView.setAdapter(adapter);
         docTypesRecyclerView.addItemDecoration(new DocTypeItemDecor(4));
+    }
+
+    @Override
+    protected void dffdsfdfdf() {
+        super.dffdsfdfdf();
+
     }
 
     private void updateUi (List<DocType> docTypeList) {
@@ -91,12 +176,38 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    private void ddd (final DocType dt) {
 
-    private void ddd (DocType dt) {
-
-        currentDocType = dt;
+        ProjectMap.setCurrentTypeDoc(dt);
 
         if (dt.getChildDocs() == null || dt.getChildDocs().size() == 0) {
+
+            final GetMainDivisionInfoQuery query = new GetMainDivisionInfoQuery();
+            query.addOnPreExecuteListener(new CallableQAsync.OnPreExecuteListener() {
+                @Override
+                public void onPreExecute() {
+                    showAwaitDialog(true);
+                }
+            });
+
+            query.addOnPostExecuteListener(new CallableQAsync.OnPostExecuteListener() {
+                @Override
+                public void onPostExecute() {
+                    showAwaitDialog(false);
+                    ProjectMap.setMainInfo(query.getDivisionInfo());
+
+                    Intent intent = new Intent(MainActivity.this, dt.getClassOfActivity());
+                    startActivity(intent);
+                }
+            });
+            query.ExecuteAsync();
+        } else {
+            backButtonEnabled(true);
+            updateUi(dt.getChildDocs());
+        }
+
+
+      /*  if (dt.getChildDocs() == null || dt.getChildDocs().size() == 0) {
 
             try {
                 AppConfigurator.getMainInfo();
@@ -107,12 +218,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             Intent intent = new Intent(MainActivity.this, dt.getClassOfActivity());
-            Constants.setCurrentDoc(dt);
             startActivity(intent);
         } else {
             backButtonEnabled(true);
             updateUi(dt.getChildDocs());
-        }
+        }*/
     }
 
     private void up () {
@@ -207,6 +317,9 @@ public class MainActivity extends AppCompatActivity {
             outRect.top = space;
         }
     }
+
+
+
 }
 
 

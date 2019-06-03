@@ -5,9 +5,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class EditCheckingListPositionQtyQuery extends CallableQuery {
+public class EditCheckingListPositionQtyQuery extends CallableQAsync {
 
     /*
     *
@@ -26,8 +27,8 @@ public class EditCheckingListPositionQtyQuery extends CallableQuery {
     private int operationType;
     private BigDecimal newQty;
 
-    public EditCheckingListPositionQtyQuery(Connection connection, String checkingListHeadGuid, String positionGuid, BigDecimal qty, int operationType) {
-        super(connection);
+    public EditCheckingListPositionQtyQuery( String checkingListHeadGuid, String positionGuid, BigDecimal qty, int operationType) {
+
         this.checkingListHeadGuid = checkingListHeadGuid;
         this.positionGuid = positionGuid;
         this.qty = qty;
@@ -37,22 +38,40 @@ public class EditCheckingListPositionQtyQuery extends CallableQuery {
 
     @Override
     protected void SetQuery() {
-        setSqlString("call V_StoreTSD.dbo.CheckingListIncPositionEditQty (?, ?, ?, ?, ?)");
+        setSqlString("? = call V_StoreTSD.dbo.CheckingListIncPositionEditQty (?, ?, ?, ?, ?)");
     }
 
     @Override
-    protected void SetQueryParams() throws SQLException {
-        stmt.setString(1,checkingListHeadGuid);
-        stmt.setString(2,positionGuid);
-        stmt.setBigDecimal(3,qty);
-        stmt.setInt(4,operationType);
-        stmt.registerOutParameter(5, Types.DECIMAL);
+    protected void SetQueryParams(){
+        try {
+            parameterIndex = 1;
+            getStmt().registerOutParameter(parameterIndex++, Types.INTEGER);
+            getStmt().setString(parameterIndex++,checkingListHeadGuid);
+            getStmt().setString(parameterIndex++,positionGuid);
+            getStmt().setBigDecimal(parameterIndex++,qty);
+            getStmt().setInt(parameterIndex++,operationType);
+            getStmt().registerOutParameter(parameterIndex++, Types.DECIMAL);
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public void Execute() throws SQLException {
+   /* @Override
+    protected void Execute() {
         super.Execute();
-        newQty = stmt.getBigDecimal(5).setScale(3);
+        try {
+            getStmt().execute();
+
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
+    }*/
+
+    @Override
+    protected void parseOutputVars() throws SQLException {
+        newQty = getStmt().getBigDecimal(6).setScale(3);
     }
 
     public BigDecimal getNewQty() {

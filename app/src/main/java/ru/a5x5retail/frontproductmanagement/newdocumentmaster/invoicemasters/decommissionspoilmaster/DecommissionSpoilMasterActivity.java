@@ -60,13 +60,7 @@ public class DecommissionSpoilMasterActivity extends BaseMasterActivity
         viewModel = ViewModelProviders.of(this).get(DecommissionSpoilMasterViewModel.class);
         binding.setViewmodel(viewModel);
         if (viewModel.getState() == Constants.ViewModelStateEnum.LOADED) return;
-        try {
-            viewModel.Load();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        viewModel.Load();
     }
 
     public void showAlertImage(boolean isShow ){
@@ -83,12 +77,8 @@ public class DecommissionSpoilMasterActivity extends BaseMasterActivity
         try {
             viewModel.saveSelectedDocument();
             finish();
-        } catch (SQLException e) {
-            e.printStackTrace();
         } catch (NullPointerException e) {
             showAlertImage(true);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 

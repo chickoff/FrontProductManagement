@@ -6,6 +6,7 @@ import java.util.List;
 import ru.a5x5retail.frontproductmanagement.base.TypedViewModel;
 import ru.a5x5retail.frontproductmanagement.db.models.CodeInfo;
 import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetFreeSkuForCheckigListQuery;
 
 public class SkuFilterViewModel extends TypedViewModel {
@@ -56,9 +57,15 @@ public class SkuFilterViewModel extends TypedViewModel {
         onDataChanged();
     }
 
-    private void load() throws SQLException {
-        GetFreeSkuForCheckigListQuery query = new GetFreeSkuForCheckigListQuery(con.getConnection(),getCheckingListGuid());
-        query.Execute();
-        setCodeInfoList(query.getList());
+    private void load() throws SQLException, ClassNotFoundException {
+        final GetFreeSkuForCheckigListQuery query = new GetFreeSkuForCheckigListQuery(getCheckingListGuid());
+        query.addOnPostExecuteListener(new CallableQAsync.OnPostExecuteListener() {
+            @Override
+            public void onPostExecute() {
+                setCodeInfoList(query.getList());
+            }
+        });
+        query.ExecuteAsync();
+
     }
 }

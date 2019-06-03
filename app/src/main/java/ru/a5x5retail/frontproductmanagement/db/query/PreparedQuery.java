@@ -6,15 +6,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public abstract class PreparedQuery extends BaseQuery {
-    public PreparedQuery(Connection connection) {
-        super(connection);
+    public PreparedQuery() throws SQLException, ClassNotFoundException {
+
     }
 
     protected PreparedStatement stmt;
 
     protected void  createStatement() throws SQLException {
         if (stmt == null)
-            stmt = connection.prepareStatement(getSqlString());
+            stmt =  getConnection().prepareStatement(getSqlString());
     }
 
     protected abstract void SetQuery();
@@ -26,7 +26,7 @@ public abstract class PreparedQuery extends BaseQuery {
         createStatement();
         SetQueryParams();
     }
-    public void Execute() throws SQLException {
+    protected void Execute() throws SQLException {
         prepare();
         setResultSet(stmt.executeQuery());
     }

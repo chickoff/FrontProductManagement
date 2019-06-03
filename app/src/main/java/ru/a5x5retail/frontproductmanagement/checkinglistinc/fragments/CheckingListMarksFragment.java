@@ -1,26 +1,31 @@
 package ru.a5x5retail.frontproductmanagement.checkinglistinc.fragments;
 
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.PresenterType;
+
+import java.util.List;
+
 import ru.a5x5retail.frontproductmanagement.R;
 import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerViewItemShortClickListener;
 import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
-import ru.a5x5retail.frontproductmanagement.base.TestFragment;
-import ru.a5x5retail.frontproductmanagement.checkinglistinc.CheckingListIncViewModel;
+import ru.a5x5retail.frontproductmanagement.base.BaseFragment;
+
 import ru.a5x5retail.frontproductmanagement.checkinglistinc.holders.MarksViewHolder;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListMark;
+import ru.a5x5retail.frontproductmanagement.db.models.CheckingListPosition;
 
 
-public class CheckingListMarksFragment extends TestFragment<CheckingListIncViewModel> {
+public class CheckingListMarksFragment extends BaseFragment implements ICheckingListIncView {
 
+    @InjectPresenter(type = PresenterType.WEAK, tag = CheckingListIncPresenter.TAG)
+    CheckingListIncPresenter presenter;
 
     public CheckingListMarksFragment() {
         // Required empty public constructor
@@ -44,7 +49,6 @@ public class CheckingListMarksFragment extends TestFragment<CheckingListIncViewM
 
         View view = inflater.inflate(R.layout.fragment_checking_list_marks, container, false);
         initUi(view);
-        initViewModel();
         return view;
     }
 
@@ -66,33 +70,21 @@ public class CheckingListMarksFragment extends TestFragment<CheckingListIncViewM
         recyclerView.setAdapter(adapter);
     }
 
-    private void initViewModel() {
-        FragmentActivity activity = getActivity();
-        setViewModel( ViewModelProviders.of(activity).get(CheckingListIncViewModel.class));
 
-    }
-
-    private void updateUi() {
-        if (getViewModel() == null) return;
-        adapter.setSourceList(getViewModel().checkingListMarkList);
+    @Override
+    public void updateUi() {
+        adapter.setSourceList(presenter.checkingListMarkList);
         adapter.notifyDataSetChanged();
     }
 
-
     @Override
-    protected void viewModelDataIsChanged() {
-        updateUi();
-    }
-
-    @Override
-    public void listenerChangedListenerRemove() {
+    public void openEditableDialog(CheckingListPosition position) {
 
     }
 
     @Override
-    public void listenerChangedListenerAdded() {
-        updateUi();
-    }
+    public void openSelectiblePositionDialog(List<CheckingListPosition> checkingListPositionList) {
 
+    }
 
 }

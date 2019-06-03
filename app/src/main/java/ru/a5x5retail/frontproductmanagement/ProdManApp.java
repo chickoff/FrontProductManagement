@@ -1,6 +1,5 @@
 package ru.a5x5retail.frontproductmanagement;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,18 +8,23 @@ import android.os.Parcelable;
 import android.os.Vibrator;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.Toast;
-import java.util.Map;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Date;
 
 import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
 import ru.a5x5retail.frontproductmanagement.configuration.Constants;
+import ru.a5x5retail.frontproductmanagement.db_local.DatabaseInit;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.creators.newinvoice.CreateNewInvoiceActivity;
-import ru.a5x5retail.frontproductmanagement.packinglistpreview.PackingListPreviewActivity;
+import ru.a5x5retail.frontproductmanagement.packinglistpreview.view.PackingListPreviewActivity;
 
 import static ru.a5x5retail.frontproductmanagement.configuration.Constants.CONTRACTOR_INFO_CONST;
-import static ru.a5x5retail.frontproductmanagement.configuration.Constants.PACKINGLISTHEAD_CONST;
+
 import static ru.a5x5retail.frontproductmanagement.configuration.Constants.PLAN_INCOME_CONST;
-import static ru.a5x5retail.frontproductmanagement.configuration.Constants.TYPEOFDOCUMENT_CONST;
+
 import static ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.creators.newinvoice.CreateNewInvoiceActivity.BASIS_OF_CREATION;
 
 
@@ -32,6 +36,7 @@ public class ProdManApp extends Application {
         ProdManApp.context = getApplicationContext();
         Thread.UncaughtExceptionHandler defaultUEH = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(defaultUEH));
+        DatabaseInit.InitDao(this);
        // StartMainActivity();
     }
 
@@ -109,9 +114,8 @@ public class ProdManApp extends Application {
     public static class Activities {
 
 
-        public static void createPackingListPreviewActivity( Context context, Parcelable head){
+        public static void createPackingListPreviewActivity( Context context){
             Intent intent = new Intent(context, PackingListPreviewActivity.class);
-            intent.putExtra(PACKINGLISTHEAD_CONST,head);
             context.startActivity(intent);
         }
 
@@ -133,7 +137,6 @@ public class ProdManApp extends Application {
 
         public static void createNewDocumentMasterActivity(FragmentActivity context, Class<?> activityClass, Constants.TypeOfDocument typeOfDoc, int requestCode){
             Intent intent = new Intent(context, activityClass);
-            intent.putExtra(TYPEOFDOCUMENT_CONST,typeOfDoc.getIndex());
             context.startActivityForResult(intent,requestCode);
         }
 
@@ -163,5 +166,35 @@ public class ProdManApp extends Application {
         Intent intent = new Intent(this,MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    public static void exceptionToFile(Throwable ex) {
+        String stackTrace = Log.getStackTraceString(ex);
+        String time = new Date(System.currentTimeMillis()).toString();
+        String message = ex.getMessage();
+
+        String filename = "stack_trace_" + String.valueOf(System.currentTimeMillis()) + ".html";
+        StringBuilder sb = new StringBuilder();
+        sb.append("<handlederror>");
+        sb.append("<ver>");
+        sb.append(AppConfigurator.GetCurrentVersion());
+        sb.append("</ver>");
+        sb.append("<stacktrace>");
+        sb.append("<![CDATA[");
+        sb.append(stackTrace);
+        sb.append("]]>");
+        sb.append("</stacktrace>");
+        sb.append("</handlederror>");
+        FileOutputStream outputStream;
+
+        try {
+            File dir = ProdManApp.getAppContext().getExternalFilesDir("events");
+            File outputFile = new File(dir, filename);
+            outputStream = new FileOutputStream(outputFile);
+            outputStream.write(sb.toString().getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

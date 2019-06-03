@@ -4,13 +4,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class UpdateCheckingListIncSourceQuery extends CallableQuery {
+public class UpdateCheckingListIncSourceQuery extends CallableQAsync {
     String checkingListHeadGuid;
 
-    public UpdateCheckingListIncSourceQuery(Connection connection, String checkingListHeadGuid) {
-        super(connection);
+    public UpdateCheckingListIncSourceQuery( String checkingListHeadGuid) {
+
         this.checkingListHeadGuid = checkingListHeadGuid;
     }
 
@@ -20,17 +21,35 @@ public class UpdateCheckingListIncSourceQuery extends CallableQuery {
     }
 
     @Override
-    protected void SetQueryParams() throws SQLException {
-        stmt.registerOutParameter(1, Types.INTEGER);
-        stmt.setString(2,checkingListHeadGuid);
-        stmt.registerOutParameter(3, Types.OTHER);
+    protected void SetQueryParams() {
+        try {
+            parameterIndex = 1;
+            getStmt().registerOutParameter(parameterIndex++, Types.INTEGER);
+            getStmt().setString(parameterIndex++,checkingListHeadGuid);
+            getStmt().registerOutParameter(parameterIndex++, Types.OTHER);
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
+
     }
 
-    @Override
-    public void Execute() throws SQLException {
+   /* @Override
+    protected void Execute() {
         super.Execute();
-        returnCode = stmt.getInt(1);
-        boolean b = stmt.getMoreResults();
-        eventMessage = stmt.getString(3);
+        try {
+            getStmt().execute();
+            returnCode = getStmt().getInt(1);
+            boolean b = getStmt().getMoreResults();
+
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
+    }*/
+
+    @Override
+    protected void parseOutputVars() throws SQLException {
+        eventMessage = getStmt().getString(3);
     }
 }

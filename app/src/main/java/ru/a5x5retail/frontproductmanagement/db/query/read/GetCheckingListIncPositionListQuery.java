@@ -8,14 +8,15 @@ import java.util.List;
 
 import ru.a5x5retail.frontproductmanagement.db.converters.CheckingListPositionConverter;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListPosition;
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class GetCheckingListIncPositionListQuery extends CallableQuery<CheckingListPosition> {
+public class GetCheckingListIncPositionListQuery extends CallableQAsync {
 
     private String checkingListHeadGuid;
     private List<CheckingListPosition> list;
-    public GetCheckingListIncPositionListQuery(Connection connection, String checkingListHeadGuid) {
-        super(connection);
+    public GetCheckingListIncPositionListQuery(String checkingListHeadGuid) {
+
         this.checkingListHeadGuid = checkingListHeadGuid;
         list = new ArrayList<>();
     }
@@ -26,27 +27,48 @@ public class GetCheckingListIncPositionListQuery extends CallableQuery<CheckingL
     }
 
     @Override
-    protected void SetQueryParams() throws SQLException {
-        stmt.registerOutParameter(1, Types.INTEGER);
-        stmt.setString(2,checkingListHeadGuid);
-
+    protected void SetQueryParams() {
+        try {
+            parameterIndex = 1;
+            getStmt().registerOutParameter(parameterIndex++, Types.INTEGER);
+            getStmt().setString(parameterIndex++,checkingListHeadGuid);
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public void Execute() throws SQLException {
+    /*@Override
+    protected void Execute() {
             super.Execute();
+        try {
+            boolean b = getStmt().execute();
+            setResultSet(getStmt().getResultSet());
             CheckingListPositionConverter converter = new CheckingListPositionConverter();
             while (getResultSet().next()) {
                 CheckingListPosition head = new CheckingListPosition();
-                converter.Convert(getResultSet(),head);
+                converter.Convert(getResultSet(), head);
                 list.add(head);
             }
-            stmt.getMoreResults();
-            setReturnCode((int)stmt.getObject(1));
+            getStmt().getMoreResults();
+            setReturnCode((int) getStmt().getObject(1));
             int r = getReturnCode();
-    }
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
+    }*/
 
     @Override
+    protected void parseResultSet() throws SQLException {
+        CheckingListPositionConverter converter = new CheckingListPositionConverter();
+        while (getResultSet().next()) {
+            CheckingListPosition head = new CheckingListPosition();
+            converter.Convert(getResultSet(), head);
+            list.add(head);
+        }
+    }
+
     public List<CheckingListPosition> getList() {
         return list;
     }

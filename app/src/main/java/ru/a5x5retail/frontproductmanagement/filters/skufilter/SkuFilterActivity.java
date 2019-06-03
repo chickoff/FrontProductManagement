@@ -14,6 +14,8 @@ import android.widget.Filterable;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +26,16 @@ import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
 import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerViewItemShortClickListener;
 import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
 import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
+import ru.a5x5retail.frontproductmanagement.base.BaseAppCompatActivity;
 import ru.a5x5retail.frontproductmanagement.base.BaseViewModel;
 import ru.a5x5retail.frontproductmanagement.configuration.Constants;
 import ru.a5x5retail.frontproductmanagement.db.models.CodeInfo;
 
 import static ru.a5x5retail.frontproductmanagement.configuration.Constants.FILTER_DATA_REQUEST_CONST;
 
-public class SkuFilterActivity extends AppCompatActivity {
+public class SkuFilterActivity extends BaseAppCompatActivity
+implements ISkuFilterView
+{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,24 +43,32 @@ public class SkuFilterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sku_filter);
         init();
         initUi();
-        initViewModel();
+        //initViewModel();
     }
 
     @SuppressLint("RestrictedApi")
     private void init() {
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if (getIntent() != null) {
+            String checkingListGuid = getIntent().getStringExtra(FILTER_DATA_REQUEST_CONST);
+            presenter.setCheckingListGuid(checkingListGuid);
+        }
+
+
     }
 
 
     private SearchView searchView;
     private RecyclerView recyclerView;
     private SkuRecyclerViewAdapter adapter;
-    private SkuFilterViewModel viewModel;
+   // private SkuFilterViewModel viewModel;
+   @InjectPresenter
+    SkuFilterPresenter presenter;
     private void initUi() {
         recyclerView = findViewById(R.id.recyclerView);
         adapter = new SkuRecyclerViewAdapter();
-        adapter.setRawSourceList(null);
         adapter.setHolderFactory(new SkuRecyclerViewViewHolderFactory());
         adapter.setLayout(R.layout.item_code_namelong_1);
         adapter.setShortClickListener(new IRecyclerViewItemShortClickListener<CodeInfo>() {
@@ -82,7 +95,7 @@ public class SkuFilterActivity extends AppCompatActivity {
         });
     }
 
-    private void initViewModel() {
+    /*private void initViewModel() {
 
         String checkingListGuid = getIntent().getStringExtra(FILTER_DATA_REQUEST_CONST);
 
@@ -102,10 +115,18 @@ public class SkuFilterActivity extends AppCompatActivity {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }*/
+
+
+
+    @Override
+    protected void Test() {
+        super.Test();
     }
 
-    private void updateUi() {
-        adapter.setRawSourceList(viewModel.getCodeInfoList());
+    @Override
+    public void updateUi() {
+        adapter.setRawSourceList(presenter.getCodeInfoList());
         adapter.notifyDataSetChanged();
     }
 
@@ -128,6 +149,9 @@ public class SkuFilterActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+
 
     public class SkuRecyclerViewAdapter extends BasicRecyclerViewAdapter<CodeInfo>
             implements Filterable {

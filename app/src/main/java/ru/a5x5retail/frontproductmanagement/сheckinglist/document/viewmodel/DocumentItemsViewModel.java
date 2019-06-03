@@ -57,7 +57,6 @@ public class DocumentItemsViewModel extends BaseViewModel {
         CheckingListGoodsAddQuery query = new CheckingListGoodsAddQuery(checkingListHeadGUID.toString(),
                 sb.toString());
         query.Execute(con.getConnection());
-
     }
 
 

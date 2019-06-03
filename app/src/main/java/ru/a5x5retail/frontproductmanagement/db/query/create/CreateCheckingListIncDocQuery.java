@@ -4,9 +4,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class CreateCheckingListIncDocQuery extends CallableQuery {
+public class CreateCheckingListIncDocQuery extends CallableQAsync {
 
     private String  imei,
                     relationGuid,
@@ -15,9 +16,9 @@ public class CreateCheckingListIncDocQuery extends CallableQuery {
     private int checkingListType,sourceTypeIdd;
 
 
-    public CreateCheckingListIncDocQuery(Connection connection, String relationGuid
+    public CreateCheckingListIncDocQuery( String relationGuid
             , String imei,int checkingListType, int sourceTypeIdd) {
-        super(connection);
+
 
         this.imei = imei;
         this.relationGuid = relationGuid;
@@ -27,22 +28,47 @@ public class CreateCheckingListIncDocQuery extends CallableQuery {
 
     @Override
     protected void SetQuery() {
-        setSqlString("{call V_StoreTSD.dbo.CheckingListIncDocAdd(?, ?, ?, ?, ?)}");
+        setSqlString("{? = call V_StoreTSD.dbo.CheckingListIncDocAdd(?, ?, ?, ?, ?)}");
     }
 
     @Override
-    protected void SetQueryParams() throws SQLException {
-        stmt.setString(1,relationGuid);
-        stmt.setString(2,imei);
-        stmt.setInt(3,checkingListType);
-        stmt.setInt(4,sourceTypeIdd);
-        stmt.registerOutParameter(5, Types.OTHER);
+    protected void SetQueryParams() {
+        try {
+            parameterIndex = 1;
+            getStmt().registerOutParameter(parameterIndex++, Types.INTEGER);
+            getStmt().setString(parameterIndex++,relationGuid);
+            getStmt().setString(parameterIndex++,imei);
+            getStmt().setInt(parameterIndex++,checkingListType);
+            getStmt().setInt(parameterIndex++,sourceTypeIdd);
+            getStmt().registerOutParameter(parameterIndex, Types.OTHER);
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
+
     }
 
-    @Override
-    public void Execute() throws SQLException {
+    /*@Override
+    protected void Execute() {
         super.Execute();
-        headGuid = stmt.getString(5);
+        try {
+            boolean b = getStmt().execute();
+            returnCode = getStmt().getInt(1);
+
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
+    }*/
+
+    @Override
+    protected void parseResultSet() throws Exception {
+
+    }
+
+    @Override
+    protected void parseOutputVars() throws SQLException {
+        headGuid = getStmt().getString(6);
     }
 
     public String getHeadGuid() {

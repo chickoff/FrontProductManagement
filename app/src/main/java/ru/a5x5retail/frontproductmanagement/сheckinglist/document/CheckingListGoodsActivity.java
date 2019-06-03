@@ -247,12 +247,11 @@ implements IRecyclerViewItemClick<CheckingListGoods>
             if(barcode.isWeightAvailable()){
                 CheckingListGoodsEditQuery query2 = new CheckingListGoodsEditQuery(checkingListHeadGUID,barcode.getSkuContext().Code,barcode.getLocalWeight(),1);
                 con.CallQuery(query2);
-                return;
             }
+        } else {
+            CheckingListGoodsEditQuery query2 = new CheckingListGoodsEditQuery(checkingListHeadGUID, barcode.getSkuContext().Code, BigDecimal.valueOf(0), 2);
+            con.CallQuery(query2);
         }
-
-        CheckingListGoodsEditQuery query2 = new CheckingListGoodsEditQuery(checkingListHeadGUID, barcode.getSkuContext().Code, BigDecimal.valueOf(0), 2);
-        con.CallQuery(query2);
 
         viewModel.Load(checkingListHeadGUID);
         initRecyclerView();

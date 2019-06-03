@@ -9,19 +9,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
 import ru.a5x5retail.frontproductmanagement.R;
+import ru.a5x5retail.frontproductmanagement.base.BaseFragment;
 import ru.a5x5retail.frontproductmanagement.db.models.ContractorExtendedInfo;
-import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.ExtendedContractorInfoViewModel;
-import ru.a5x5retail.frontproductmanagement.base.TestFragment;
+import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.fragments.presenter.ContractorInfoSubPresenter;
+import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.fragments.view.IContractorInfoSubView;
 
 
-public class ContractorInfoSubFragment extends TestFragment<ExtendedContractorInfoViewModel> {
+public class ContractorInfoSubFragment extends BaseFragment
+implements IContractorInfoSubView
+{
 
     public ContractorInfoSubFragment() {
         // Required empty public constructor
     }
 
-    public static ContractorInfoSubFragment newInstance(String param1, String param2) {
+    @InjectPresenter
+    ContractorInfoSubPresenter presenter;
+
+    public static ContractorInfoSubFragment newInstance() {
         ContractorInfoSubFragment fragment = new ContractorInfoSubFragment();
         return fragment;
     }
@@ -36,7 +44,6 @@ public class ContractorInfoSubFragment extends TestFragment<ExtendedContractorIn
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contractor_info_sub, container, false);
         initUi(view);
-        initViewModel();
         return view;
     }
 
@@ -53,14 +60,11 @@ public class ContractorInfoSubFragment extends TestFragment<ExtendedContractorIn
         dp_group_iv_1 = view.findViewById(R.id.dp_group_iv_1);
     }
 
-    private void initViewModel() {
-        FragmentActivity activity = getActivity();
-        setViewModel(ViewModelProviders.of(activity).get(ExtendedContractorInfoViewModel.class));
-    }
 
-    private void updateUi() {
-        ContractorExtendedInfo info = getViewModel().getContractorExtendedInfo();
 
+    public void updateUi() {
+
+        ContractorExtendedInfo info = presenter.getContractorExtendedInfo();
         if (info == null) return;
         tv_1.setText(info.contractorName);
         setImage(info.edi,edi_group_iv_1);
@@ -77,21 +81,5 @@ public class ContractorInfoSubFragment extends TestFragment<ExtendedContractorIn
         } else {
             iv.setImageResource(R.drawable.ic_highlight_off_red_24dp);
         }
-    }
-
-    @Override
-    protected void viewModelDataIsChanged() {
-        updateUi();
-    }
-
-    @Override
-    public void listenerChangedListenerRemove() {
-        //NULL
-    }
-
-    @Override
-    public void listenerChangedListenerAdded() {
-
-        updateUi();
     }
 }

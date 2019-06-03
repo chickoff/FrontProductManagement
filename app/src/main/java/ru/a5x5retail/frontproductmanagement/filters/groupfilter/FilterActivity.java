@@ -1,6 +1,5 @@
 package ru.a5x5retail.frontproductmanagement.filters.groupfilter;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,32 +8,42 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import java.sql.SQLException;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.a5x5retail.frontproductmanagement.R;
-import ru.a5x5retail.frontproductmanagement.configuration.Constants;
+import ru.a5x5retail.frontproductmanagement.base.BaseAppCompatActivity;
 import ru.a5x5retail.frontproductmanagement.db.models.CodeInfo;
-import ru.a5x5retail.frontproductmanagement.filters.groupfilter.fragments.ContractorFilter.ContractorFilterFragment;
-import ru.a5x5retail.frontproductmanagement.filters.groupfilter.fragments.GroupFilter.GroupFilterFragment;
-import ru.a5x5retail.frontproductmanagement.filters.groupfilter.fragments.ResultSku.ResultSkuFragment;
+import ru.a5x5retail.frontproductmanagement.filters.groupfilter.fragments.contractorfilter.ContractorFilterFragment;
+import ru.a5x5retail.frontproductmanagement.filters.groupfilter.fragments.groupfilter.GroupFilterFragment;
 
-public class FilterActivity extends AppCompatActivity
-implements IFilterCompleteListener<CodeInfo>
+
+public class FilterActivity extends BaseAppCompatActivity
+implements  IFilterCompleteListener<CodeInfo>,
+        IFilterView
+
 {
-    FilterViewModel viewModel;
+
     private DrawerLayout drawerLayout = null;
     NavigationView nav_view;
+
+    @InjectPresenter
+    FilterPresenter presenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        presenter = presenter;
+
         setContentView(R.layout.activity_group_filter);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -55,20 +64,17 @@ implements IFilterCompleteListener<CodeInfo>
                         menuItem.setCheckable(true);
                         menuItem.setChecked(true);
                         drawerLayout.closeDrawers();
-
-                        Fragment fragment = null;
-
                         switch (menuItem.getItemId()){
                             case R.id.m_subgroup_filter :
-                                fragment = GroupFilterFragment.newInstance("dddddf","ddf");
+                                presenter.showGroupFilter();
                                break;
 
                             case R.id.m_contractor_filter:
-                                fragment = ContractorFilterFragment.newInstance("dddddf","ddf");
+                                presenter.showContractorFilter();
                                 break;
 
                             case R.id.m_result_sku:
-                                fragment = ResultSkuFragment.newInstance("dddddf","ddf");
+
                                 break;
 
                             case R.id.m_exit:
@@ -78,8 +84,6 @@ implements IFilterCompleteListener<CodeInfo>
 
                             default: return true;
                         }
-
-                        replaceFragment(fragment);
                         return true;
                     }
                 }
@@ -87,7 +91,7 @@ implements IFilterCompleteListener<CodeInfo>
     }
 
     private void initViewModel(){
-        viewModel = ViewModelProviders.of(this).get(FilterViewModel.class);
+        /*viewModel = ViewModelProviders.of(this).get(FilterViewModel.class);
         if (viewModel.getState() == Constants.ViewModelStateEnum.LOADED) {
             return;
         }
@@ -97,7 +101,7 @@ implements IFilterCompleteListener<CodeInfo>
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
@@ -131,6 +135,17 @@ implements IFilterCompleteListener<CodeInfo>
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frAg, fragment).commit();
+    }
+
+
+    @Override
+    public void showContractorFilter() {
+        replaceFragment( ContractorFilterFragment.newInstance());
+    }
+
+    @Override
+    public void showGroupFilter() {
+        replaceFragment( GroupFilterFragment.newInstance());
     }
 }
 

@@ -2,25 +2,20 @@ package ru.a5x5retail.frontproductmanagement.db.query;
 
 import android.os.AsyncTask;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 public abstract class CallableQueryAsync<T,Params, Progress, Result> extends CallableQuery<T> {
 
     private AsyncQueryListener<Params, Progress, Result> queryListener;
 
-    public CallableQueryAsync(Connection connection) {
-        super(connection);
+    public CallableQueryAsync() throws SQLException, ClassNotFoundException {
+        super();
     }
-
-
 
     public void ExecuteAsync() {
         DbTask task = new DbTask();
         task.execute();
     }
-
-
 
     public AsyncQueryListener getQueryListener() {
         return queryListener;
@@ -44,11 +39,15 @@ public abstract class CallableQueryAsync<T,Params, Progress, Result> extends Cal
         @Override
         protected Result doInBackground(Params... params) {
             try {
-
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            try {
                 CallableQueryAsync.this.Execute();
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 CallableQueryAsync.this.setResultSetEnable(false);
-                CallableQueryAsync.this.setSqlException(e);
+                CallableQueryAsync.this.setException(e);
                 e.printStackTrace();
             }
             return null;

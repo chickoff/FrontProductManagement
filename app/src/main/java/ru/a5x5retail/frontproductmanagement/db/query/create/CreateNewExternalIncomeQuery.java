@@ -4,35 +4,56 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class CreateNewExternalIncomeQuery extends CallableQuery {
+public class CreateNewExternalIncomeQuery extends CallableQAsync {
 
     String  imei,relationGuid,headGuid;
 
 
-    public CreateNewExternalIncomeQuery(Connection connection, String relationGuid, String imei) {
-        super(connection);
+    public CreateNewExternalIncomeQuery(String relationGuid, String imei) {
+
         this.imei = imei;
         this.relationGuid = relationGuid;
     }
 
     @Override
     protected void SetQuery() {
-        setSqlString("{call V_StoreTSD.dbo.IncomeFromExternalContractorHeadADD(?, ?, ?)}");
+        setSqlString("{? = call V_StoreTSD.dbo.IncomeFromExternalContractorHeadADD(?, ?, ?)}");
     }
 
     @Override
-    protected void SetQueryParams() throws SQLException {
-        stmt.setString(1,relationGuid);
-        stmt.setString(2,imei);
-        stmt.registerOutParameter(3, Types.OTHER);
+    protected void SetQueryParams() {
+        try {
+            parameterIndex = 1;
+            getStmt().registerOutParameter(parameterIndex++, Types.INTEGER);
+            getStmt().setString(parameterIndex++,relationGuid);
+            getStmt().setString(parameterIndex++,imei);
+            getStmt().registerOutParameter(parameterIndex, Types.OTHER);
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
+
     }
 
-    @Override
-    public void Execute() throws SQLException {
+   /* @Override
+    protected void Execute() {
         super.Execute();
-        headGuid = stmt.getString(3);
+        try {
+            boolean b = getStmt().execute();
+            returnCode = getStmt().getInt(1);
+
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
+    }*/
+
+    @Override
+    protected void parseOutputVars() throws SQLException {
+        headGuid = getStmt().getString(4);
     }
 
     public String getHeadGuid() {

@@ -18,9 +18,13 @@ import java.util.List;
 import ru.a5x5retail.frontproductmanagement.DocType;
 import ru.a5x5retail.frontproductmanagement.ProdManApp;
 import ru.a5x5retail.frontproductmanagement.Version;
+import ru.a5x5retail.frontproductmanagement.assortmentcard.AssortmentCardActivity;
 import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetApkVersionApkQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetMainDivisionInfoQuery;
+import ru.a5x5retail.frontproductmanagement.db_local.ProjectMap;
+import ru.a5x5retail.frontproductmanagement.inventories.InventoriesActivity;
 import ru.a5x5retail.frontproductmanagement.packinglistitems.PackingListItemsActivity;
 import ru.a5x5retail.frontproductmanagement.printprice.document.PrintPriceActivity;
 import ru.a5x5retail.frontproductmanagement.settings.SettingsActivity;
@@ -43,7 +47,9 @@ public class AppConfigurator {
             return null;
         }
         TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        return manager.getDeviceId();
+        return
+                //"863961030323132";
+                manager.getDeviceId();
     }
 
     public static String[] getConnectionString(){
@@ -70,6 +76,9 @@ public class AppConfigurator {
     }
 
     private static List<DocType> list;
+    private static List<DocType> searchList;
+
+
 
     private static SharedPreferences getPreferences() {
         SharedPreferences prefs = ProdManApp.getAppContext()
@@ -79,6 +88,7 @@ public class AppConfigurator {
 
     public  static List<DocType> getAvailableDocTypes(){
         list = new ArrayList<>();
+        searchList = new ArrayList<>();
 
         DocType doc = new DocType<PackingListItemsActivity>();
         doc.setClassOfActivity(PrintPriceActivity.class);
@@ -86,6 +96,11 @@ public class AppConfigurator {
         doc.setName("Печать ценников");
         doc.setShortName("Ценники");
         list.add(doc);
+        searchList.add(doc);
+
+
+/************************************************************************************************/
+/**      Блок инвентаризации          */
 
         doc = new DocType<PackingListItemsActivity>();
         doc.setClassOfActivity(PackingListItemsActivity.class);
@@ -93,33 +108,37 @@ public class AppConfigurator {
         doc.setName("Инвентаризация");
         doc.setShortName("");
 
-/**************************
- *      Дочки !
- * */
+            /**************************
+             *      Дочки !
+             * */
 
             List<DocType> inventoryChilds = new ArrayList<>();
 
             DocType loChild = new DocType();
-            loChild.setClassOfActivity(PackingListItemsActivity.class);
+            loChild.setClassOfActivity(InventoriesActivity.class);
             loChild.setTypeOfDocument(Constants.TypeOfDocument.PARTIAL_INVENTORY);
             loChild.setName("Локальная инвентаризация");
             loChild.setShortName("Локалка");
             loChild.setParentDoc(doc);
             inventoryChilds.add(loChild);
+            searchList.add(loChild);
 
             loChild = new DocType();
-            loChild.setClassOfActivity(PackingListItemsActivity.class);
+            loChild.setClassOfActivity(InventoriesActivity.class);
             loChild.setTypeOfDocument(Constants.TypeOfDocument.FULL_INVENTORY);
             loChild.setName("Полная инвентаризация");
             loChild.setShortName("Полная инв.");
             loChild.setParentDoc(doc);
             inventoryChilds.add(loChild);
+            searchList.add(loChild);
 
             doc.setChildDocs(inventoryChilds);
 
-/****************************/
+            /****************************/
 
         list.add(doc);
+        searchList.add(doc);
+/************************************************************************************************/
 
         doc = new DocType<PackingListItemsActivity>();
         doc.setClassOfActivity(PackingListItemsActivity.class);
@@ -127,6 +146,7 @@ public class AppConfigurator {
         doc.setName("Приход от стороннего поставщика");
         doc.setShortName("Приход (линия 1)");
         list.add(doc);
+        searchList.add(doc);
 
         doc = new DocType<PackingListItemsActivity>();
         doc.setClassOfActivity(PackingListItemsActivity.class);
@@ -134,6 +154,7 @@ public class AppConfigurator {
         doc.setName("Приход по внутреннему перемещению");
         doc.setShortName("Приход (линия 11)");
         list.add(doc);
+        searchList.add(doc);
 
 
         doc = new DocType<PackingListItemsActivity>();
@@ -142,19 +163,28 @@ public class AppConfigurator {
         doc.setName("Внутреннее перемещение");
         doc.setShortName("Внутр. перемещение");
         list.add(doc);
+        searchList.add(doc);
 
+
+        doc = new DocType<AssortmentCardActivity>();
+        doc.setClassOfActivity(AssortmentCardActivity.class);
+        doc.setTypeOfDocument(Constants.TypeOfDocument.ASSORTMENT_CARD);
+        doc.setName("Карточка товара");
+        list.add(doc);
+        searchList.add(doc);
 
         doc = new DocType<SettingsActivity>();
         doc.setClassOfActivity(SettingsActivity.class);
         doc.setTypeOfDocument(Constants.TypeOfDocument.SETTINGS);
         doc.setName("Настройки");
         list.add(doc);
+        searchList.add(doc);
 
         return list;
     }
 
     public static DocType getTypeDocByType(Constants.TypeOfDocument type){
-        for (DocType docType : list) {
+        for (DocType docType : searchList) {
             if (docType.getTypeOfDocument().equals(type)){
                 return docType;
             }
@@ -184,12 +214,12 @@ public class AppConfigurator {
         return ver;
     }
 
-    public static int checkNewVersion() {
+   /*public static int checkNewVersion() {
         int result = 0;
         GetApkVersionApkQuery query;
         try {
-            MsSqlConnection con = new MsSqlConnection();
-            query = new GetApkVersionApkQuery(con.getConnection());
+
+            query = new GetApkVersionApkQuery();
             query.Execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -211,15 +241,20 @@ public class AppConfigurator {
             intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);*/
 
-        }
+       /*}
         return result;
-    }
+    }*/
 
     public static void getMainInfo() throws SQLException, ClassNotFoundException {
-        MsSqlConnection con = new MsSqlConnection();
-        GetMainDivisionInfoQuery query = new GetMainDivisionInfoQuery(con.getConnection());
-        query.Execute();
-        Constants.setDivisionInfo(query.getDivisionInfo());
+        final GetMainDivisionInfoQuery query = new GetMainDivisionInfoQuery();
+        query.addOnPostExecuteListener(new CallableQAsync.OnPostExecuteListener() {
+            @Override
+            public void onPostExecute() {
+                ProjectMap.setMainInfo(query.getDivisionInfo());
+            }
+        });
+        query.ExecuteAsync();
+
     }
 
     public static class Period {

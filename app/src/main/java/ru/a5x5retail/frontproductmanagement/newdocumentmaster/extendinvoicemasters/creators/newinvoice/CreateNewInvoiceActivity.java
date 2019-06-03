@@ -16,9 +16,11 @@ import ru.a5x5retail.frontproductmanagement.db.models.ContractorExtendedInfo;
 import ru.a5x5retail.frontproductmanagement.db.models.DivisionInfo;
 import ru.a5x5retail.frontproductmanagement.db.models.PlanIncome;
 import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.create.CreateRrIncomeQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.create.CreateRrIncomeViaPlanIncomeQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetDivisionInfoQuery;
+import ru.a5x5retail.frontproductmanagement.db_local.ProjectMap;
 import ru.a5x5retail.frontproductmanagement.dialogs.standart.StandartFragmentDialog;
 import ru.a5x5retail.frontproductmanagement.dialogs.standart.holders.DivisionInfoViewHolder;
 import ru.a5x5retail.frontproductmanagement.interfaces.IRecyclerViewItemClick;
@@ -114,7 +116,7 @@ implements IRecyclerViewItemClick<DivisionInfo>
 
         if (basisOfCreation == BASIS_OF_CREATION_NEW) {
 
-            if (Constants.getCurrentDoc().getTypeOfDocument() == Constants.TypeOfDocument.OUTER_INCOME) {
+            if (ProjectMap.getCurrentTypeDoc().getTypeOfDocument() == Constants.TypeOfDocument.OUTER_INCOME) {
                 cat_foot.setVisibility(View.GONE);
                 division_textview.setVisibility(View.GONE);
             }
@@ -147,9 +149,14 @@ implements IRecyclerViewItemClick<DivisionInfo>
 
     private void showDialog() throws SQLException, ClassNotFoundException {
 
-        MsSqlConnection con = new MsSqlConnection();
-        GetDivisionInfoQuery query = new GetDivisionInfoQuery(con.getConnection());
-        query.Execute();
+        GetDivisionInfoQuery query = new GetDivisionInfoQuery();
+        query.addOnPostExecuteListener(new CallableQAsync.OnPostExecuteListener() {
+            @Override
+            public void onPostExecute() {
+
+            }
+        });
+        query.ExecuteAsync();
 
         StandartFragmentDialog<DivisionInfo> dialog = new StandartFragmentDialog();
         dialog.setViewHolderFactory(new DivisionInfoViewHolder.DivisionInfoViewHolderFactory());
@@ -187,7 +194,7 @@ implements IRecyclerViewItemClick<DivisionInfo>
 
     private boolean checkDivision(){
 
-        if(Constants.getCurrentDoc().getTypeOfDocument()
+        if(ProjectMap.getCurrentTypeDoc().getTypeOfDocument()
                 == Constants.TypeOfDocument.OUTER_INCOME) { return true; }
 
         if (basisOfCreation == BASIS_OF_CREATION_ON_PP) { return true; }
@@ -216,10 +223,16 @@ implements IRecyclerViewItemClick<DivisionInfo>
                 ,   numDoc = num_doc_edittext.getText().toString()
                 ,   rrHeadGuid;
 
-        MsSqlConnection con = new MsSqlConnection();
+
         CreateRrIncomeViaPlanIncomeQuery query
-                = new CreateRrIncomeViaPlanIncomeQuery(con.getConnection(),planIncomeGuid,numDoc);
-        query.Execute();
+                = new CreateRrIncomeViaPlanIncomeQuery(planIncomeGuid,numDoc);
+        query.addOnPostExecuteListener(new CallableQAsync.OnPostExecuteListener() {
+            @Override
+            public void onPostExecute() {
+
+            }
+        });
+        query.ExecuteAsync();
     }
 
     private void createInvoiceNew() throws SQLException, ClassNotFoundException {
@@ -227,23 +240,30 @@ implements IRecyclerViewItemClick<DivisionInfo>
         int checkListTypeId;
         String contractorGUID,divisionGUIDin,divisionGUIDout,numDoc,dateDoc,rrHeadGuid;
 
-        checkListTypeId = Constants.getCurrentDoc().getTypeOfDocument().getIndex();
+        checkListTypeId = ProjectMap.getCurrentTypeDoc().getTypeOfDocument().getIndex();
         contractorGUID = contractorInfo.contractorGuid;
-        divisionGUIDin = Constants.getDivisionInfo().guid;
+        divisionGUIDin = ProjectMap.getMainInfo().guid;
         divisionGUIDout = divisionInfo == null ? null : divisionInfo.guid;
         numDoc = num_doc_edittext.getText().toString();
         dateDoc = date_doc_edittext.getText().toString();
 
-        MsSqlConnection con = new MsSqlConnection();
-        CreateRrIncomeQuery query = new CreateRrIncomeQuery(con.getConnection()
-                ,checkListTypeId
+
+        CreateRrIncomeQuery query = new CreateRrIncomeQuery(
+                checkListTypeId
                 ,contractorGUID
                 ,divisionGUIDin
                 ,divisionGUIDout
                 ,numDoc
                 ,dateDoc
         );
-        query.Execute();
+
+        query.addOnPostExecuteListener(new CallableQAsync.OnPostExecuteListener() {
+            @Override
+            public void onPostExecute() {
+
+            }
+        });
+        query.ExecuteAsync();
     }
 
 

@@ -4,9 +4,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class CreateRrIncomeQuery extends CallableQuery {
+public class CreateRrIncomeQuery extends CallableQAsync {
 
     /**
 
@@ -26,9 +27,9 @@ public class CreateRrIncomeQuery extends CallableQuery {
     private String contractorGUID,divisionGUIDin,divisionGUIDout,numDoc,dateDoc,rrHeadGuid;
 
 
-    public CreateRrIncomeQuery( Connection connection, int checkListTypeId, String contractorGUID,
+    public CreateRrIncomeQuery( int checkListTypeId, String contractorGUID,
            String divisionGUIDin, String divisionGUIDout, String numDoc, String dateDoc) {
-        super(connection);
+
         this.checkListTypeId =
                 checkListTypeId;
         this.contractorGUID =
@@ -47,25 +48,44 @@ public class CreateRrIncomeQuery extends CallableQuery {
 
     @Override
     protected void SetQuery() {
-        setSqlString("{call V_StoreTSD.dbo.rrCreateIncome(?, ?, ?, ?, ?, ?, ?)}");
+        setSqlString("{? = call V_StoreTSD.dbo.rrCreateIncome(?, ?, ?, ?, ?, ?, ?)}");
     }
 
     @Override
-    protected void SetQueryParams() throws SQLException {
-        stmt.setInt(1,checkListTypeId);
-        stmt.setString(2,contractorGUID);
-        stmt.setString(3,divisionGUIDin);
-        stmt.setString(4,divisionGUIDout);
-        stmt.setString(5,numDoc);
-        stmt.setString(6,dateDoc);
-        stmt.registerOutParameter(7, Types.OTHER);
+    protected void SetQueryParams()  {
+        try {
+            parameterIndex = 1;
+            getStmt().registerOutParameter(parameterIndex++, Types.INTEGER);
+            getStmt().setInt(parameterIndex++,checkListTypeId);
+            getStmt().setString(parameterIndex++,contractorGUID);
+            getStmt().setString(parameterIndex++,divisionGUIDin);
+            getStmt().setString(parameterIndex++,divisionGUIDout);
+            getStmt().setString(parameterIndex++,numDoc);
+            getStmt().setString(parameterIndex++,dateDoc);
+            getStmt().registerOutParameter(parameterIndex, Types.OTHER);
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
+
     }
 
-    @Override
-    public void Execute() throws SQLException {
+    /*@Override
+    protected void Execute() {
         super.Execute();
-        rrHeadGuid = stmt.getString(7);
+        try {
+            boolean b = getStmt().execute();
+            returnCode = getStmt().getInt(1);
 
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
+    }*/
+
+    @Override
+    protected void parseOutputVars() throws SQLException {
+        rrHeadGuid = getStmt().getString(8);
     }
 
     public String getRrHeadGuid() {

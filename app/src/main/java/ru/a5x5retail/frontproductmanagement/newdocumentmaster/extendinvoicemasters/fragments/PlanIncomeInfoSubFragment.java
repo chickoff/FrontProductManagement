@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
 import ru.a5x5retail.frontproductmanagement.ItemsRecyclerViewDecoration;
 import ru.a5x5retail.frontproductmanagement.ProdManApp;
 import ru.a5x5retail.frontproductmanagement.R;
@@ -17,34 +19,30 @@ import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerV
 import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
 import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
+import ru.a5x5retail.frontproductmanagement.base.BaseFragment;
+
 import ru.a5x5retail.frontproductmanagement.db.models.ContractorExtendedInfo;
 import ru.a5x5retail.frontproductmanagement.db.models.PlanIncome;
-import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.ExtendedContractorInfoViewModel;
-import ru.a5x5retail.frontproductmanagement.base.TestFragment;
+
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.dlgfragments.PlanIncomeSwitchDialogFragment;
+import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.fragments.presenter.PlanIncomeInfoSubPresenter;
+import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.fragments.view.IPlanIncomeInfoSubView;
 
 import static ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.creators.newinvoice.CreateNewInvoiceActivity.BASIS_OF_CREATION_ON_PP;
 
-public class PlanIncomeInfoSubFragment extends TestFragment<ExtendedContractorInfoViewModel> {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class PlanIncomeInfoSubFragment extends BaseFragment implements IPlanIncomeInfoSubView {
 
 
-
+    @InjectPresenter
+    PlanIncomeInfoSubPresenter presenter;
 
     public PlanIncomeInfoSubFragment() {
         // Required empty public constructor
     }
 
 
-    public static PlanIncomeInfoSubFragment newInstance(String param1, String param2) {
+    public static PlanIncomeInfoSubFragment newInstance() {
         PlanIncomeInfoSubFragment fragment = new PlanIncomeInfoSubFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -59,8 +57,6 @@ public class PlanIncomeInfoSubFragment extends TestFragment<ExtendedContractorIn
                              Bundle savedInstanceState) {
        View view = inflater.inflate(R.layout.fragment_plan_income_info_sub, container, false);
         initUi(view);
-        initViewModel();
-       //init(view);
        return view;
     }
 
@@ -82,9 +78,9 @@ public class PlanIncomeInfoSubFragment extends TestFragment<ExtendedContractorIn
                     }
                 })
                 .setLayout(R.layout.item_plan_income_head_def_1)
-                .setHolderFactory(new InvoiceRecyclerViewHolderFactory())
+                .setHolderFactory(new InvoiceRecyclerViewHolderFactory());
 
-        ;
+
 
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new ItemsRecyclerViewDecoration());
@@ -134,7 +130,7 @@ public class PlanIncomeInfoSubFragment extends TestFragment<ExtendedContractorIn
     }
 
     private void createInvoiceClick(PlanIncome innerItem) {
-        ContractorExtendedInfo ci = getViewModel().getContractorExtendedInfo();
+        ContractorExtendedInfo ci = presenter.getContractorExtendedInfo();
         if ((ci.edi == 0) || (ci.rpbpp == 1 || ci.ediTp == 1)) {
             ProdManApp.Activities.createNewInvoiceActivity(getActivity(),BASIS_OF_CREATION_ON_PP,null,
                     innerItem,201);
@@ -143,35 +139,14 @@ public class PlanIncomeInfoSubFragment extends TestFragment<ExtendedContractorIn
         }
     }
 
-    private void initViewModel() {
-        FragmentActivity activity = getActivity();
-        setViewModel(ViewModelProviders.of(activity).get(ExtendedContractorInfoViewModel.class));
-    }
 
-    private void updateUi() {
-        if (getViewModel().getPlanIncomeList() == null) return;
 
-        adapter.setSourceList(getViewModel().getPlanIncomeList());
+    public void updateUi() {
+        if (presenter.getPlanIncomeList() == null) return;
+
+        adapter.setSourceList(presenter.getPlanIncomeList());
         adapter.notifyDataSetChanged();
     }
-
-    @Override
-    protected void viewModelDataIsChanged() {
-        updateUi();
-    }
-
-    @Override
-    public void listenerChangedListenerRemove() {
-        //NULL
-    }
-
-    @Override
-    public void listenerChangedListenerAdded() {
-        updateUi();
-    }
-
-
-
     public class InvoiceRecyclerViewHolder extends BasicViewHolder<PlanIncome> {
 
         public InvoiceRecyclerViewHolder( View itemView) {

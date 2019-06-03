@@ -2,7 +2,6 @@ package ru.a5x5retail.frontproductmanagement.checkinglistinc;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,13 +12,12 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.sql.SQLException;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.PresenterType;
 
 import ru.a5x5retail.frontproductmanagement.R;
 import ru.a5x5retail.frontproductmanagement.base.BaseAppCompatActivity;
@@ -30,37 +28,40 @@ import ru.a5x5retail.frontproductmanagement.checkinglistinc.fragments.CheckingLi
 import ru.a5x5retail.frontproductmanagement.checkinglistinc.fragments.DateOfManufactorFragment;
 import ru.a5x5retail.frontproductmanagement.configuration.Constants;
 import ru.a5x5retail.frontproductmanagement.db.models.CodeInfo;
-import ru.a5x5retail.frontproductmanagement.dictionarygoods.document.DictionaryGoodsActivity;
+import ru.a5x5retail.frontproductmanagement.db_local.ProjectMap;
 import ru.a5x5retail.frontproductmanagement.filters.skufilter.SkuFilterActivity;
+import ru.a5x5retail.frontproductmanagement.interfaces.IReceiveScanerMessageListener;
 
 import static ru.a5x5retail.frontproductmanagement.broadcast.SystemBroadCast.SCN_CUST_EX_SCODE;
 import static ru.a5x5retail.frontproductmanagement.сheckinglist.broadcast.SystemBroadCast.SCN_CUST_ACTION_SCODE;
 
 
-public class CheckingListIncActivity extends BaseAppCompatActivity {
+public class CheckingListIncActivity extends BaseAppCompatActivity
+implements ICheckingListActivityView {
+
+    @InjectPresenter(type = PresenterType.WEAK, tag = CheckingListActivityPresenter.TAG)
+    CheckingListActivityPresenter presenter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checking_list_inc);
         init();
-        initUi();
-        initViewModel();
-        loadViewModel();
+       // initUi();
+
 
     }
 
     private BottomNavigationView bottomNavigationView;
 
-    private IReceiveScanerMessageListener receiveScanerMessageListener;
 
     @SuppressLint("RestrictedApi")
     private void init() {
 
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -69,13 +70,13 @@ public class CheckingListIncActivity extends BaseAppCompatActivity {
 
                 switch (menuItem.getItemId()) {
                     case R.id.goods_nav_item :
-                        replaceFragment(CheckingListIncPositionFragment.newInstance(),false);
+                       presenter.showPositions();
                         break;
                     case R.id.prod_date_item :
-                        replaceFragment(DateOfManufactorFragment.newInstance(),false);
+                        presenter.showManufactor();
                         break;
                     case R.id.mark_info_item :
-                        replaceFragment(CheckingListMarksFragment.newInstance(),false);
+                        presenter.showMarks();
                         break;
 
                 }
@@ -83,22 +84,22 @@ public class CheckingListIncActivity extends BaseAppCompatActivity {
             }
         });
     }
-    private void initUi() {
-
+    /*private void initUi() {
         if (isFirstStart()) {
             replaceFragment(CheckingListIncPositionFragment.newInstance(),false);
         }
-    }
+    }*/
 
-    CheckingListIncViewModel viewModel;
+   // CheckingListIncViewModel viewModel;
 
-    private void initViewModel() {
+/*    private void initViewModel() {
         viewModel = ViewModelProviders.of(this).get(CheckingListIncViewModel.class);
         if (isFirstStart()) {
-            viewModel.selectedCheckingListHead = getIntent().getParcelableExtra(Constants.PACKINGLISTHEAD_CONST);
+            viewModel.selectedCheckingListHead = ProjectMap.getCurrentCheckingListHead();
         }
-    }
+    }*/
 
+/*
     private void loadViewModel(){
         try {
             viewModel.Load();
@@ -112,6 +113,7 @@ public class CheckingListIncActivity extends BaseAppCompatActivity {
         }
 
     }
+*/
 
     private void viewFragment(TestFragment fragment) {
 
@@ -172,7 +174,7 @@ public class CheckingListIncActivity extends BaseAppCompatActivity {
                 return true;
             case R.id.action_dictionary :
                 Intent intentdict = new Intent(this, SkuFilterActivity.class);
-                intentdict.putExtra(Constants.FILTER_DATA_REQUEST_CONST,viewModel.selectedCheckingListHead.Guid);
+                intentdict.putExtra(Constants.FILTER_DATA_REQUEST_CONST,ProjectMap.getCurrentCheckingListHead().Guid);
                 startActivityForResult(intentdict,234);
                 return true;
         }
@@ -186,11 +188,7 @@ public class CheckingListIncActivity extends BaseAppCompatActivity {
             case 234 :
                 if (resultCode == Activity.RESULT_OK) {
                     CodeInfo selectedSku = data.getParcelableExtra(Constants.FILTER_DATA_RESPONSE_CONST);
-                    try {
-                        viewModel.addNewSku(selectedSku.code);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                    CheckingListIncPresenterBridge.sendSelectedSkuInfo(selectedSku);
                 }
             break;
             default:
@@ -201,15 +199,31 @@ public class CheckingListIncActivity extends BaseAppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-
     }
 
+    private IReceiveScanerMessageListener receiveScanerMessageListener;
     public void setReceiveScanerMessageListener(IReceiveScanerMessageListener receiveScanerMessageListener) {
         this.receiveScanerMessageListener = receiveScanerMessageListener;
     }
 
-    public interface IReceiveScanerMessageListener {
-     void receiveMessage(String message);
+    @Override
+    public void showPositions() {
+        replaceFragment(CheckingListIncPositionFragment.newInstance(),false);
     }
+
+    @Override
+    public void showManufactor() {
+        replaceFragment(DateOfManufactorFragment.newInstance(),false);
+    }
+
+    @Override
+    public void showMarks() {
+        replaceFragment(CheckingListMarksFragment.newInstance(),false);
+    }
+
+
+
+
 }
+
+

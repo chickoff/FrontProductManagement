@@ -16,6 +16,7 @@ public final class Constants {
         INNER_INCOME (4),
         DISCARD (5),
         PRINT_PRICE (6),
+        ASSORTMENT_CARD (7),
         SETTINGS (0);
 
 
@@ -48,8 +49,8 @@ public final class Constants {
     public enum DIALOGRESULTENUM {TRUE, FALSE ,ERROR}
 
     public static final String PWD_SI = "3860";
-    public static final String TYPEOFDOCUMENT_CONST = "TYPEOFDOCUMENT_CONST";
-    public static final String PACKINGLISTHEAD_CONST = "PACKINGLISTHEAD_CONST";
+    //public static final String TYPEOFDOCUMENT_CONST = "TYPEOFDOCUMENT_CONST";
+    //public static final String PACKINGLISTHEAD_CONST = "PACKINGLISTHEAD_CONST";
     public static final String CONTRACTOR_INFO_CONST = "CONTRACTOR_INFO_CONST";
     public static final String PLAN_INCOME_CONST = "PLAN_INCOME_CONST";
 
@@ -83,9 +84,9 @@ public final class Constants {
     }
 
     private static DocType currentDoc;
-    public static DocType getCurrentDoc() {
+   /* public static DocType getCurrentDoc() {
         return currentDoc;
-    }
+    }*/
 
     public static void setCurrentDoc(DocType currentDoc) {
         Constants.currentDoc = currentDoc;

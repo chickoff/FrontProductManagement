@@ -2,9 +2,11 @@ package ru.a5x5retail.frontproductmanagement.base;
 
 import android.support.v4.app.Fragment;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+
 import ru.a5x5retail.frontproductmanagement.base.BaseViewModel;
 
-public abstract class TestFragment<T extends BaseViewModel> extends Fragment {
+public abstract class TestFragment<T extends BaseViewModel> extends BaseFragment {
     private T viewModel;
 
     public T getViewModel() {

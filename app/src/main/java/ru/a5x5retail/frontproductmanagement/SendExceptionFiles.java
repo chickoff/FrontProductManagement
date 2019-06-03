@@ -13,6 +13,7 @@ import java.sql.SQLException;
 
 import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
 import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.create.SendExceptionFileQuery;
 
 public class SendExceptionFiles {
@@ -60,11 +61,11 @@ public class SendExceptionFiles {
             sendToDb(sb.toString());
             file.delete();
         }
+
     }
 
-    private void sendToDb(String file) throws SQLException, ClassNotFoundException {
-        MsSqlConnection con = new MsSqlConnection();
-        SendExceptionFileQuery query = new SendExceptionFileQuery(con.getConnection(), AppConfigurator.getDeviceId(ProdManApp.getAppContext()),file);
+    private void sendToDb(String fileBody) {
+        SendExceptionFileQuery query = new SendExceptionFileQuery(AppConfigurator.getDeviceId(ProdManApp.getAppContext()),fileBody);
         query.Execute();
     }
 
@@ -94,9 +95,7 @@ public class SendExceptionFiles {
         @Override
         protected Void doInBackground(Void... voids) {
             SendExceptionFiles.this.Send();
-
             return null;
         }
     }
-
 }

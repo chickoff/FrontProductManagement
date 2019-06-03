@@ -5,37 +5,68 @@ import java.sql.SQLException;
 import java.sql.Types;
 import ru.a5x5retail.frontproductmanagement.Version;
 import ru.a5x5retail.frontproductmanagement.db.models.IncomeInvoiceHead;
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class GetApkVersionApkQuery extends CallableQuery<IncomeInvoiceHead> {
+public class GetApkVersionApkQuery extends CallableQAsync {
     Version version;
 
-    public GetApkVersionApkQuery(Connection connection) {
-        super(connection);
+    public GetApkVersionApkQuery() {
+
     }
 
     @Override
     protected void SetQuery() {
-        setSqlString("? = call V_StoreTSD.dbo.GetCurrentSettings (?)");
+        setSqlString("? = call V_StoreTSD.dbo.GetCurrentSettingsByName ?, ?");
     }
 
     @Override
-    protected void SetQueryParams() throws SQLException {
-        stmt.registerOutParameter(1, Types.OTHER);
-        stmt.setString(2, "VersionApk_FPM");
+    protected void SetQueryParams()  {
+
+        try {
+            parameterIndex = 1;
+            getStmt().registerOutParameter(parameterIndex++, Types.OTHER);
+            getStmt().setString(parameterIndex++, "VersionApk_FPM");
+            getStmt().registerOutParameter(parameterIndex, Types.OTHER);
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
+
     }
 
-    @Override
-    public void Execute() throws SQLException {
+  /*  @Override
+    protected void Execute() {
         super.Execute();
-        String strVersion = stmt.getString(1);
-        String[] splitDbVersion = strVersion.split("\\.");
-        int
-                realise = Integer.parseInt(splitDbVersion[0] == "" ? "-1"
-                :splitDbVersion[0]),
-                build = Integer.parseInt(splitDbVersion[1] == "" ? "-1"
-                        :splitDbVersion[1]);
-        version = new Version(realise,build);
+        try {
+            boolean rex = getStmt().execute();
+            String strVersion = null;
+            strVersion = getStmt().getString(3);
+            String[] splitDbVersion = strVersion.split("\\.");
+            int
+                    realise = Integer.parseInt(splitDbVersion[0] == "" ? "-1"
+                    : splitDbVersion[0]),
+                    build = Integer.parseInt(splitDbVersion[1] == "" ? "-1"
+                            : splitDbVersion[1]);
+            version = new Version(realise, build);
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
+    }*/
+
+    @Override
+    protected void parseOutputVars() throws SQLException {
+            String strVersion = null;
+            strVersion = getStmt().getString(3);
+            String[] splitDbVersion = strVersion.split("\\.");
+            int
+                    realise = Integer.parseInt(splitDbVersion[0] == "" ? "-1"
+                    : splitDbVersion[0]),
+                    build = Integer.parseInt(splitDbVersion[1] == "" ? "-1"
+                            : splitDbVersion[1]);
+            version = new Version(realise, build);
+
     }
 
     public Version getDbVersion() {

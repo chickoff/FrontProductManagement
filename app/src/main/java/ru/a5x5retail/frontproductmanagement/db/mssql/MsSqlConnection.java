@@ -40,11 +40,14 @@ public class MsSqlConnection {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
+           // Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(getSqlConnectionString());
+
         }
 
     private String getSqlConnectionString(){
-        return  "jdbc:jtds:sqlserver://" + server + ";databaseName=" + database + ";user=" + user + ";password=" + password;
+       return  "jdbc:jtds:sqlserver://" + server + ";databaseName=" + database + ";user=" + user + ";password="
+               + password + ";TDS=8.0" + ";prepareSQL=3";
     }
 
     public Connection getConnection() {

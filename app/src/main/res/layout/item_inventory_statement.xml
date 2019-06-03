@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="5dp"
+    android:background="@drawable/item_recyclerview_background"
+    >
+    <TextView
+        android:id="@+id/text_view_1"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:hint="номер инв"
+
+        />
+    <TextView
+        android:id="@+id/text_view_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="15dp"
+        android:hint="дата"
+        android:textColor="@color/item_recyclerview_textview_color"
+        android:layout_toRightOf="@+id/text_view_1"
+    />
+    <TextView
+        android:id="@+id/text_view_3"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:hint="тип(ч/п)"
+        android:textColor="@color/item_recyclerview_textview_color"
+        android:layout_below="@+id/text_view_1"
+
+        />
+
+    <TextView
+        android:id="@+id/text_view_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="место хранения"
+        android:textColor="@color/item_recyclerview_textview_color"
+        android:layout_below="@+id/text_view_3"
+        />
+
+    <TextView
+        android:id="@+id/text_view_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="изменения"
+        android:textColor="@color/item_recyclerview_textview_color"
+        android:layout_below="@+id/text_view_4"
+        />
+
+<!--    <ImageView
+        android:id="@+id/image_view_1"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/ic_summah"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/text_view_2"
+        />
+
+    <TextView
+        android:id="@+id/text_view_3"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Это сумма"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/item_recyclerview_textview_color"
+        android:layout_below="@+id/text_view_2"
+        android:layout_toRightOf="@+id/image_view_1"
+
+        />
+
+    <ImageView
+        android:id="@+id/image_view_2"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/ic_vat"
+        android:layout_marginStart="10dp"
+        android:layout_below="@+id/text_view_2"
+        android:layout_toRightOf="@+id/text_view_3"
+        />
+
+    <TextView
+        android:id="@+id/text_view_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Это НДС"
+        android:textColor="@color/item_recyclerview_textview_color"
+        android:layout_marginStart="10dp"
+    android:layout_below="@+id/text_view_2"
+        android:layout_toRightOf="@+id/image_view_2"
+        />-->
+
+</RelativeLayout>
+
+
+  <!-- <android.support.constraint.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_marginLeft="2dp"
+            android:paddingLeft="15dp"
+            android:background="@drawable/item_recyclerview_background"
+    >
+
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:id="@+id/nameDocTextView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/item_recyclerview_textview_color"
+
+        />
+
+    <TextView
+        android:id="@+id/statusTextView"
+        android:layout_width="97dp"
+        android:layout_height="21dp"
+        android:text="TextView"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameDocTextView"
+        android:textColor="@color/item_recyclerview_textview_color"/>
+
+    &lt;!&ndash;<View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_BottomLineHeight"
+            android:background="@color/recyclerViewItemBottomLineColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/view"/>&ndash;&gt;
+
+
+</android.support.constraint.ConstraintLayout>-->

@@ -6,9 +6,10 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class EditCheckingListPositionDateQuery extends CallableQuery {
+public class EditCheckingListPositionDateQuery extends CallableQAsync {
 
     /*
     *
@@ -27,8 +28,7 @@ public class EditCheckingListPositionDateQuery extends CallableQuery {
 
 
 
-    public EditCheckingListPositionDateQuery(Connection connection, String checkingListHeadGuid, String positionGuid, Date date) {
-        super(connection);
+    public EditCheckingListPositionDateQuery(String checkingListHeadGuid, String positionGuid, Date date) {
         this.checkingListHeadGuid = checkingListHeadGuid;
         this.positionGuid = positionGuid;
         this.date = date;
@@ -37,22 +37,34 @@ public class EditCheckingListPositionDateQuery extends CallableQuery {
 
     @Override
     protected void SetQuery() {
-        setSqlString("call V_StoreTSD.dbo.CheckingListIncPositionEditDate (?, ?, ?)");
+        setSqlString("? = call V_StoreTSD.dbo.CheckingListIncPositionEditDate (?, ?, ?)");
     }
 
     @Override
-    protected void SetQueryParams() throws SQLException {
-        stmt.setString(1,checkingListHeadGuid);
-        stmt.setString(2,positionGuid);
-        java.sql.Date d = new java.sql.Date(date.getTime());
-        stmt.setDate(3, d);
+    protected void SetQueryParams() {
+        try {
+            parameterIndex = 1;
+            getStmt().registerOutParameter(parameterIndex++, Types.INTEGER);
+            getStmt().setString(parameterIndex++,checkingListHeadGuid);
+            getStmt().setString(parameterIndex++,positionGuid);
+            java.sql.Date d = new java.sql.Date(date.getTime());
+            getStmt().setDate(parameterIndex++, d);
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public void Execute() throws SQLException {
+  /*  @Override
+    protected void Execute() {
         super.Execute();
-        //newQty = stmt.getBigDecimal(5).setScale(3);
-    }
+        try {
+            getStmt().execute();
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }        //newQty = getStmt().getBigDecimal(5).setScale(3);
+    }*/
 
    /* public BigDecimal getNewQty() {
         return newQty;

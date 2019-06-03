@@ -4,34 +4,48 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
+import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
 import ru.a5x5retail.frontproductmanagement.interfaces.IQuery;
 
-public class BaseQuery implements IQuery {
+public class BaseQuery {
     private String sqlString;
     private boolean isResultSetEnable = false;
-    private SQLException sqlException;
+    private Exception exception;
     public int returnCode;
     public String eventMessage;
     Connection connection = null;
     private ResultSet rs;
 
-    public BaseQuery(Connection connection) {
-        this.connection = connection;
+
+    public BaseQuery() throws SQLException, ClassNotFoundException {
+
+
+    }
+
+    protected Connection getConnection() {
+        Connection c = null;
+        while (c ==null) {
+            try {
+                c = new MsSqlConnection().getConnection();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return c;
     }
 
     public String getSqlString() {
         return sqlString;
     }
+
     public void setSqlString(String sqlString) {
         this.sqlString = sqlString;
     }
-    @Override
-    public void Execute() throws SQLException {
+
+
+    protected void Execute() throws SQLException {
 
     }
-
-
-
 
     public boolean isResultSetEnable() {
         return isResultSetEnable;
@@ -57,11 +71,11 @@ public class BaseQuery implements IQuery {
         this.returnCode = returnCode;
     }
 
-    public SQLException getSqlException() {
-        return sqlException;
+    public Exception getException() {
+        return exception;
     }
 
-    protected void setSqlException(SQLException sqlException) {
-        this.sqlException = sqlException;
+    protected void setException(Exception exception) {
+        this.exception = exception;
     }
 }

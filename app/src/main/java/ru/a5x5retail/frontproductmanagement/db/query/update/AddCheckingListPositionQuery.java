@@ -5,9 +5,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class AddCheckingListPositionQuery extends CallableQuery {
+public class AddCheckingListPositionQuery extends CallableQAsync {
 
     /*
     *
@@ -25,8 +26,8 @@ public class AddCheckingListPositionQuery extends CallableQuery {
     private int sku;
 
 
-    public AddCheckingListPositionQuery(Connection connection, String checkingListHeadGuid, int sku) {
-        super(connection);
+    public AddCheckingListPositionQuery( String checkingListHeadGuid, int sku) {
+
         this.checkingListHeadGuid = checkingListHeadGuid;
         this.sku = sku;
 
@@ -34,19 +35,28 @@ public class AddCheckingListPositionQuery extends CallableQuery {
 
     @Override
     protected void SetQuery() {
-        setSqlString("call V_StoreTSD.dbo.CheckingListIncPositionAdd (?, ?)");
+        setSqlString("? = call V_StoreTSD.dbo.CheckingListIncPositionAdd (?, ?)");
     }
 
     @Override
     protected void SetQueryParams() throws SQLException {
-        stmt.setString(1,checkingListHeadGuid);
-        stmt.setInt(2,sku);
-
+            parameterIndex = 1;
+            getStmt().registerOutParameter(parameterIndex++, Types.INTEGER);
+            getStmt().setString(parameterIndex++,checkingListHeadGuid);
+            getStmt().setInt(parameterIndex++,sku);
     }
 
-    @Override
-    public void Execute() throws SQLException {
+   /* @Override
+    protected void Execute() {
         super.Execute();
+        try {
+            getStmt().execute();
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
 
-    }
+    }*/
+
+
 }

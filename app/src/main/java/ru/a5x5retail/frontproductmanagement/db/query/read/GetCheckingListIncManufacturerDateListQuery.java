@@ -8,14 +8,15 @@ import java.util.List;
 
 import ru.a5x5retail.frontproductmanagement.db.converters.CheckingListManufacturerDateConverter;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListManufacturerDate;
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class GetCheckingListIncManufacturerDateListQuery extends CallableQuery<CheckingListManufacturerDate> {
+public class GetCheckingListIncManufacturerDateListQuery extends CallableQAsync {
 
     private String checkingListHeadGuid;
     private List<CheckingListManufacturerDate> list;
-    public GetCheckingListIncManufacturerDateListQuery(Connection connection, String checkingListHeadGuid) {
-        super(connection);
+    public GetCheckingListIncManufacturerDateListQuery(String checkingListHeadGuid) {
+
         this.checkingListHeadGuid = checkingListHeadGuid;
         list = new ArrayList<>();
     }
@@ -26,27 +27,49 @@ public class GetCheckingListIncManufacturerDateListQuery extends CallableQuery<C
     }
 
     @Override
-    protected void SetQueryParams() throws SQLException {
-        stmt.registerOutParameter(1, Types.INTEGER);
-        stmt.setString(2,checkingListHeadGuid);
+    protected void SetQueryParams() {
+        try {
+            parameterIndex = 1;
+            getStmt().registerOutParameter(parameterIndex++, Types.INTEGER);
+            getStmt().setString(parameterIndex++,checkingListHeadGuid);
+        } catch (Exception e) {setException(e);
+            e.printStackTrace();
+        }
+
 
     }
 
-    @Override
-    public void Execute() throws SQLException {
+ /*   @Override
+    protected void Execute() {
             super.Execute();
+        try {
+            boolean b = getStmt().execute();
+            setResultSet(getStmt().getResultSet());
             CheckingListManufacturerDateConverter converter = new CheckingListManufacturerDateConverter();
             while (getResultSet().next()) {
                 CheckingListManufacturerDate head = new CheckingListManufacturerDate();
-                converter.Convert(getResultSet(),head);
+                converter.Convert(getResultSet(), head);
                 list.add(head);
             }
-            stmt.getMoreResults();
-            setReturnCode((int)stmt.getObject(1));
+            getStmt().getMoreResults();
+            setReturnCode((int) getStmt().getObject(1));
             int r = getReturnCode();
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
+    }
+*/
+    @Override
+    protected void parseResultSet() throws SQLException {
+        CheckingListManufacturerDateConverter converter = new CheckingListManufacturerDateConverter();
+        while (getResultSet().next()) {
+            CheckingListManufacturerDate head = new CheckingListManufacturerDate();
+            converter.Convert(getResultSet(), head);
+            list.add(head);
+        }
     }
 
-    @Override
     public List<CheckingListManufacturerDate> getList() {
        return list;
     }

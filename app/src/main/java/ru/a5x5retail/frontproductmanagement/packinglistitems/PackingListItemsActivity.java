@@ -10,12 +10,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
 import java.sql.SQLException;
+import java.util.UUID;
 
 import ru.a5x5retail.frontproductmanagement.DocType;
 
@@ -25,20 +29,27 @@ import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerV
 import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
 import ru.a5x5retail.frontproductmanagement.base.BaseAppCompatActivity;
+import ru.a5x5retail.frontproductmanagement.base.BaseViewModel;
 import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
 import ru.a5x5retail.frontproductmanagement.configuration.Constants;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListHead;
+import ru.a5x5retail.frontproductmanagement.db_local.ProjectMap;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.ExtendInvoiceMasterActivity;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.invoicemasters.decommissionspoilmaster.DecommissionSpoilMasterActivity;
 
-import ru.a5x5retail.frontproductmanagement.packinglistitems.viewmodel.PackingListItemsViewModel;
-import ru.a5x5retail.frontproductmanagement.interfaces.IRecyclerViewItemClick;
+
+
 
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.inventorymaster.InventoryMasterActivity;
 import ru.a5x5retail.frontproductmanagement.R;
 
 public class PackingListItemsActivity extends BaseAppCompatActivity
-        implements IRecyclerViewItemClick<CheckingListHead> {
+        implements
+
+        IPackingListItemsView {
+
+    @InjectPresenter
+    PackingListItemsPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +69,17 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
     private BasicRecyclerViewAdapter<CheckingListHead> adapter ;
     private FloatingActionButton fab;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private PackingListItemsViewModel viewModel;
 
     @SuppressLint("RestrictedApi")
     private void init() {
 
-        if (Constants.getCurrentDoc() == null) {
+        if (ProjectMap.getCurrentTypeDoc() == null) {
             throw new NullPointerException("Object currentDoc not initialized!");
+        }
+
+        DocType td = ProjectMap.getCurrentTypeDoc();
+        if (td != null) {
+            this.setTitle(td.getShortName());
         }
 
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -80,7 +95,6 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
 
         docItemsRecyclerView = findViewById(R.id.DocItemsRecyclerView);
 
-        initViewModel();
         initRecyclerView();
 
         mSwipeRefreshLayout = findViewById(R.id.swipe_container);
@@ -88,7 +102,7 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
             @Override
             public void onRefresh() {
                 mSwipeRefreshLayout.setRefreshing(false);
-                reLoadViewModel();
+                presenter.load();
             }
         });
     }
@@ -99,31 +113,63 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
         CheckingListHeadViewHolderFactory factory = new CheckingListHeadViewHolderFactory();
         adapter.setHolderFactory(factory);
         adapter.setLayout(R.layout.item_packing_list_items_rv);
-        adapter.setSourceList(viewModel.getHeadList());
+
         adapter.setShortClickListener(new IRecyclerViewItemShortClickListener<CheckingListHead>() {
             @Override
             public void OnShortClick(int pos, View view, CheckingListHead innerItem) {
+
+
+
+              /*  for (int i =0; i < 100; i++){
+                    try {
+                        ProjectMap.setCurrentCheckListHead(innerItem);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        CheckingListHead ccc = ProjectMap.getCurrentCheckingListHead();
+                        Log.e("sss",ccc.Guid) ;
+                        UUID bb = UUID.fromString(innerItem.Guid);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }*/
+
+
+
+                ProjectMap.setCurrentCheckListHead(innerItem);
+
                 ProdManApp.Activities
                         .createPackingListPreviewActivity
-                                (PackingListItemsActivity.this,
-                                        innerItem);
+                                (PackingListItemsActivity.this);
             }
         });
         docItemsRecyclerView.setAdapter(adapter);
         docItemsRecyclerView.addItemDecoration(new PackingListItemsRvDecoration());
     }
 
-    private void initViewModel() {
+   /* private void initViewModel() {
         viewModel = ViewModelProviders.of(this).get(PackingListItemsViewModel.class);
-        DocType td = Constants.getCurrentDoc();
+
+        viewModel.addDataChangedListener(new BaseViewModel.IDataChangedListener() {
+            @Override
+            public void dataIsChanged() {
+                adapter.setSourceList(viewModel.getHeadList());
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        DocType td = ProjectMap.getCurrentTypeDoc();
         if (td != null) {
             this.setTitle(td.getShortName());
         }
 
-        loadViewModel();
-    }
+       // loadViewModel();
+    }*/
 
-    private void loadViewModel() {
+ /*   private void loadViewModel() {
         if (viewModel.getState() == Constants.ViewModelStateEnum.LOADED) {
             return;
         }
@@ -132,11 +178,10 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
 
     private void reLoadViewModel() {
         loadVm();
-        adapter.setSourceList(viewModel.getHeadList());
-        docItemsRecyclerView.getAdapter().notifyDataSetChanged();
-    }
 
-    private void loadVm(){
+    }*/
+
+ /*   private void loadVm(){
         try {
             viewModel.Load();
         } catch (SQLException e) {
@@ -145,31 +190,40 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }*/
+
+
+
+
+    @Override
+    public void updateView() {
+        adapter.setSourceList(presenter.getHeadList());
+        adapter.notifyDataSetChanged();
     }
+
 
 
     @SuppressLint("HardwareIds")
     private void createIntent() {
 
-
        /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             return;
         }*/
-        switch (Constants.getCurrentDoc().getTypeOfDocument()){
+        switch (ProjectMap.getCurrentTypeDoc().getTypeOfDocument()){
             case PARTIAL_INVENTORY:
-                CreateIntent(InventoryMasterActivity.class,Constants.getCurrentDoc().getTypeOfDocument());
+                CreateIntent(InventoryMasterActivity.class,ProjectMap.getCurrentTypeDoc().getTypeOfDocument());
                 break;
 
             case INNER_INCOME:
-                CreateIntent(ExtendInvoiceMasterActivity.class,Constants.getCurrentDoc().getTypeOfDocument(),1);
+                CreateIntent(ExtendInvoiceMasterActivity.class,ProjectMap.getCurrentTypeDoc().getTypeOfDocument(),1);
                 break;
 
             case OUTER_INCOME:
-                CreateIntent(ExtendInvoiceMasterActivity.class,Constants.getCurrentDoc().getTypeOfDocument(),1);
+                CreateIntent(ExtendInvoiceMasterActivity.class,ProjectMap.getCurrentTypeDoc().getTypeOfDocument(),1);
                 break;
 
             case DISCARD:
-                CreateIntent(DecommissionSpoilMasterActivity.class,Constants.getCurrentDoc().getTypeOfDocument());
+                CreateIntent(DecommissionSpoilMasterActivity.class,ProjectMap.getCurrentTypeDoc().getTypeOfDocument());
                 break;
         }
     }
@@ -194,7 +248,7 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.itemUpd :
-                reLoadViewModel();
+            presenter.load();
                 return true;
             case android.R.id.home :
                 finish();
@@ -209,22 +263,10 @@ public class PackingListItemsActivity extends BaseAppCompatActivity
     }
 
     @Override
-    public void OnClick(int pos, CheckingListHead innerItem) {
-        ProdManApp.Activities
-                .createPackingListPreviewActivity(this,innerItem);
-    }
-
-    @Override
-    public void OnCancel() {
-
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        reLoadViewModel();
+        presenter.load();
     }
-
 
     public class CheckingListHeadViewHolder extends BasicViewHolder<CheckingListHead> {
 

@@ -36,22 +36,19 @@ public class CheckListRepository {
         getCheckList().setHead(checkingListHead);
     }
 
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-        MsSqlConnection con = new MsSqlConnection();
-        return con.getConnection();
-    }
+
 
     private void getDbPositions() throws SQLException, ClassNotFoundException {
-        GetCheckingListIncPositionListQuery q1 = new GetCheckingListIncPositionListQuery(getConnection(),getCheckList().getHead().Guid);
-        GetCheckingListIncControlQtyListQuery q2 = new GetCheckingListIncControlQtyListQuery(getConnection(),getCheckList().getHead().Guid);
-        q1.Execute();
-        q2.Execute();
+        GetCheckingListIncPositionListQuery q1 = new GetCheckingListIncPositionListQuery(getCheckList().getHead().Guid);
+        GetCheckingListIncControlQtyListQuery q2 = new GetCheckingListIncControlQtyListQuery(getCheckList().getHead().Guid);
+      //  q1.Execute();
+       // q2.Execute();
         getCheckList().setCheckListPositionList(new CheckListPositionList(q1.getList(),q2.getList()));
     }
 
     private void getDbMarks() throws SQLException, ClassNotFoundException {
-        GetCheckingListIncMarkListQuery q1 = new GetCheckingListIncMarkListQuery(getConnection(),getCheckList().getHead().Guid);
-        q1.Execute();
+        GetCheckingListIncMarkListQuery q1 = new GetCheckingListIncMarkListQuery(getCheckList().getHead().Guid);
+       // q1.Execute();
 
         getCheckList().setCheckListMarkList(new CheckListMarkList(q1.getList()));
     }
@@ -63,8 +60,8 @@ public class CheckListRepository {
 
     public void addQty(CheckingListPosition position, BigDecimal qty, int operationType) throws SQLException, ClassNotFoundException {
         EditCheckingListPositionQtyQuery qtyQuery =
-                new EditCheckingListPositionQtyQuery(getConnection(),getCheckList().getHead().Guid, position.guid, qty,operationType);
-        qtyQuery.Execute();
+                new EditCheckingListPositionQtyQuery(getCheckList().getHead().Guid, position.guid, qty,operationType);
+       // qtyQuery.Execute();
         if (operationType == 1) {
             position.qtyUser = position.qtyUser.add(qty).setScale(3);
         } else {
@@ -80,8 +77,8 @@ public class CheckListRepository {
 
     public void addDate(CheckingListPosition position, Date date) throws SQLException, ClassNotFoundException {
         EditCheckingListPositionDateQuery query =
-                new EditCheckingListPositionDateQuery(getConnection(),getCheckList().getHead().Guid, position.guid,date);
-        query.Execute();
+                new EditCheckingListPositionDateQuery(getCheckList().getHead().Guid, position.guid,date);
+       // query.Execute();
         getDbPositions();
 
         //onDataChanged();
@@ -89,8 +86,8 @@ public class CheckListRepository {
 
     public void addNewSku(int sku) throws SQLException, ClassNotFoundException {
 
-        AddCheckingListPositionQuery query = new AddCheckingListPositionQuery(getConnection(),getCheckList().getHead().Guid,sku);
-        query.Execute();
+        AddCheckingListPositionQuery query = new AddCheckingListPositionQuery(getCheckList().getHead().Guid,sku);
+       // query.Execute();
         getDbPositions();
 
         //onDataChanged();

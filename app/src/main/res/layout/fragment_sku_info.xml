@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".assortmentcard.SkuInfoFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+
+    <!--<TextView
+        android:id="@+id/text_view_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Наименование:"
+        />-->
+    <TextView
+        android:id="@+id/text_view_1"
+        android:textColor="#000"
+        android:textSize="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:hint="нет данных"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        />
+
+
+
+    <TextView
+        android:id="@+id/text_view_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Код:"
+        android:layout_below="@+id/text_view_1"
+        />
+    <TextView
+        android:id="@+id/text_view_4"
+        android:textColor="#000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/text_view_1"
+        android:layout_toRightOf="@+id/text_view_3"
+        android:hint="нет данных"
+        />
+
+
+    <TextView
+        android:id="@+id/text_view_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ед. изм."
+        android:layout_below="@+id/text_view_3"
+        />
+    <TextView
+        android:id="@+id/text_view_6"
+        android:textColor="#000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:hint="нет данных"
+        android:layout_below="@+id/text_view_3"
+        android:layout_toRightOf="@+id/text_view_5"
+        />
+
+
+
+    <TextView
+        android:id="@+id/text_view_7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Остаток:"
+        android:layout_below="@+id/text_view_5"/>
+    <TextView
+        android:id="@+id/text_view_8"
+        android:textColor="#000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:hint="нет данных"
+        android:layout_below="@+id/text_view_5"
+        android:layout_toRightOf="@+id/text_view_7"/>
+
+
+
+    <TextView
+        android:id="@+id/text_view_9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Рег. цена:"
+        android:layout_below="@+id/text_view_7"/>
+    <TextView
+        android:id="@+id/text_view_10"
+        android:textColor="#000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:hint="нет данных"
+        android:layout_below="@+id/text_view_7"
+        android:layout_toRightOf="@+id/text_view_9"/>
+
+
+
+    <TextView
+        android:id="@+id/text_view_11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Цена на кассе:"
+        android:layout_below="@+id/text_view_9"
+        />
+    <TextView
+        android:id="@+id/text_view_12"
+        android:textColor="#000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:hint="нет данных"
+        android:layout_below="@+id/text_view_9"
+        android:layout_toRightOf="@+id/text_view_11"/>
+
+
+</RelativeLayout>

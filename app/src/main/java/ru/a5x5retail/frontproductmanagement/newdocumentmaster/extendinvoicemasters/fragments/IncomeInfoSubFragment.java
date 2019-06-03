@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
 import java.sql.SQLException;
 
 import ru.a5x5retail.frontproductmanagement.ItemsRecyclerViewDecoration;
@@ -25,37 +27,31 @@ import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerV
 import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
 
+import ru.a5x5retail.frontproductmanagement.base.BaseFragment;
 import ru.a5x5retail.frontproductmanagement.db.models.ContractorExtendedInfo;
 import ru.a5x5retail.frontproductmanagement.db.models.IncomeInvoiceHead;
-import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.ExtendedContractorInfoViewModel;
+
 import ru.a5x5retail.frontproductmanagement.base.TestFragment;
 import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.dlgfragments.InvoiceSwitchDialogFragment;
+import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.fragments.presenter.IncomeInfoSubPresenter;
+import ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.fragments.view.IIncomeInfoSubView;
 
 import static ru.a5x5retail.frontproductmanagement.newdocumentmaster.extendinvoicemasters.creators.newinvoice.CreateNewInvoiceActivity.BASIS_OF_CREATION_NEW;
 
 
-public class IncomeInfoSubFragment extends TestFragment<ExtendedContractorInfoViewModel> {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class IncomeInfoSubFragment extends BaseFragment implements IIncomeInfoSubView {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
+    @InjectPresenter
+    IncomeInfoSubPresenter presenter;
 
     public IncomeInfoSubFragment() {
         // Required empty public constructor
     }
 
 
-    public static IncomeInfoSubFragment newInstance(String param1, String param2) {
+    public static IncomeInfoSubFragment newInstance() {
         IncomeInfoSubFragment fragment = new IncomeInfoSubFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -94,9 +90,7 @@ public class IncomeInfoSubFragment extends TestFragment<ExtendedContractorInfoVi
                     }
                 })
                 .setLayout(R.layout.item_invoice_head_def_2)
-                .setHolderFactory(new InvoiceRecyclerViewHolderFactory())
-                .setSourceList(getViewModel().getInvoiceHeadList());
-
+                .setHolderFactory(new InvoiceRecyclerViewHolderFactory());
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new ItemsRecyclerViewDecoration());
 
@@ -112,7 +106,7 @@ public class IncomeInfoSubFragment extends TestFragment<ExtendedContractorInfoVi
     private void fabOnClick() {
 
         ProdManApp.Activities.createNewInvoiceActivity(getActivity(),BASIS_OF_CREATION_NEW,
-                getViewModel().getContractorExtendedInfo(),null,201);
+                presenter.getContractorExtendedInfo(),null,201);
 
 
     }
@@ -144,52 +138,34 @@ public class IncomeInfoSubFragment extends TestFragment<ExtendedContractorInfoVi
     }
 
     private void createCheckList(IncomeInvoiceHead innerItem) {
-        try {
-            getViewModel().CreateNewCheckList(innerItem);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-       getActivity().finish();
+        presenter.createNewCheckList(innerItem);
+        getActivity().finish();
     }
 
     private void initViewModel() {
         FragmentActivity activity = getActivity();
-        setViewModel( ViewModelProviders.of(activity).get(ExtendedContractorInfoViewModel.class));
+        //setViewModel( ViewModelProviders.of(activity).get(ExtendedContractorInfoViewModel.class));
 
     }
 
-    @Override
-    protected void viewModelDataIsChanged() {
-        updateUi();
-    }
+
 
     @SuppressLint("RestrictedApi")
-    private void updateUi() {
-        ContractorExtendedInfo ci = getViewModel().getContractorExtendedInfo();
-        if (ci == null) return;
-        if (getViewModel().getInvoiceHeadList() == null) return;
+    public void updateUi() {
+        ContractorExtendedInfo ci = presenter.getContractorExtendedInfo();
 
+        if (ci == null) return;
+        if (presenter.getInvoiceHeadList() == null) return;
         if (ci.edi == 0 || ci.ediTp == 1 || ci.rpbpp == 1) {
             fab.setVisibility(View.VISIBLE);
         } else {
             fab.setVisibility(View.INVISIBLE);   // тут нужен инвизибл !!!
         }
-
-        adapter.setSourceList(getViewModel().getInvoiceHeadList());
+        adapter.setSourceList(presenter.getInvoiceHeadList());
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void listenerChangedListenerRemove() {
 
-    }
-
-    @Override
-    public void listenerChangedListenerAdded() {
-
-        updateUi();
-    }
 
     public class InvoiceRecyclerViewHolder extends BasicViewHolder<IncomeInvoiceHead> {
 

@@ -1,20 +1,20 @@
 package ru.a5x5retail.frontproductmanagement.checkinglistinc.fragments;
 
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.sql.SQLException;
-import java.text.DecimalFormat;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.PresenterType;
+
 import java.util.Date;
+import java.util.List;
 
 import ru.a5x5retail.frontproductmanagement.ItemsRecyclerViewDecoration;
 import ru.a5x5retail.frontproductmanagement.R;
@@ -22,8 +22,8 @@ import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
 import ru.a5x5retail.frontproductmanagement.adapters.abstractadapters.IRecyclerViewItemShortClickListener;
 import ru.a5x5retail.frontproductmanagement.adapters.viewadapters.BasicRecyclerViewAdapter;
 import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
-import ru.a5x5retail.frontproductmanagement.base.TestFragment;
-import ru.a5x5retail.frontproductmanagement.checkinglistinc.CheckingListIncViewModel;
+import ru.a5x5retail.frontproductmanagement.base.BaseFragment;
+
 import ru.a5x5retail.frontproductmanagement.checkinglistinc.dialogs.CheckingListCangeDateOfManufactorDialogFragment;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListPosition;
 
@@ -32,15 +32,22 @@ import ru.a5x5retail.frontproductmanagement.db.models.CheckingListPosition;
  * Use the {@link DateOfManufactorFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DateOfManufactorFragment extends TestFragment<CheckingListIncViewModel> {
+public class DateOfManufactorFragment  extends BaseFragment implements ICheckingListIncView {
     public DateOfManufactorFragment() {
         // Required empty public constructor
     }
+
+    /*************************************************************************************************************************************************/
+
+    @InjectPresenter(type = PresenterType.WEAK, tag = CheckingListIncPresenter.TAG)
+    CheckingListIncPresenter presenter;
 
     public static DateOfManufactorFragment newInstance() {
         DateOfManufactorFragment fragment = new DateOfManufactorFragment();
         return fragment;
     }
+
+    /*************************************************************************************************************************************************/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,15 +55,18 @@ public class DateOfManufactorFragment extends TestFragment<CheckingListIncViewMo
 
     }
 
+    /*************************************************************************************************************************************************/
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_date_of_manufactor, container, false);
         initUi(view);
-        initViewModel();
         return view;
 
     }
+
+    /*************************************************************************************************************************************************/
 
     private CheckingListPositionRecyclerAdapter adapter;
     private RecyclerView recyclerView;
@@ -84,16 +94,29 @@ public class DateOfManufactorFragment extends TestFragment<CheckingListIncViewMo
         recyclerView.addItemDecoration(new ItemsRecyclerViewDecoration());
     }
 
-    private void initViewModel() {
-        FragmentActivity activity = getActivity();
-        setViewModel( ViewModelProviders.of(activity).get(CheckingListIncViewModel.class));
-    }
+    /*************************************************************************************************************************************************/
 
-    private void updateUi() {
-        if (getViewModel() == null) return;
-        adapter.setSourceList(getViewModel().getPositionListForDateOfManufacturer());
+    @Override
+    public void updateUi() {
+        adapter.setSourceList(presenter.getPositionListForDateOfManufacturer());
         adapter.notifyDataSetChanged();
     }
+
+    /*************************************************************************************************************************************************/
+
+    @Override
+    public void openEditableDialog(CheckingListPosition position) {
+
+    }
+
+    /*************************************************************************************************************************************************/
+
+    @Override
+    public void openSelectiblePositionDialog(List<CheckingListPosition> checkingListPositionList) {
+
+    }
+
+    /*************************************************************************************************************************************************/
 
     private void showDialog(CheckingListPosition source) {
 
@@ -102,11 +125,7 @@ public class DateOfManufactorFragment extends TestFragment<CheckingListIncViewMo
         dialog.setNewDateListener(new CheckingListCangeDateOfManufactorDialogFragment.INewDateListener() {
             @Override
             public void onNewDate(CheckingListPosition position, Date date) {
-                try {
-                    getViewModel().addDate(position,date);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                presenter.addDate(position,date);
             }
 
             @Override
@@ -118,22 +137,7 @@ public class DateOfManufactorFragment extends TestFragment<CheckingListIncViewMo
         dialog.show(getFragmentManager(),"sfds");
     }
 
-
-    @Override
-    protected void viewModelDataIsChanged() {
-        updateUi();
-    }
-
-    @Override
-    public void listenerChangedListenerRemove() {
-
-    }
-
-    @Override
-    public void listenerChangedListenerAdded() {
-        updateUi();
-    }
-
+    /*************************************************************************************************************************************************/
 
     public class CheckingListPositionRecyclerAdapter extends BasicRecyclerViewAdapter<CheckingListPosition> {
 
@@ -158,6 +162,7 @@ public class DateOfManufactorFragment extends TestFragment<CheckingListIncViewMo
         }
     }
 
+    /*************************************************************************************************************************************************/
 
     public class DateOfManufactorViewHolder extends BasicViewHolder<CheckingListPosition> {
 

@@ -17,19 +17,37 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".diag.FullDiagActivity">
+        tools:ignore="GoogleAppIndexingWarning"
+        >
+        <activity android:name=".inventories.InventoriesActivity"
+                android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".assortmentcard.AssortmentCardActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".diag.FullDiagActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
 
-        <!-- <intent-filter>
+            <!--
+         <intent-filter>
              <action android:name="android.intent.action.MAIN" />
              <category android:name="android.intent.category.LAUNCHER" />
-         </intent-filter>-->
+         </intent-filter>
+            -->
 
         </activity>
-        <activity android:name=".filters.skufilter.SkuFilterActivity" />
+        <activity
+            android:name=".filters.skufilter.SkuFilterActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".checkinglistinc.CheckingListIncActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
 
             <!--
          <intent-filter>
@@ -40,8 +58,12 @@
         </activity>
         <activity
             android:name=".newdocumentmaster.extendinvoicemasters.creators.newinvoice.CreateNewInvoiceActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity android:name=".newdocumentmaster.extendinvoicemasters.ExtendInvoiceMasterActivity">
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".newdocumentmaster.extendinvoicemasters.ExtendInvoiceMasterActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
 
             <!--
            <intent-filter>
@@ -52,33 +74,42 @@
         </activity>
         <activity
             android:name=".filters.groupfilter.FilterActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
 
             <!--
-            <intent-filter>
+                <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             -->
+
         </activity>
         <activity
             android:name=".updateapplication.UpdateApplicationActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="Обновление" />
+            android:label="Обновление"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".invoicemasters.InvoiceMasterActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".newdocumentmaster.invoicemasters.decommissionspoilmaster.DecommissionSpoilMasterActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".settings.SettingsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Настройки"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -88,20 +119,31 @@
         </activity>
         <activity
             android:name=".packinglistitems.PackingListItemsActivity"
-            android:label="Инв. Описи" />
+            android:label="Инв. Описи"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".newdocumentmaster.inventorymaster.InventoryMasterActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Новая инвентаризация"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".packinglistpreview.PackingListPreviewActivity" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".packinglistpreview.view.PackingListPreviewActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".сheckinglist.document.CheckingListGoodsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Сканирование"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".printprice.document.PrintPriceActivity"
-            android:label="Печать ценников" />
-        <activity android:name=".dictionarygoods.document.DictionaryGoodsActivity" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="Печать ценников"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".dictionarygoods.document.DictionaryGoodsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

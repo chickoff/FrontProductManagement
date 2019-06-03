@@ -12,11 +12,9 @@ public class BInfo {
     }
 
     public boolean isLocal() {
-
         if (barcode.length() < 13) {
             return false;
         }
-
         return Integer.parseInt(barcode.substring(0,1))  == 2;
     }
 
@@ -31,7 +29,6 @@ public class BInfo {
         if (!isLocal()) {
             return -1;
         }
-
         return Integer.parseInt(barcode.substring(2,7));
     }
 
@@ -39,9 +36,7 @@ public class BInfo {
         if (!isLocal()) {
             return null;
         }
-
         return BigDecimal.valueOf(Double.parseDouble(barcode.substring(7,9)+"."+barcode.substring(9,12)));
-
     }
 
     private SKUContext skuContext;

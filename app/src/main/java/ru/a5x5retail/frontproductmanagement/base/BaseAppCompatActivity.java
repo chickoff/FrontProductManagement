@@ -1,24 +1,37 @@
 package ru.a5x5retail.frontproductmanagement.base;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
+
+import com.arellomobile.mvp.MvpAppCompatActivity;
+
+import java.lang.ref.ReferenceQueue;
 
 import ru.a5x5retail.frontproductmanagement.MainActivity;
 import ru.a5x5retail.frontproductmanagement.ProdManApp;
-import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
-import ru.a5x5retail.frontproductmanagement.configuration.Constants;
+
+import ru.a5x5retail.frontproductmanagement.dialogs.working.ProcessFragmentDialog;
+import ru.a5x5retail.frontproductmanagement.interfaces.IBaseMvpView;
 import ru.a5x5retail.frontproductmanagement.updateapplication.UpdateApplicationActivity;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 
-public class BaseAppCompatActivity extends AppCompatActivity {
+@SuppressLint("Registered")
+public class BaseAppCompatActivity extends MvpAppCompatActivity
+implements IAttachProcessFragmentDialog, IBaseMvpView
+{
 
-
+public BaseAppCompatActivity() {
+    Log.d("DataBaseQuery",this.toString());
+}
 
     private String STATE_ACTIVITY = "STATE_ACTIVITY";
     private int STATE_ACTIVITY_VALUE = 0;
@@ -26,10 +39,18 @@ public class BaseAppCompatActivity extends AppCompatActivity {
 
 
 
+     protected void Test(){
+
+     }
+
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkUpdateVer();
+        //checkUpdateVer();
+        Test();
+
+
     }
 
 
@@ -113,7 +134,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
 
     }
 
-    private void checkUpdateVer() {
+    /*private void checkUpdateVer() {
         int isNewVersion = -1;
         isNewVersion = AppConfigurator.checkNewVersion();
         switch (isNewVersion) {
@@ -127,10 +148,98 @@ public class BaseAppCompatActivity extends AppCompatActivity {
                 return;
             case 0:
         }
+    }*/
+
+
+    public ProcessFragmentDialog getProcessDialog() {
+        if (processDialog == null){
+            processDialog = new ProcessFragmentDialog();
+        }
+        processDialog.setCancelListener(new ProcessFragmentDialog.IProcessDialogCancelListener() {
+            @Override
+            public void onCancel() {
+                dffdsfdfdf();
+            }
+        });
+        return processDialog;
+    }
+
+    protected void dffdsfdfdf() {
+        int a = 2;
+    }
+
+    ProcessFragmentDialog processDialog;
+
+    private FragmentTransaction getFragmentTransaction() {
+       return getSupportFragmentManager().beginTransaction();
     }
 
 
+    private boolean isShowAwaitDialog;
+    @Override
+    public void showAwaitDialog(boolean show){
+       // dffdsfdfdf();
 
+        if (!isShowAwaitDialog && show) {
+            getProcessDialog().show(getSupportFragmentManager(),"eee");
+            isShowAwaitDialog = show;
+        } else if (isShowAwaitDialog && !show){
+            getProcessDialog().dismissAllowingStateLoss();
+            isShowAwaitDialog = show;
+        }
+
+        boolean a = getProcessDialog().isAdded();
+        boolean b = getProcessDialog().isCancelable();
+        boolean c = getProcessDialog().isDetached();
+        boolean d = getProcessDialog().isHidden();
+        boolean e = getProcessDialog().isInLayout();
+        @SuppressLint("RestrictedApi")      boolean f = getProcessDialog().isMenuVisible();
+        boolean j = getProcessDialog().isRemoving();
+        boolean k = getProcessDialog().isResumed();
+        boolean l = getProcessDialog().isStateSaved();
+        boolean m = getProcessDialog().isVisible();
+
+
+    /*    if (show) {
+
+
+
+
+
+            if (!getProcessDialog().isAdded()) {
+                //FragmentTransaction tra = getFragmentTransaction();
+                getProcessDialog().show(getSupportFragmentManager(),"eee");
+                return;
+            }
+
+            if (getProcessDialog().isAdded() && !getProcessDialog().isVisible()) {
+                getProcessDialog().show(getSupportFragmentManager(),"eee");
+                //getProcessDialog().setShowsDialog(true);
+                return;
+            }
+
+        } else {
+            if (getProcessDialog().isAdded()) {
+                getProcessDialog().dismissAllowingStateLoss();
+            }
+        }*/
+    }
+
+    @Override
+    public void showEventToast(String text, int toast_Len) {
+        ProdManApp.Alerts.MakeToast(text,toast_Len);
+    }
+
+    @Override
+    public void showExceptionToast(Exception e, String text) {
+        ProdManApp.Alerts.MakeErrorAlert(this,e,e.getMessage());
+    }
+
+
+    @Override
+    public void attachProcessDialog(ProcessFragmentDialog dialog) {
+        processDialog = dialog;
+    }
 
 
 

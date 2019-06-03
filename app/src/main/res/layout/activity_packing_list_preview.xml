@@ -5,11 +5,12 @@
     android:id="@+id/yyyy"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".packinglistpreview.PackingListPreviewActivity">
+    tools:context=".packinglistpreview.view.PackingListPreviewActivity">
 
     <FrameLayout
         android:id="@+id/fragment_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
+
 </android.support.constraint.ConstraintLayout>

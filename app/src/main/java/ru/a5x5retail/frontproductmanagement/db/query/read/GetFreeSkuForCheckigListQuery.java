@@ -2,42 +2,70 @@ package ru.a5x5retail.frontproductmanagement.db.query.read;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.a5x5retail.frontproductmanagement.db.converters.CodeInfoConverter;
 import ru.a5x5retail.frontproductmanagement.db.models.CodeInfo;
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class GetFreeSkuForCheckigListQuery extends CallableQuery<CodeInfo> {
+public class GetFreeSkuForCheckigListQuery extends CallableQAsync {
 
     private String checkingListGuid;
 
     private List<CodeInfo> list;
 
-    public GetFreeSkuForCheckigListQuery(Connection connection, String checkingListGuid) {
-        super(connection);
+    public GetFreeSkuForCheckigListQuery(String checkingListGuid) {
+
         list = new ArrayList<>();
         this.checkingListGuid = checkingListGuid;
     }
 
     @Override
     protected void SetQuery() {
-        setSqlString("call V_StoreTSD.dbo.CheckingListIncDictFreeSKU (?)");
+        setSqlString("? = call V_StoreTSD.dbo.CheckingListIncDictFreeSKU (?)");
     }
 
     @Override
-    protected void SetQueryParams() throws SQLException {
-        stmt.setString(1, checkingListGuid);
+    protected void SetQueryParams() {
+        try {
+            parameterIndex = 1;
+            getStmt().registerOutParameter(parameterIndex++, Types.INTEGER);
+            getStmt().setString(parameterIndex++, checkingListGuid);
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
     }
 
+/*
     @Override
-    public void Execute() throws SQLException {
+    protected void Execute() {
         super.Execute();
+        try {
+            boolean b = getStmt().execute();
+            setResultSet(getStmt().getResultSet());
+            CodeInfoConverter converter = new CodeInfoConverter();
+            while (getResultSet().next()) {
+                CodeInfo head = new CodeInfo();
+                converter.Convert(getResultSet(), head);
+                list.add(head);
+            }
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
+    }
+*/
+
+    @Override
+    protected void parseResultSet() throws SQLException {
         CodeInfoConverter converter = new CodeInfoConverter();
         while (getResultSet().next()) {
             CodeInfo head = new CodeInfo();
-            converter.Convert(getResultSet(),head);
+            converter.Convert(getResultSet(), head);
             list.add(head);
         }
     }

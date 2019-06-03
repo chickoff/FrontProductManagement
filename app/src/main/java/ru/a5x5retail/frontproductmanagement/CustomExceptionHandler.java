@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Date;
 
+import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
+
 public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     private final Thread.UncaughtExceptionHandler defaultUEH;
@@ -23,8 +25,13 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
         String filename = "stack_trace_" + String.valueOf(System.currentTimeMillis()) + ".html";
         StringBuilder sb = new StringBuilder();
         sb.append("<error>");
+        sb.append("<ver>");
+        sb.append(AppConfigurator.GetCurrentVersion());
+        sb.append("</ver>");
         sb.append("<stacktrace>");
+        sb.append("<![CDATA[");
         sb.append(stackTrace);
+        sb.append("]]>");
         sb.append("</stacktrace>");
         sb.append("</error>");
         FileOutputStream outputStream;

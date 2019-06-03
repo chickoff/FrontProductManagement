@@ -8,14 +8,15 @@ import java.util.List;
 
 import ru.a5x5retail.frontproductmanagement.db.converters.CheckingListControlQtyConverter;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListControlQty;
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class GetCheckingListIncControlQtyListQuery extends CallableQuery<CheckingListControlQty> {
+public class GetCheckingListIncControlQtyListQuery extends CallableQAsync {
 
     private String checkingListHeadGuid;
     private List<CheckingListControlQty> list;
-    public GetCheckingListIncControlQtyListQuery(Connection connection, String checkingListHeadGuid) {
-        super(connection);
+    public GetCheckingListIncControlQtyListQuery(String checkingListHeadGuid){
+
         this.checkingListHeadGuid = checkingListHeadGuid;
         list = new ArrayList<>();
     }
@@ -26,28 +27,48 @@ public class GetCheckingListIncControlQtyListQuery extends CallableQuery<Checkin
     }
 
     @Override
-    protected void SetQueryParams() throws SQLException {
-        stmt.registerOutParameter(1, Types.INTEGER);
-        stmt.setString(2,checkingListHeadGuid);
+    protected void SetQueryParams() {
+        try {
+            parameterIndex = 1;
+            getStmt().registerOutParameter(parameterIndex++, Types.INTEGER);
+            getStmt().setString(parameterIndex++,checkingListHeadGuid);
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
 
     }
 
-    @Override
-    public void Execute() throws SQLException {
+    /*@Override
+    protected void Execute()  {
             super.Execute();
-        CheckingListControlQtyConverter converter = new CheckingListControlQtyConverter();
+        try {
+            boolean b = getStmt().execute();
+            setResultSet(getStmt().getResultSet());
+            CheckingListControlQtyConverter converter = new CheckingListControlQtyConverter();
             while (getResultSet().next()) {
                 CheckingListControlQty head = new CheckingListControlQty();
-                converter.Convert(getResultSet(),head);
+                converter.Convert(getResultSet(), head);
                 list.add(head);
             }
-            stmt.getMoreResults();
-            setReturnCode((int)stmt.getObject(1));
+            getStmt().getMoreResults();
+            setReturnCode((int) getStmt().getObject(1));
             int r = getReturnCode();
-    }
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
 
     @Override
+    protected void parseResultSet() throws SQLException {
+        CheckingListControlQtyConverter converter = new CheckingListControlQtyConverter();
+        while (getResultSet().next()) {
+            CheckingListControlQty head = new CheckingListControlQty();
+            converter.Convert(getResultSet(), head);
+            list.add(head);
+        }
+    }
+
     public List<CheckingListControlQty> getList() {
         return list;
     }

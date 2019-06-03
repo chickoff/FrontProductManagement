@@ -1,14 +1,24 @@
 package ru.a5x5retail.frontproductmanagement.base;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.view.KeyEvent;
 
-import java.lang.reflect.Array;
+import com.arellomobile.mvp.MvpAppCompatFragment;
 
-public class BaseFragment extends Fragment {
+import java.lang.ref.WeakReference;
+
+import ru.a5x5retail.frontproductmanagement.dialogs.working.ProcessFragmentDialog;
+import ru.a5x5retail.frontproductmanagement.interfaces.IBaseMvpView;
+
+public class BaseFragment extends MvpAppCompatFragment
+    implements IBaseMvpView
+
+{
 
 
 
@@ -38,6 +48,18 @@ public class BaseFragment extends Fragment {
     }
 
 
+    private WeakReference<IBaseMvpView> mvpActivity;
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        //FragmentActivity activity = getActivity();
+        if (context instanceof IBaseMvpView) {
+            mvpActivity = new WeakReference(context);
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -45,6 +67,14 @@ public class BaseFragment extends Fragment {
             onFirstInit();
             STATE_FRAGMENT_VALUE = 1;
         }
+
+
+
+    }
+
+
+    public void onKeyUp(int keyCode, KeyEvent event) {
+
     }
 
     @Override
@@ -56,6 +86,8 @@ public class BaseFragment extends Fragment {
         }  else {
             firstStart = true;
         }
+
+
     }
 
     protected void onFirstInit() {
@@ -74,5 +106,57 @@ public class BaseFragment extends Fragment {
         super.onConfigurationChanged(newConfig);
         firstStart = false;
     }
+
+
+
+    ProcessFragmentDialog processDialog;
+
+    public ProcessFragmentDialog getProcessDialog() {
+        if (processDialog == null){
+            processDialog = new ProcessFragmentDialog();
+        }
+        return processDialog;
+    }
+
+    public void showAwaitDialog(boolean show){
+        if (mvpActivity != null) {
+            mvpActivity.get().showAwaitDialog(show);
+        }
+
+
+        /*if (show) {
+            if (!getProcessDialog().isAdded()) {
+                getProcessDialog().show(getActivity().getSupportFragmentManager(),"eee");
+            }
+
+        } else {
+
+                                                boolean a = getProcessDialog().isAdded();
+                                                boolean b = getProcessDialog().isCancelable();
+                                                boolean c = getProcessDialog().isDetached();
+                                                boolean d = getProcessDialog().isHidden();
+                                                boolean e = getProcessDialog().isInLayout();
+            @SuppressLint("RestrictedApi")      boolean f = getProcessDialog().isMenuVisible();
+                                                boolean j = getProcessDialog().isRemoving();
+                                                boolean k = getProcessDialog().isResumed();
+                                                boolean l = getProcessDialog().isStateSaved();
+                                                boolean m = getProcessDialog().isVisible();
+
+            if (getProcessDialog().isAdded()) {
+                getProcessDialog().dismiss();
+            }
+        }*/
+    }
+
+    @Override
+    public void showEventToast(String text, int toast_Len) {
+        mvpActivity.get().showEventToast(text,toast_Len);
+    }
+
+    @Override
+    public void showExceptionToast(Exception e, String text) {
+        mvpActivity.get().showExceptionToast(e,text);
+    }
+
 
 }

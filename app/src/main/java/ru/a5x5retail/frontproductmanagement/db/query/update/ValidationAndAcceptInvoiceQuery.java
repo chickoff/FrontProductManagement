@@ -10,9 +10,10 @@ import java.util.List;
 
 import ru.a5x5retail.frontproductmanagement.db.models.AcceptResult;
 import ru.a5x5retail.frontproductmanagement.db.models.AcceptValidateMessage;
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class ValidationAndAcceptInvoiceQuery extends CallableQuery {
+public class ValidationAndAcceptInvoiceQuery extends CallableQAsync {
 
     /*
     *
@@ -32,8 +33,8 @@ public class ValidationAndAcceptInvoiceQuery extends CallableQuery {
     private AcceptResult acceptResult;
 
 
-    public ValidationAndAcceptInvoiceQuery(Connection connection, String objectGuid) {
-        super(connection);
+    public ValidationAndAcceptInvoiceQuery(String objectGuid) {
+
         this.objectGuid = objectGuid;
     }
 
@@ -43,53 +44,59 @@ public class ValidationAndAcceptInvoiceQuery extends CallableQuery {
     }
 
     @Override
-    protected void SetQueryParams() throws SQLException {
+    protected void SetQueryParams() {
 
-        stmt.registerOutParameter(1, Types.INTEGER);
-        stmt.setString(2,objectGuid);
-        stmt.setInt(3, 1);
-        stmt.registerOutParameter(4, Types.INTEGER);
-        stmt.registerOutParameter(5, Types.INTEGER);
-        stmt.registerOutParameter(6, Types.OTHER);
+        try {
+            parameterIndex = 1;
+            getStmt().registerOutParameter(parameterIndex++, Types.INTEGER);
+            getStmt().setString(parameterIndex++,objectGuid);
+            getStmt().setInt(parameterIndex++, 1);
+            getStmt().registerOutParameter(parameterIndex++, Types.INTEGER);
+            getStmt().registerOutParameter(parameterIndex++, Types.INTEGER);
+            getStmt().registerOutParameter(parameterIndex++, Types.OTHER);
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
+
 
 
     }
 
-    @Override
-    public void Execute() throws SQLException {
-        //super.Execute();
-        SetQuery();
-        createStatement();
-        SetQueryParams();
-        ResultSet resultSet = stmt.executeQuery();
-        if (resultSet != null) {
-            setResultSet(resultSet);
-        }
-        acceptResult = new AcceptResult();
-      //  stmt.getMoreResults();
-        if (getResultSet()!= null) {
-            List<AcceptValidateMessage> acceptValidateMessageList = new ArrayList<>();
-            while (getResultSet().next()) {
-                AcceptValidateMessage acceptValidateMessage = new AcceptValidateMessage();
-                acceptValidateMessage.idd = getResultSet().getInt("IDD");
-                acceptValidateMessage.text = getResultSet().getString("text");
-                acceptValidateMessage.note = getResultSet().getString("note");
-                acceptValidateMessage.level = getResultSet().getInt("level");
-                acceptValidateMessage.orderBy = getResultSet().getInt("orderBy");
-                acceptValidateMessage.spName = getResultSet().getString("spName");
-                acceptValidateMessage.dateCreate = getResultSet().getDate("dateCreate");
-                acceptValidateMessageList.add(acceptValidateMessage);
+   /* @Override
+    protected void Execute() {
+        super.Execute();
+
+        try {
+            boolean b = getStmt().execute();
+            setResultSet(getStmt().getResultSet());
+            acceptResult = new AcceptResult();
+            if (getResultSet() != null) {
+                List<AcceptValidateMessage> acceptValidateMessageList = new ArrayList<>();
+                while (getResultSet().next()) {
+                    AcceptValidateMessage acceptValidateMessage = new AcceptValidateMessage();
+                    acceptValidateMessage.idd = getResultSet().getInt("IDD");
+                    acceptValidateMessage.text = getResultSet().getString("text");
+                    acceptValidateMessage.note = getResultSet().getString("note");
+                    acceptValidateMessage.level = getResultSet().getInt("level");
+                    acceptValidateMessage.orderBy = getResultSet().getInt("orderBy");
+                    acceptValidateMessage.spName = getResultSet().getString("spName");
+                    acceptValidateMessage.dateCreate = getResultSet().getDate("dateCreate");
+                    acceptValidateMessageList.add(acceptValidateMessage);
+                }
+                acceptResult.acceptValidateMessageList = acceptValidateMessageList;
             }
-            acceptResult.acceptValidateMessageList = acceptValidateMessageList;
+
+            setReturnCode(getStmt().getInt(1));
+            acceptResult.returnCode = getReturnCode();
+            acceptResult.isValidated = getStmt().getInt(4);
+            acceptResult.isAccepted = getStmt().getInt(5);
+            acceptResult.eventMessage = getStmt().getString(6);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        setReturnCode(stmt.getInt(1));
-        acceptResult.returnCode = getReturnCode();
-        acceptResult.isValidated = stmt.getInt(4);
-        acceptResult.isAccepted = stmt.getInt(5);
-        acceptResult.eventMessage = stmt.getString(6);
-
-    }
+    }*/
 
     public AcceptResult getAcceptResult() {
         if (acceptResult == null) {

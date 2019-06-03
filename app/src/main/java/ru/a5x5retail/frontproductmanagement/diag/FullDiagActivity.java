@@ -186,15 +186,16 @@ public class FullDiagActivity extends AppCompatActivity {
 
     }
     private void testConnection() {
-        try {
+        /*try {
             MsSqlConnection con = new MsSqlConnection();
-            TestConnectionQuery q = new TestConnectionQuery(con.getConnection());
+            TestConnectionQuery q = new TestConnectionQuery();
+            q.e
             con.CallQuery(q);
             dbState = "Бд доступна";
         } catch (Exception e) {
             dbState = "Бд не доступна";
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override

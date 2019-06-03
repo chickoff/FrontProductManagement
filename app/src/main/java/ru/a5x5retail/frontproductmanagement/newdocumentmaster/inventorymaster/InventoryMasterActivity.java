@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import ru.a5x5retail.frontproductmanagement.configuration.AppConfigurator;
 import ru.a5x5retail.frontproductmanagement.db.models.InventoryList;
 import ru.a5x5retail.frontproductmanagement.db.mssql.MsSqlConnection;
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.create.CreateNewLocalInventoryQuery;
 import ru.a5x5retail.frontproductmanagement.interfaces.IRecyclerViewItemClick;
 
@@ -74,20 +75,19 @@ implements IRecyclerViewItemClick<InventoryList>
                     return;
                 }
 
-                try {
-                    MsSqlConnection con = new MsSqlConnection();
-                    CreateNewLocalInventoryQuery query =
-                            new CreateNewLocalInventoryQuery( con.getConnection(),
-                                    viewModel.getSelectedInventoryList().getValue().inventoryGuid,
-                                            AppConfigurator.getDeviceId(InventoryMasterActivity.this));
-                    con.CallQuery(query);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-                setResult(1);
-                finish();
+                CreateNewLocalInventoryQuery query =
+                        new CreateNewLocalInventoryQuery(
+                                viewModel.getSelectedInventoryList().getValue().inventoryGuid,
+                                        AppConfigurator.getDeviceId(InventoryMasterActivity.this),"master");
+                query.addOnPostExecuteListener(new CallableQAsync.OnPostExecuteListener() {
+                    @Override
+                    public void onPostExecute() {
+                        setResult(1);
+                        finish();
+                    }
+                });
+                query.ExecuteAsync();
+
             }
         });
 

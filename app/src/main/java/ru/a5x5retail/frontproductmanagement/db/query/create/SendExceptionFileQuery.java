@@ -4,14 +4,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.CallableQuery;
 
-public class SendExceptionFileQuery extends CallableQuery {
+public class SendExceptionFileQuery extends CallableQAsync {
     String imei;
     String exeptionFile;
 
-    public SendExceptionFileQuery(Connection connection, String imei, String exeptionFile) {
-        super(connection);
+    public SendExceptionFileQuery(String imei, String exeptionFile) {
         this.imei = imei;
         this.exeptionFile = exeptionFile;
     }
@@ -22,18 +22,27 @@ public class SendExceptionFileQuery extends CallableQuery {
     }
 
     @Override
-    protected void SetQueryParams() throws SQLException {
-        stmt.registerOutParameter(1, Types.INTEGER);
-        stmt.setString(2,imei);
-        stmt.setString(3, exeptionFile);
+    protected void SetQueryParams() {
+        try {
+            parameterIndex = 1;
+            getStmt().registerOutParameter(parameterIndex++, Types.INTEGER);
+            getStmt().setString(parameterIndex++,imei);
+            getStmt().setString(parameterIndex++, exeptionFile);
+        } catch (Exception e) {
+            setException(e);
+            e.printStackTrace();
+        }
+
+    }
+
+
+    @Override
+    public boolean Execute() {
+        return super.Execute();
     }
 
     @Override
-    public void Execute() throws SQLException {
-        super.Execute();
-        returnCode = stmt.getInt(1);
-
-        /*boolean b = stmt.getMoreResults();
-        eventMessage = stmt.getString(3);*/
+    protected void parseOutputVars() throws SQLException {
+        returnCode = getStmt().getInt(1);
     }
 }
