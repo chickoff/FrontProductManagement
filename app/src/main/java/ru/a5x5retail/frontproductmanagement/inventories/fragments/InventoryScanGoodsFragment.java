@@ -60,7 +60,7 @@ import ru.a5x5retail.frontproductmanagement.inventories.view.IInventoryScanGoods
 
 import static android.app.Activity.RESULT_OK;
 
-
+/** это фрагмент, где происходит сканирование!!! **/
 public class InventoryScanGoodsFragment extends BaseFragment implements IInventoryScanGoodsView {
 
     @InjectPresenter
