@@ -2,13 +2,18 @@ package ru.a5x5retail.frontproductmanagement.inventories.fragments;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -17,13 +22,16 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import org.w3c.dom.Text;
 
+import ru.a5x5retail.frontproductmanagement.MainActivity;
 import ru.a5x5retail.frontproductmanagement.R;
+import ru.a5x5retail.frontproductmanagement.SuperPwdDialogFragment;
 import ru.a5x5retail.frontproductmanagement.adapters.BasicViewHolderFactory;
 import ru.a5x5retail.frontproductmanagement.adapters.viewholders.BasicViewHolder;
 import ru.a5x5retail.frontproductmanagement.common.RecyclerViewStandartFragment;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckListInventory;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListHead;
 import ru.a5x5retail.frontproductmanagement.db_local.ProjectMap;
+import ru.a5x5retail.frontproductmanagement.filters.actualassortmentfilter.IActualAssortmentFilterCallListener;
 import ru.a5x5retail.frontproductmanagement.inventories.dialogs.InventoryNoteDialogFragment;
 import ru.a5x5retail.frontproductmanagement.inventories.presenters.InventorySheetsPresenter;
 import ru.a5x5retail.frontproductmanagement.inventories.view.IInventorySheetsView;
@@ -38,6 +46,7 @@ public class InventorySheetsFragment extends RecyclerViewStandartFragment<CheckL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        setHasOptionsMenu(true);
         fab = view.findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -100,11 +109,64 @@ public class InventorySheetsFragment extends RecyclerViewStandartFragment<CheckL
         swipeRefreshLayout.setRefreshing(false);
     }
 
+
+    IEditInventoryGoodsListener mListener;
+    public IEditInventoryGoodsListener getmListener() {
+        return mListener;
+    }
+    public void setmListener(IEditInventoryGoodsListener mListener) {
+        this.mListener = mListener;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        FragmentActivity activity = getActivity();
+        if (activity instanceof IEditInventoryGoodsListener) {
+            mListener = (IEditInventoryGoodsListener) activity;
+        }
+    }
+
     @Override
     public void updateUi() {
         adapter.setSourceList(presenter.getCheckingListHeadList());
         adapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void setEditInventoryGoodsFragment() {
+        if (mListener !=null ) {
+            mListener.onEditInventoryGoods();
+        }
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_inventory_sheets, menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.edit_inventory :
+                FragmentActivity fa =  getActivity();
+                SuperPwdDialogFragment dialog = new SuperPwdDialogFragment();
+                dialog.setResult(new SuperPwdDialogFragment.SuperPwdDialogFragmentResult() {
+                    @Override
+                    public void onSuperPwdSuccess() {
+                        presenter.setEditInventoryGoodsFragment();
+                    }
+                });
+                dialog.show(fa.getSupportFragmentManager(),"dsfds");
+            break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     /*********************************************************************************************/
 
@@ -153,6 +215,10 @@ public class InventorySheetsFragment extends RecyclerViewStandartFragment<CheckL
 
     public interface IInventorySheetsSelectedListener {
         void onSelect();
+    }
+
+    public interface IEditInventoryGoodsListener {
+        void onEditInventoryGoods();
     }
 }
 

@@ -55,7 +55,19 @@ public class ProdManApp extends Application {
 
     public static class Alerts {
 
-        public static void MakeErrorAlert(Context context,Exception e,String text) {
+        private static void createAlert(String msg) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getAppContext());
+            builder.setMessage(msg);
+            builder.setNeutralButton("ОК", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.create().show();
+        }
+
+        public static void MakeErrorAlert(Context context, Exception e, String text) {
             if (AppConfigurator.isDebug()) {
                 StringBuilder sb = new StringBuilder();
                 if (e == null) {
@@ -76,26 +88,23 @@ public class ProdManApp extends Application {
                         }
                     }
                 }
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage(sb.toString());
-                builder.setNeutralButton("ОК", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.create().show();
+                createAlert(sb.toString());
             } else {
                 Toast toast = Toast.makeText(getAppContext(),
-                        text, Toast.LENGTH_SHORT);
+                        text, Toast.LENGTH_LONG);
                 toast.show();
             }
         }
 
         public static void MakeToast(String text, int toast_Len){
-            Toast toast = Toast.makeText(getAppContext(),
-                    text, toast_Len);
-            toast.show();
+
+            if (AppConfigurator.isDebug()) {
+                createAlert(text);
+            } else {
+                Toast toast = Toast.makeText(getAppContext(),
+                        text, toast_Len);
+                toast.show();
+            }
         }
 
         public static void MakeAlertVibrate() {

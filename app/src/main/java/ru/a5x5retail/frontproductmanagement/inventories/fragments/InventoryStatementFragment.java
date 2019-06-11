@@ -61,6 +61,7 @@ public class InventoryStatementFragment extends RecyclerViewStandartFragment<Inv
 
     }
 
+
     public class InventoryStatementViewHolder extends BasicViewHolder<InventoryList> {
 
         public InventoryStatementViewHolder(@NonNull View itemView) {

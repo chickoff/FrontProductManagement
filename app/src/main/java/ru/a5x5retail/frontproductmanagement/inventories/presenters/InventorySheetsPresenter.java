@@ -99,4 +99,8 @@ public class InventorySheetsPresenter extends BasePresenter<IInventorySheetsView
     public void setSelectedInventorySheet(CheckListInventory sheet) {
         model.setSelectedInventorySheet(sheet);
     }
+
+    public void setEditInventoryGoodsFragment() {
+        getViewState().setEditInventoryGoodsFragment();
+    }
 }

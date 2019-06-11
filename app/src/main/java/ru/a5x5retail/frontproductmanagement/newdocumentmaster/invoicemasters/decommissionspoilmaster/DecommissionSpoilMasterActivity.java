@@ -91,7 +91,7 @@ public class DecommissionSpoilMasterActivity extends BaseMasterActivity
     private void showDialog(){
         dialog = new StepsFDialog();
         dialog.setViewModel(viewModel);
-        dialog.setTitle("Брак");
+        dialog.setTitle("Выберите накладную:");
         dialog.show(getSupportFragmentManager(),"dsfds");
     }
 

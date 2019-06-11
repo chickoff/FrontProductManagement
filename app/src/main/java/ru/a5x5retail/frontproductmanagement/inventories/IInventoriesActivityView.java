@@ -13,5 +13,6 @@ public interface IInventoriesActivityView extends IBaseMvpView {
     void setInventoryPreviewFragment();
     void setEditInventoryStatementFragment();
     void setInventoryScanGoodsFragment();
+    void setEditInventoryGoodsFragment();
     void setActualAssortmentFilterFragment(ActualAssortmentFilterFragment.IActualAssortmentFilterResultListener resultListener);
 }

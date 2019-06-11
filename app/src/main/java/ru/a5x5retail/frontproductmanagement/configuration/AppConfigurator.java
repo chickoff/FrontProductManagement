@@ -128,6 +128,7 @@ public class AppConfigurator {
             loChild.setTypeOfDocument(Constants.TypeOfDocument.FULL_INVENTORY);
             loChild.setName("Полная инвентаризация");
             loChild.setShortName("Полная инв.");
+            loChild.setSuperPwdProtect(true);
             loChild.setParentDoc(doc);
             inventoryChilds.add(loChild);
             searchList.add(loChild);

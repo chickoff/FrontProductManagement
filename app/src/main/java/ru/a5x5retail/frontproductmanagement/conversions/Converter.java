@@ -28,4 +28,22 @@ public class Converter {
         DecimalFormat df = new DecimalFormat("0.000##",otherSymbols);
         return df.format(qty);
     }
+
+    public static String QtyToString(BigDecimal qty,int measureUnitIdd) {
+        BigDecimal tmpQty;
+
+        if (qty == null) {
+            tmpQty = new BigDecimal(0);
+        } else {
+            tmpQty = qty;
+        }
+
+        if (measureUnitIdd == 1) {
+            tmpQty = tmpQty.setScale(3);
+        } else {
+            tmpQty = tmpQty.setScale(0);
+        }
+
+        return tmpQty.toString();
+    }
 }

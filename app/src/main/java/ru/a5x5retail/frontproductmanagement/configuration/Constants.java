@@ -49,6 +49,7 @@ public final class Constants {
     public enum DIALOGRESULTENUM {TRUE, FALSE ,ERROR}
 
     public static final String PWD_SI = "3860";
+    public static final String PWD_SUPER = "viking";
     //public static final String TYPEOFDOCUMENT_CONST = "TYPEOFDOCUMENT_CONST";
     //public static final String PACKINGLISTHEAD_CONST = "PACKINGLISTHEAD_CONST";
     public static final String CONTRACTOR_INFO_CONST = "CONTRACTOR_INFO_CONST";

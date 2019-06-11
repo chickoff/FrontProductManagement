@@ -31,4 +31,8 @@ public class InventoriesActivityPresenter extends BasePresenter<IInventoriesActi
     public void setActualAssortmentFilterFragment(ActualAssortmentFilterFragment.IActualAssortmentFilterResultListener resultListener) {
         getViewState().setActualAssortmentFilterFragment(resultListener);
     }
+
+    public void setEditInventoryGoodsFragment() {
+        getViewState().setEditInventoryGoodsFragment();
+    }
 }

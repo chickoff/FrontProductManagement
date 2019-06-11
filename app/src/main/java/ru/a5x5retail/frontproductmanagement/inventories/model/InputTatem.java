@@ -7,6 +7,7 @@ import java.util.List;
 import ru.a5x5retail.frontproductmanagement.BInfo;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckListInventory;
 import ru.a5x5retail.frontproductmanagement.db.models.CheckingListGoods;
+import ru.a5x5retail.frontproductmanagement.db.models.InventoryCode;
 import ru.a5x5retail.frontproductmanagement.db_local.loSkuContext;
 
 
@@ -48,6 +49,16 @@ public class InputTatem {
     }
 
 
+
+
+    private InventoryCode inventoryCode;
+    public InventoryCode getInventoryCode() {
+        return inventoryCode;
+    }
+    public void setInventoryCode(InventoryCode inventoryCode) {
+        this.inventoryCode = inventoryCode;
+    }
+
     /******************************************************************************************/
 
 
@@ -64,6 +75,9 @@ public class InputTatem {
                 break;
             case byFilter:
                 var = (int) skuContext.Code;
+                break;
+            case byEdit:
+                var = inventoryCode.code;
                 break;
         }
         return var;
@@ -83,6 +97,9 @@ public class InputTatem {
             case byFilter:
                 var = skuContext.MeasureUnitIDD;
                 break;
+            case byEdit:
+                var = inventoryCode.measureUnitIDD;
+                break;
         }
         return var;
     }
@@ -101,6 +118,9 @@ public class InputTatem {
             case byFilter:
                 var = skuContext.NameLong;
                 break;
+            case byEdit:
+                var = inventoryCode.nameLong;
+                break;
         }
         return var;
     }
@@ -115,8 +135,15 @@ public class InputTatem {
 
     public BigDecimal getCurrentQty() {
         BigDecimal var = BigDecimal.valueOf(0);
-        if (selectedPosition != null) {
-            var = selectedPosition.Qty;
+
+        if (inputType == InputType.byEdit) {
+            if (inventoryCode != null && inventoryCode.qty != null) {
+                var = inventoryCode.qty;
+            }
+        } else {
+            if (selectedPosition != null) {
+                var = selectedPosition.Qty;
+            }
         }
 
         return var;
@@ -184,7 +211,7 @@ public class InputTatem {
 
 
 
-    public enum InputType {none, byClick, byScan, byFilter}
+    public enum InputType {none, byClick, byScan, byFilter, byEdit}
 
     private int stepIndex;
     public void setNextStepIndex() {

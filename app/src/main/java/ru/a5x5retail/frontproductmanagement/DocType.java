@@ -45,7 +45,6 @@ public class DocType<T extends AppCompatActivity> {
     public String getShortName() {
         return shortName;
     }
-
     public void setShortName(String shortName) {
         this.shortName = shortName;
     }
@@ -59,12 +58,18 @@ public class DocType<T extends AppCompatActivity> {
     }
 
     private DocType parentDoc;
-
     public DocType getParentDoc() {
         return parentDoc;
     }
-
     public void setParentDoc(DocType parentDoc) {
         this.parentDoc = parentDoc;
+    }
+
+    private boolean isSuperPwdProtect;
+    public boolean isSuperPwdProtect() {
+        return isSuperPwdProtect;
+    }
+    public void setSuperPwdProtect(boolean superPwdProtect) {
+        isSuperPwdProtect = superPwdProtect;
     }
 }

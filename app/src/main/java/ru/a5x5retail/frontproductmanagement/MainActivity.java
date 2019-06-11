@@ -74,7 +74,6 @@ implements IMainActivityView
                 .setHolderFactory(new DocTypeViewHolderFactory())
                 .setLayout(R.layout.item_doctype_rv)
                 .setSourceList(AppConfigurator.getAvailableDocTypes())
-
                 .setShortClickListener(new IRecyclerViewItemShortClickListener<DocType>() {
                     @Override
                     public void OnShortClick(int pos, View view, final DocType innerItem) {
@@ -156,6 +155,7 @@ implements IMainActivityView
 
                             query.ExecuteAsync();
                         } else {
+
                             Intent intent = new Intent(MainActivity.this, innerItem.getClassOfActivity());
                             startActivity(intent);
                         }
@@ -198,6 +198,21 @@ implements IMainActivityView
 
                     Intent intent = new Intent(MainActivity.this, dt.getClassOfActivity());
                     startActivity(intent);
+
+
+/*                    if (dt.isSuperPwdProtect()) {
+                        SuperPwdDialogFragment dialog = new SuperPwdDialogFragment();
+                        dialog.setResult(new SuperPwdDialogFragment.SuperPwdDialogFragmentResult() {
+                            @Override
+                            public void onSuperPwdSuccess() {
+                                Intent intent = new Intent(MainActivity.this, dt.getClassOfActivity());
+                                startActivity(intent);
+                            }
+                        });
+                        dialog.show(getSupportFragmentManager(),"dsfds");
+                    } else {
+
+                    }*/
                 }
             });
             query.ExecuteAsync();

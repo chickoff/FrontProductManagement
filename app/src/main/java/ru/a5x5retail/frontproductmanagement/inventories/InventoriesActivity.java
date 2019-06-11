@@ -23,10 +23,12 @@ import ru.a5x5retail.frontproductmanagement.filters.actualassortmentfilter.IActu
 import ru.a5x5retail.frontproductmanagement.filters.actualassortmentfilter.IActualAssortmentFilterCloseListener;
 import ru.a5x5retail.frontproductmanagement.filters.assortmentfilter.AssortmentFilterFragment;
 import ru.a5x5retail.frontproductmanagement.interfaces.IReceiveScanerMessageListener;
+import ru.a5x5retail.frontproductmanagement.inventories.fragments.EditInventoryGoodsFragment;
 import ru.a5x5retail.frontproductmanagement.inventories.fragments.EditInventoryStatementFragment;
 import ru.a5x5retail.frontproductmanagement.inventories.fragments.InventoryPreviewFragment;
 import ru.a5x5retail.frontproductmanagement.inventories.fragments.InventoryScanGoodsFragment;
 import ru.a5x5retail.frontproductmanagement.inventories.fragments.InventorySheetsFragment;
+import ru.a5x5retail.frontproductmanagement.inventories.fragments.InventorySheetsFragment.IEditInventoryGoodsListener;
 import ru.a5x5retail.frontproductmanagement.inventories.fragments.InventoryStatementFragment;
 
 import static ru.a5x5retail.frontproductmanagement.broadcast.SystemBroadCast.SCN_CUST_EX_SCODE;
@@ -34,7 +36,8 @@ import static ru.a5x5retail.frontproductmanagement.сheckinglist.broadcast.Syste
 
 public class InventoriesActivity extends BaseAppCompatActivity
 implements IInventoriesActivityView,
-        IActualAssortmentFilterCallListener
+        IActualAssortmentFilterCallListener,
+        IEditInventoryGoodsListener
 {
     @InjectPresenter
     InventoriesActivityPresenter presenter;
@@ -86,6 +89,11 @@ implements IInventoriesActivityView,
     @Override
     public void setInventoryScanGoodsFragment() {
         replaceFragment(InventoryScanGoodsFragment.newInstance(), true);
+    }
+
+    @Override
+    public void setEditInventoryGoodsFragment() {
+        replaceFragment(EditInventoryGoodsFragment.newInstance(), true);
     }
 
     @Override
@@ -169,5 +177,10 @@ implements IInventoriesActivityView,
     @Override
     public void actualAssortmentFilterCall(ActualAssortmentFilterFragment.IActualAssortmentFilterResultListener resultListener) {
         presenter.setActualAssortmentFilterFragment(resultListener);
+    }
+
+    @Override
+    public void onEditInventoryGoods() {
+        presenter.setEditInventoryGoodsFragment();
     }
 }
