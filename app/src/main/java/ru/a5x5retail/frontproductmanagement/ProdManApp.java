@@ -55,8 +55,8 @@ public class ProdManApp extends Application {
 
     public static class Alerts {
 
-        private static void createAlert(String msg) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getAppContext());
+        private static void createAlert(Context context,String msg) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage(msg);
             builder.setNeutralButton("ОК", new DialogInterface.OnClickListener() {
                 @Override
@@ -88,18 +88,18 @@ public class ProdManApp extends Application {
                         }
                     }
                 }
-                createAlert(sb.toString());
+                createAlert(context,sb.toString());
             } else {
-                Toast toast = Toast.makeText(getAppContext(),
+                Toast toast = Toast.makeText(context,
                         text, Toast.LENGTH_LONG);
                 toast.show();
             }
         }
 
-        public static void MakeToast(String text, int toast_Len){
+        public static void MakeToast(Context context,String text, int toast_Len){
 
-            if (AppConfigurator.isDebug()) {
-                createAlert(text);
+            if (context != null && AppConfigurator.isDebug()) {
+                createAlert(context, text);
             } else {
                 Toast toast = Toast.makeText(getAppContext(),
                         text, toast_Len);

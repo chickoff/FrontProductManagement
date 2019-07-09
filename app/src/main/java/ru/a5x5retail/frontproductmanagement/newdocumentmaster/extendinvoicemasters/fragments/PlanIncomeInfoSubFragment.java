@@ -135,7 +135,7 @@ public class PlanIncomeInfoSubFragment extends BaseFragment implements IPlanInco
             ProdManApp.Activities.createNewInvoiceActivity(getActivity(),BASIS_OF_CREATION_ON_PP,null,
                     innerItem,201);
         } else {
-            ProdManApp.Alerts.MakeToast("Нельзя создать накладную из ПП. Смотрите информацию по поставщику",0);
+            showEventToast("Нельзя создать накладную из ПП. Смотрите информацию по поставщику",0);
         }
     }
 

@@ -118,7 +118,7 @@ public class GroupFilterFragment extends BaseFragment implements IGroupFilterVie
 
     private void okFilter() {
         if (presenter.isEmptyChecked()) {
-            ProdManApp.Alerts.MakeToast("Выберите подгруппу!",0);
+             showEventToast("Выберите подгруппу!",0);
             return;
         }
         presenter.getCode();

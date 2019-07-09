@@ -31,6 +31,7 @@ import ru.a5x5retail.frontproductmanagement.db.query.CallableQAsync;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetApkVersionApkQuery;
 import ru.a5x5retail.frontproductmanagement.db.query.read.GetMainDivisionInfoQuery;
 import ru.a5x5retail.frontproductmanagement.db_local.ProjectMap;
+import ru.a5x5retail.frontproductmanagement.network.n;
 import ru.a5x5retail.frontproductmanagement.updateapplication.UpdateApplicationActivity;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -39,6 +40,9 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 public class MainActivity extends BaseAppCompatActivity
 implements IMainActivityView
 {
+
+    //n f = new n();
+
 
     private SendExceptionFiles sendExceptionFiles;
 

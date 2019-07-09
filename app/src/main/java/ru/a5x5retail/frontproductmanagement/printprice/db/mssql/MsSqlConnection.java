@@ -41,7 +41,7 @@ public class MsSqlConnection {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
             connection = DriverManager.getConnection(getSqlConnectionString());
         } catch (ClassNotFoundException | SQLException e) {
-            ProdManApp.Alerts.MakeToast("Отсустствует подключение к серверу!",0);
+            ProdManApp.Alerts.MakeToast(null,"Отсустствует подключение к серверу!",0);
             e.printStackTrace();
         }
     }

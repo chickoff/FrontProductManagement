@@ -38,7 +38,7 @@ public class WiFiSpeedTimer {
                         new Runnable() {
                             @Override
                             public void run() {
-                                ProdManApp.Alerts.MakeToast(warning, Toast.LENGTH_SHORT);
+                                ProdManApp.Alerts.MakeToast(null,warning, Toast.LENGTH_SHORT);
                             }
                         }
                 );
@@ -49,7 +49,7 @@ public class WiFiSpeedTimer {
                         new Runnable() {
                             @Override
                             public void run() {
-                                ProdManApp.Alerts.MakeToast(alarm, Toast.LENGTH_SHORT);
+                                ProdManApp.Alerts.MakeToast(null,alarm, Toast.LENGTH_SHORT);
                             }
                         }
                 );

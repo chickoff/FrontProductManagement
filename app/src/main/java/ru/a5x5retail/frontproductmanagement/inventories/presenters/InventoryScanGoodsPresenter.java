@@ -173,7 +173,7 @@ public class InventoryScanGoodsPresenter extends BasePresenter<IInventoryScanGoo
         public void raiseError(String message) {
             getViewState().closeEditableDialog();
             ProdManApp.Alerts.MakeDoubleVibrate();
-            ProdManApp.Alerts.MakeToast(message, 0);
+            getViewState().showEventToast(message, 0);
         }
 
         @Override

@@ -227,7 +227,7 @@ public BaseAppCompatActivity() {
 
     @Override
     public void showEventToast(String text, int toast_Len) {
-        ProdManApp.Alerts.MakeToast(text,toast_Len);
+        ProdManApp.Alerts.MakeToast(this,text,toast_Len);
     }
 
     @Override

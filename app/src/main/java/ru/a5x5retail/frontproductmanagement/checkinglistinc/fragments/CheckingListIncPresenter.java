@@ -376,7 +376,7 @@ public List<CheckingListMark> getCheckingListMarkList() {
         @Override
         public void raiseError(String message) {
             ProdManApp.Alerts.MakeDoubleVibrate();
-            ProdManApp.Alerts.MakeToast(message, 0);
+            getViewState().showEventToast(message,0);
         }
 
         @Override
